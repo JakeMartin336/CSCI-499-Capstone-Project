@@ -1,11 +1,9 @@
 import requests
 
-# for now it only fetches and displays concert information for a specified location 
-
-def get_concerts(location):
+def get_concerts(location, artist):
     url = "https://real-time-events-search.p.rapidapi.com/search-events"
     querystring = {
-        "query": f"concerts in {location}",
+        "query": f"{artist} concerts in {location}",
         "date": "any",
         "is_virtual": "false",
         "start": "0"
@@ -35,11 +33,12 @@ def get_concerts(location):
         else:
             print("No events found.")
     else:
-        print(f"Error: {response.status_code} - {response.text}")
+        print(f"Error: {response.status_code}")
 
 if __name__ == "__main__":
     location = input("Enter the location (e.g., 'San Francisco'): ").strip()
-    get_concerts(location)
+    artist = input("Enter the artist's name: ").strip()
+    
+    get_concerts(location, artist)
 
 
-# example 
