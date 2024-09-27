@@ -1,3 +1,1 @@
 # CSCI-499-Capstone-Project
-
-This app is a web platform designed to enhance the concert-going experience by connecting users with similar music tastes and simplifying media sharing. Users can explore trending live performances, and find potential concert buddies through a matching system based on past events or musical preferences. The platform also offers instant messaging for users to connect, coordinate, and find concert buddies of a lifetime! After the concert, users can also conveniently share photos and videos in a centralized space, making it a one-stop hub for discovering, attending, and sharing concert memories with the people you experienced them with!
