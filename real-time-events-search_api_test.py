@@ -1,5 +1,3 @@
-# CANNOT USE (API unavailable since 2019)
-
 import requests
 
 def get_concerts(location, artist):
