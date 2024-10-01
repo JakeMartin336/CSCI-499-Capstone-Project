@@ -10,9 +10,14 @@ def get_concerts(location, artist):
     }
     
     headers = {
-        "x-rapidapi-host": "real-time-events-search.p.rapidapi.com",
-        "x-rapidapi-key": "d70791e08amsh1cd03ce9f9fdc97p1f97d4jsn378f66394a3e"
+	"x-rapidapi-key": "d50f6e803emsh4e674004cf2581ep178d33jsne1cea532c048",
+	"x-rapidapi-host": "real-time-events-search.p.rapidapi.com"
     }
+    # headers = {
+    #     "x-rapidapi-host": "real-time-events-search.p.rapidapi.com",
+    #     "x-rapidapi-key": "50f6803emsh4674004cf2581p178d33jsne1cea532c048"
+    #     # "d70791e08amsh1cd03ce9f9fdc97p1f97d4jsn378f66394a3e"
+    # }
     
     response = requests.get(url, headers=headers, params=querystring)
     
