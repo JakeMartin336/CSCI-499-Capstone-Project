@@ -6,7 +6,7 @@
     <title>Profile Page</title>
 
     <!-- Custom Css -->
-    <link rel="stylesheet" href="static/styles.css">
+    <link rel="stylesheet" href="/static/styles.css">
 
     <!-- FontAwesome 5 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
@@ -45,7 +45,7 @@
     <!-- Sidenav -->
     <div class="sidenav">
         <div class="profile">
-            <img src="https://imdezcode.files.wordpress.com/2020/02/imdezcode-logo.png" alt="" width="100" height="100">
+            <img src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/626fd8140423801.6241b91e24d9c.png" alt="" width="100" height="100">
 
             <div class="name">
                 {{ user['user_name'] if user else 'User Name' }}
@@ -65,7 +65,26 @@
                 <hr align="center">
             </div>
         </div>
+
+        <div class="myList">
+            My List
+            <div class="Interested">
+                Interested:
+
+                <div class = "interestedConcerts">
+                    Sabrina Carpenter: Short 'n Sweet
+                    Chappell Roan 
+                    CharliXCX
+                </div>
+
+            </div>
+            <div class="Going">
+                Going:
+            </div>
+        </div>
     </div>
+
+    
     <!-- End -->
 
     <!-- Main -->
@@ -104,3 +123,13 @@
     <!-- End -->
 </body>
 </html>
+
+
+<!-- How to run flask -->
+<!-- 1) python3 -m venv venv
+     2) source venv/bin/activate
+     3) flask run -->
+     4. deactivate 
+
+<!-- To check for account example: 
+ 1) add this to end of url: /?account_id=10001 -->
