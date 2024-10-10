@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, jsonify, url_for, redirect, session
 import csv
 import pandas as pd
 import psycopg2
@@ -10,6 +10,9 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 import secrets
 app.secret_key = secrets.token_hex(16)
 
+
+def insert_survey(username, email, password, age, location, genres, budget, travel_time):
+    return True
 
 def get_login(email, password):
 
@@ -92,15 +95,23 @@ def login():
 def register():
     error = None
     if request.method == 'POST':
-        new_username = request.form['new_username']
-        new_email = request.form['new_email']
-        new_password = request.form['new_password']
-        # print(f"Username: {new_username}, Email: {new_email}, Password: {new_password}")
+        # new_username = request.form['new_username']
+        # new_email = request.form['new_email']
+        # new_password = request.form['new_password']
+        new_username = request.form.get('new_username')
+        new_email = request.form.get('new_email')
+        new_password = request.form.get('new_password')
+        print(f"Username: {new_username}, Email: {new_email}, Password: {new_password}")
         created_info = create_user(new_username, new_email, new_password)
+        # created_info = True
         if created_info is True:
             # return render_template("test.html", username=new_username, email=new_email, password=new_password)
             # return redirect(url_for('home'))
-            return redirect(url_for('survey', new_username=new_username, new_email=new_email, new_password=new_password))
+            # return redirect(url_for('survey', new_username=new_username, new_email=new_email, new_password=new_password))
+            session['new_username'] = new_username
+            session['new_email'] = new_email
+            session['new_password'] = new_password
+            return redirect(url_for('survey'))
         else:
             # return render_template("smile.html")
             return render_template("register.html", error=created_info)
@@ -110,11 +121,19 @@ def register():
 
 @app.route('/survey', methods=['GET', 'POST'])
 def survey():
+    error = None
     if request.method == 'POST':
-        # Pass User Data
-        new_username = request.args.get('new_username')
-        new_email = request.args.get('new_email')
-        new_password = request.args.get('new_password')
+
+        # Extract user data form survey (username, email, and password inserted into survey.html)
+        # new_username = request.form.get('new_username')
+        # new_email = request.form.get('new_email')
+        # new_password = request.form.get('new_password')
+        
+        # Get user info from session
+        new_username = session.get('new_username')
+        new_email = session.get('new_email')
+        new_password = session.get('new_password')
+        
         # Get Survey Data
         age = request.form['age']
         location = request.form['location']
@@ -122,14 +141,33 @@ def survey():
         budget = request.form['budget']
         travel_time = request.form['travel_time']
 
-        # Save data to CSV
-        with open('temp_survey_data.csv', mode='a', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerow([new_username, new_email, new_password, age, location, ', '.join(genres), budget, travel_time])
+        updated_info = insert_survey(new_username, new_email, new_password, age, location, ', '.join(genres), budget, travel_time)
+        # updated_info = True
         
+        # Save data to CSV
+        # with open('temp_survey_data.csv', mode='a', newline='') as file:
+        #     writer = csv.writer(file)
+        #     writer.writerow([new_username, new_email, new_password, age, location, ', '.join(genres), budget, travel_time])
+        
+        print([new_username, new_email, new_password, age, location, ', '.join(genres), budget, travel_time])
+
+        # Clear session data after submission
+        session.pop('new_username', None)
+        session.pop('new_email', None)
+        session.pop('new_password', None)
+
         return redirect(url_for('home'))
+    
+    # else:
+    #     # Pass the user data from register() to survey.html via GET parameters
+    #     new_username = request.args.get('new_username')
+    #     new_email = request.args.get('new_email')
+    #     new_password = request.args.get('new_password')
+    #     return render_template('survey.html', new_username=new_username, new_email=new_email, new_password=new_password)
+    
     else:
         return render_template('survey.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)

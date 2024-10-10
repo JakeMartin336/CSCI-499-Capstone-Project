@@ -87,6 +87,12 @@
 <body>
     <h1>Survey Form</h1>
     <form id="survey-form" method="POST" action="/survey">
+
+        <!-- Hidden fields for user data, ONLY USE IF register() is passing values to survey()-->
+        <!-- <input type="hidden" name="new_username" value="{{ new_username }}">
+        <input type="hidden" name="new_email" value="{{ new_email }}">
+        <input type="hidden" name="new_password" value="{{ new_password }}"> -->
+
         <div class="form-control">
             <label for="age">Age</label>
             <input type="range" id="age" name="age" min="18" max="100" value="25" class="slider" oninput="this.nextElementSibling.value = this.value">
@@ -105,28 +111,28 @@
         <div class="form-control">
             <label for="genre">Pick up to 3 genres</label>
             <div class="checkbox-group">
-                <label><input type="checkbox" name="genre" value="Alternative"> Alternative</label>
-                <label><input type="checkbox" name="genre" value="Ballads/Romantic"> Ballads/Romantic</label>
-                <label><input type="checkbox" name="genre" value="Blues"> Blues</label>
-                <label><input type="checkbox" name="genre" value="Children’s music"> Children’s music</label>
-                <label><input type="checkbox" name="genre" value="Classic"> Classic</label>
-                <label><input type="checkbox" name="genre" value="Country"> Country</label>
-                <label><input type="checkbox" name="genre" value="Dance/Electronic"> Dance/Electronic</label>
-                <label><input type="checkbox" name="genre" value="Folk"> Folk</label>
-                <label><input type="checkbox" name="genre" value="Hip-Hop/Rap"> Hip-Hop/Rap</label>
-                <label><input type="checkbox" name="genre" value="Holiday"> Holiday</label>
-                <label><input type="checkbox" name="genre" value="Jazz"> Jazz</label>
-                <label><input type="checkbox" name="genre" value="Latin"> Latin</label>
-                <label><input type="checkbox" name="genre" value="Medieval/Renaissance"> Medieval/Renaissance</label>
-                <label><input type="checkbox" name="genre" value="Metal"> Metal</label>
-                <label><input type="checkbox" name="genre" value="New Age"> New Age</label>
-                <label><input type="checkbox" name="genre" value="Other"> Other</label>
-                <label><input type="checkbox" name="genre" value="Pop"> Pop</label>
-                <label><input type="checkbox" name="genre" value="R&B"> R&B</label>
-                <label><input type="checkbox" name="genre" value="Reggae"> Reggae</label>
-                <label><input type="checkbox" name="genre" value="Religious"> Religious</label>
-                <label><input type="checkbox" name="genre" value="Rock"> Rock</label>
-                <label><input type="checkbox" name="genre" value="World"> World</label>
+                <label><input type="checkbox" name="genre" value="Alternative" class="genre-checkbox"> Alternative</label>
+                <label><input type="checkbox" name="genre" value="Ballads/Romantic" class="genre-checkbox"> Ballads/Romantic</label>
+                <label><input type="checkbox" name="genre" value="Blues" class="genre-checkbox"> Blues</label>
+                <label><input type="checkbox" name="genre" value="Children’s music" class="genre-checkbox"> Children’s music</label>
+                <label><input type="checkbox" name="genre" value="Classic" class="genre-checkbox"> Classic</label>
+                <label><input type="checkbox" name="genre" value="Country" class="genre-checkbox"> Country</label>
+                <label><input type="checkbox" name="genre" value="Dance/Electronic" class="genre-checkbox"> Dance/Electronic</label>
+                <label><input type="checkbox" name="genre" value="Folk" class="genre-checkbox"> Folk</label>
+                <label><input type="checkbox" name="genre" value="Hip-Hop/Rap" class="genre-checkbox"> Hip-Hop/Rap</label>
+                <label><input type="checkbox" name="genre" value="Holiday" class="genre-checkbox"> Holiday</label>
+                <label><input type="checkbox" name="genre" value="Jazz" class="genre-checkbox"> Jazz</label>
+                <label><input type="checkbox" name="genre" value="Latin" class="genre-checkbox"> Latin</label>
+                <label><input type="checkbox" name="genre" value="Medieval/Renaissance" class="genre-checkbox"> Medieval/Renaissance</label>
+                <label><input type="checkbox" name="genre" value="Metal" class="genre-checkbox"> Metal</label>
+                <label><input type="checkbox" name="genre" value="New Age" class="genre-checkbox"> New Age</label>
+                <label><input type="checkbox" name="genre" value="Other" class="genre-checkbox"> Other</label>
+                <label><input type="checkbox" name="genre" value="Pop" class="genre-checkbox"> Pop</label>
+                <label><input type="checkbox" name="genre" value="R&B" class="genre-checkbox"> R&B</label>
+                <label><input type="checkbox" name="genre" value="Reggae" class="genre-checkbox"> Reggae</label>
+                <label><input type="checkbox" name="genre" value="Religious" class="genre-checkbox"> Religious</label>
+                <label><input type="checkbox" name="genre" value="Rock" class="genre-checkbox"> Rock</label>
+                <label><input type="checkbox" name="genre" value="World" class="genre-checkbox"> World</label>
             </div>
         </div>
 
@@ -147,6 +153,8 @@
 
         <button type="submit">Submit Survey</button>
     </form>
-</body>
 
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
 </html>

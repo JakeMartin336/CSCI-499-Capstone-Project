@@ -111,10 +111,6 @@ header {
     padding: 40px;
 }
 
-.icon-close {
-    display: none; /* Hide the close button for standalone pages */
-}
-
 .form-box h2 {
     font-size: 2em;
     color: #162938;
@@ -218,4 +214,25 @@ header {
 
 .login-register p a:hover {
     text-decoration: underline;
+}
+
+
+/* Styling the "X" button */
+.to-home {
+    font-size: 25px;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    position: absolute;
+    right: 15px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.to-home:hover {
+    color: red;
+}
+
+.back-home {
+    position: relative;
 }

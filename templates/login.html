@@ -12,10 +12,13 @@
 <body>
     <div class="wrapper">
         <div class="form-box login">
+            <div class="back-home">
+                <p><a href="/" class="to-home">X</a></p>  <!-- Back to home page -->
+            </div>
+            <h2>Login</h2>
             {% if error %}
                 <p class="error-message">{{ error }}</p>  <!-- Display error message -->
             {% endif %}
-            <h2>Login</h2>
             <form action="/login" method="POST">
                 <div class="input-box">
                     <span class="icon">
