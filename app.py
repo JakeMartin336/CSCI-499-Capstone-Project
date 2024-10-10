@@ -96,8 +96,7 @@ def register():
         new_email = request.form['new_email']
         new_password = request.form['new_password']
         # print(f"Username: {new_username}, Email: {new_email}, Password: {new_password}")
-        # created_info = create_user(new_username, new_email, new_password)
-        created_info = True
+        created_info = create_user(new_username, new_email, new_password)
         if created_info is True:
             # return render_template("test.html", username=new_username, email=new_email, password=new_password)
             # return redirect(url_for('home'))
