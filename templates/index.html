@@ -1,135 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Profile Page</title>
 
     <!-- Custom Css -->
-    <link rel="stylesheet" href="/static/styles.css">
-
+    <link rel="stylesheet" href="/static/styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
     <!-- FontAwesome 5 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
-</head>
-<body>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
+    />
+  </head>
+  <body>
     <!-- Navbar top -->
     <div class="navbar-top">
-        <div class="title">
-            <h1>Profile</h1>
-        </div>
+      <div class="title">Logo</div>
 
-        <!-- Navbar -->
-        <ul>
-            <li>
-                <a href="#message">
-                    <span class="icon-count">29</span>
-                    <i class="fa fa-envelope fa-2x"></i>
-                </a>
-            </li>
-            <li>
-                <a href="#notification">
-                    <span class="icon-count">59</span>
-                    <i class="fa fa-bell fa-2x"></i>
-                </a>
-            </li>
-            <li>
-                <a href="#sign-out">
-                    <i class="fa fa-sign-out-alt fa-2x"></i>
-                </a>
-            </li>
-        </ul>
-        <!-- End -->
+      <!-- Navbar -->
+      <ul>
+        <li>
+          <a href="#concerts">
+            <button>Concerts</button>
+          </a>
+        </li>
+        <li>
+          <a href="#venues">
+            <button>Venues</button>
+          </a>
+        </li>
+        <li>
+          <a href="#messages">
+            <button>Messages</button>
+          </a>
+        </li>
+        <li>
+          <a href="#my_list">
+            <button>My List</button>
+          </a>
+        </li>
+        <li>
+          <a href="#sign-out">
+            <i class="fa fa-sign-out-alt fa-2x"></i>
+          </a>
+        </li>
+      </ul>
+      <!-- End -->
     </div>
     <!-- End -->
 
     <!-- Sidenav -->
-    <div class="sidenav">
-        <div class="profile">
-            <img src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/626fd8140423801.6241b91e24d9c.png" alt="" width="100" height="100">
-
-            <div class="name">
+    <div class="container">
+      <div class="sidenav-container">
+        <div class="sidenav">
+          <div class="profile-box">
+            <div class="profile">
+              <img
+                src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/626fd8140423801.6241b91e24d9c.png"
+                alt="Profile Picture"
+                width="100"
+                height="100"
+              />
+              <div class="name">
                 {{ user['user_name'] if user else 'User Name' }}
-            </div>
-            <div class="job">
+              </div>
+              <div class="job">
                 {{ user['account_description'] if user else '' }}
+              </div>
             </div>
-        </div>
 
-        <div class="sidenav-url">
-            <div class="url">
-                <a href="#profile" class="active">Profile</a>
-                <hr align="center">
-            </div>
-            <div class="url">
+            <div class="sidenav-url">
+              <div class="url">
+                <a href="#profile">Profile</a>
+                <hr />
+              </div>
+              <div class="url">
                 <a href="#settings">Settings</a>
-                <hr align="center">
+                <hr />
+              </div>
             </div>
+          </div>
         </div>
 
-        <div class="myList">
-            My List
-            <div class="Interested">
-                Interested:
-
-                <div class = "interestedConcerts">
-                    Sabrina Carpenter: Short 'n Sweet
-                    Chappell Roan 
-                    CharliXCX
-                </div>
-
-            </div>
-            <div class="Going">
-                Going:
-            </div>
+        <div class="sidenav">
+          <div class="concerts-box">
+            <h3>Interested Concerts</h3>
+            <ul>
+              {% if favorite_concerts %} {% for concert in favorite_concerts %}
+                <li><a href="#{{ concert.id }}">{{ concert.name }}</a></li>
+              {% endfor %} {% else %}
+                <li>No concerts favorited yet.</li>
+              {% endif %}
+            </ul>
+          </div>
         </div>
-    </div>
+      </div>
 
-    
-    <!-- End -->
+      <!-- End -->
 
-    <!-- Main -->
-    <div class="main">
-        <h2>IDENTITY</h2>
+      <!-- Main -->
+      <div class="main">
+        <h2>MY FEED</h2>
         <div class="card">
-            <div class="card-body">
-                <i class="fa fa-pen fa-xs edit"></i>
-                <table>
-                    <tbody>
-                        <tr>
-                            <td>Name</td>
-                            <td>:</td>
-                            <td>{{ user['user_name'] if user else 'User Name' }}</td>
-                        </tr>
-                        <tr>
-                            <td>Age</td>
-                            <td>:</td>
-                            <td>{{ user['age'] if user else 'N/A' }}</td>
-                        </tr>
-                        <tr>
-                            <td>Location</td>
-                            <td>:</td>
-                            <td>{{ user['user_location'] if user else 'Unknown' }}</td>
-                        </tr>
-                        <tr>
-                            <td>Music Genre</td>
-                            <td>:</td>
-                            <td>{{ user['music_genre'] if user else 'Unknown' }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+          <div class="card-body">
+            <table>
+              <tbody>
+                <tr>
+                  <td>Name</td>
+                  <td>:</td>
+                  <td>{{ user['user_name'] if user else 'User Name' }}</td>
+                </tr>
+                <tr>
+                  <td>Age</td>
+                  <td>:</td>
+                  <td>{{ user['age'] if user else 'N/A' }}</td>
+                </tr>
+                <tr>
+                  <td>Location</td>
+                  <td>:</td>
+                  <td>{{ user['user_location'] if user else 'Unknown' }}</td>
+                </tr>
+                <tr>
+                  <td>Music Genre</td>
+                  <td>:</td>
+                  <td>{{ user['music_genre'] if user else 'Unknown' }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
+      </div>
     </div>
     <!-- End -->
-</body>
+  </body>
 </html>
-
 
 <!-- How to run flask -->
 <!-- 1) python3 -m venv venv
      2) source venv/bin/activate
-     3) flask run -->
      4. deactivate 
+     3) flask run -->
 
 <!-- To check for account example: 
  1) add this to end of url: /?account_id=10001 -->
