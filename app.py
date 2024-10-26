@@ -1,7 +1,6 @@
 from flask import Flask, request, render_template
 import pandas as pd
 import psycopg2
-from config import config
 import json 
 import os
 from supabase import create_client, Client
@@ -47,7 +46,7 @@ def get_user_concerts(user_id):
     concerts = []
     try:
         # Get user concerts from the supabase 'user_concert' DB, where the id is user_id
-        response = supabase.table("user_concerts").select("concert_id, status").eq("id", user_id).execute()
+        response = supabase.table("user_concerts").select("user_concert_id, status").eq("id", user_id).execute()
         if response.status_code == 200:
             concerts = response.data 
         else:
