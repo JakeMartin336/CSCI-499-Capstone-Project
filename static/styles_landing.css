@@ -1,0 +1,185 @@
+/* Import Font Dancing Script */
+* {
+    margin: 0;
+}
+
+body {
+    background-color: #e8f5ff;
+    font-family: "Montserrat", "arial";
+    overflow: hidden;
+}
+
+/* NavbarTop */
+.navbar-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fff;
+    color: #333;
+    box-shadow: 0px 4px 8px 0px grey;
+    height: 70px;
+}
+
+.title {
+    font-size: 24px;
+    padding-left: 10px;
+    font-weight: bold;
+}
+
+.navbar-top ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    margin-right: 40px;
+}
+
+.navbar-top ul li {
+    margin-left: 20px;
+}
+
+.navbar-top ul li a {
+    color: #333;
+    padding: 10px 10px;
+    text-align: center;
+    text-decoration: none;
+}
+
+.navbar-top button {
+    border: none;
+    background: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    color: inherit;
+    font-size: 16px;
+}
+
+.navbar-top button:hover {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+/* End */
+
+/* Sidenav */
+.container {
+    display: flex;
+}
+
+.sidenav-container {
+    display: flex;
+    flex-direction: column;
+    width: 275px;
+    color: #333;
+    padding: 20px;
+}
+
+.sidenav {
+    margin-bottom: 15px;
+}
+
+.profile-box,
+.concerts-box {
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.profile {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.name {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.job {
+    font-size: 14px;
+    color: #666;
+}
+
+.sidenav-url .url a {
+    color: #333;
+    font-size: 16px;
+    text-decoration: none;
+    padding: 8px;
+    display: block;
+    text-align: center;
+    border-radius: 75px;
+}
+
+.sidenav-url hr {
+    border: 0;
+    border-top: 1px solid #ddd;
+    margin: 8px 0;
+    width: 100%;
+}
+
+.sidenav-url .url a:hover {
+    background-color: #e8f5ff;
+    color: #000;
+}
+
+.concerts-box h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    border-radius: 75px;
+}
+
+.concerts-box ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.concerts-box ul li {
+    margin: 5px 0;
+}
+
+.concerts-box ul li a {
+    color: #333;
+    font-size: 16px;
+    text-decoration: none;
+    padding: 8px;
+    display: block;
+    border-radius: 5px;
+}
+
+.concerts-box ul li a:hover {
+    background-color: #e8f5ff;
+    color: #000;
+}
+/* End */
+
+/* Main */
+.main {
+    margin-top: 2%;
+    font-size: 28px;
+    padding: 0 10px;
+    width: 60%;
+}
+
+.main h2 {
+    color: #333;
+    font-family: "Montserrat";
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.main .card {
+    background-color: #fff;
+    border-radius: 18px;
+    box-shadow: 1px 1px 8px 0 grey;
+    height: auto;
+    margin-bottom: 20px;
+    padding: 20px 0 20px 50px;
+}
+
+.main .card table {
+    border: none;
+    font-size: 16px;
+    width: 80%;
+}
