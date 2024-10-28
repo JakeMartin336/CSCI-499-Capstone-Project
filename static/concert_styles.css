@@ -1,53 +1,34 @@
+* {
+    margin: 0;
+}
+
 body {
     background-color: #e8f5ff;
-    font-family: "Montserrat", "Arial";
+    font-family: "Montserrat", "arial";
 }
 
 /* Navbar Styles */
-.navbar-top {
-    background-color: #fff;
-    color: #333;
-    box-shadow: 0px 4px 8px 0px grey;
-    height: 70px;
+.nav-link:hover {
+    background-color: rgba(74, 91, 248, 0.169);
+    border-radius: 10px;
+    transition: all 0.2s;
 }
 
-.navbar-brand {
-    margin-left: 30px;
-}
-
-.navbar-nav .nav-item {
-    margin-left: 10px;
-}
-
-.navbar-nav .nav-link {
-    text-decoration: none;
-    color: #333;
-}
-
-.navbar-nav .nav-link:hover {
-    background-color: #e8f5ff;
-    color: #0f7bbf;
-}
-
-/* Title Styles */
 .title {
     font-size: 24px;
+    padding-left: 10px;
     font-weight: bold;
 }
 
+
 /* Concert Preview Styles */
-.concert_preview {
+.container-bg {
+    /* background-image: url("../concert-bg2.png");
+    background-size: contain; */
     padding: 1rem 5%;
     background-color: #f3f7db;
     min-height: 20vh;
-    max-height: 60vh;
-}
-
-.left-column {
-    display: flex;
-    flex-direction: column; 
-    align-items: flex-start; 
-    height: 100%; 
+    height: auto;
 }
 
 .concert_image_info {
@@ -79,12 +60,14 @@ body {
 }
 
 .concert_preview_list_button:hover {
-    background-color: #0f7bbf;
+    background-color: rgba(74, 91, 248, 0.169);
+    border: 1px solid #333;
 }
 /* Concert Preview End */
 
 /* Custom Button Styles */
-.custom-button {
+.custom-button, .buddy_button {
+    margin-top: 50%;
     background-color: rgba(0, 0, 0, 0.1);
     color: #333;             
     border: 1px solid #333;              
@@ -95,31 +78,21 @@ body {
     transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-.custom-button:hover {
-    background-color: #0f7bbf;
-    color: white;             
+.custom-button:hover{
+    background-color: rgba(74, 91, 248, 0.169);          
     cursor: pointer;          
+}
+
+.buddy_button:hover {
+    background-color: rgba(74, 91, 248, 0.169);          
+    cursor: pointer;  
+    border: #333 1px solid;
 }
 
 .custom-button:focus {
     box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5); 
 }
 /* Custom Button Styles End*/
-
-/* Network Info Styles */
-.right-column {
-    display: flex;
-    flex-direction: column;  
-    justify-content: flex-end; 
-    height: 100%;
-    padding: 20px;
-}
-
-.buddy_button{
-    margin-top: 50%;
-
-}
-
 .network_info {
     display: flex;
     flex-direction: column;
@@ -139,19 +112,10 @@ body {
 
 /* Dropdown Item Styles */
 .dropdown-item:hover {
-    background-color: #e8f5ff;
+    background-color: rgba(74, 91, 248, 0.169);
 }
 
 /* Middle Column Styles */
-.middle-column {
-    display: flex;
-    flex-direction: column; 
-    padding:10px;
-    margin-left: -100px; 
-    margin-top: 3%;
-    gap: 10px;
-}
-
 .concert_info {
     display: flex;
     flex-direction: column; 
@@ -176,17 +140,6 @@ body {
 }
 /* Middle Column End */
 
-/* Link Styles */
-.btn-link {
-    color: #333; 
-    text-decoration: none;
-}
-
-.btn-link:hover {
-    color: #0f7bbf; 
-    background-color: rgba(0, 0, 0, 0.1);
-}
-
 /* Concert Seating Chart */
 .image-container {
     margin: 30px 30px;
@@ -208,12 +161,15 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    width: 100%;
+    padding: 20px;
 }
 
 .card {
     width: 70%; 
-    height: 400px; 
-    margin-top: 0px; 
+    height: 500px; 
+    margin-top: 10px; 
+    padding: 5px;
     display: flex;
     flex-direction: row; 
     overflow: hidden; 
@@ -222,6 +178,7 @@ body {
 .card-img-container {
     flex: 0 0 45%; 
     height: 100%; 
+    margin-bottom: 10px;
 }
 
 .card-img-top {
@@ -235,8 +192,14 @@ body {
     flex-direction: column; 
     justify-content: center;
     flex: 1; 
-    padding: 20px; 
+    padding: 10px; 
     text-align: left;
+    margin-bottom: 10px;
+}
+
+.scrollable-card {
+    max-height: 500px;
+    overflow-y: auto;
 }
 
 .button-container {
@@ -252,3 +215,19 @@ body {
     min-width: 120px;
 }
 /* Buddy Matching End */
+
+.seating {
+    background-color: antiquewhite;
+    padding: 10px;
+}
+
+.matching {
+    background-color: aliceblue;
+}
+
+@media (max-width: 768px) {
+    .buddy_button {
+        margin-top: 5px;
+        margin-left: 10px;
+    }
+}
