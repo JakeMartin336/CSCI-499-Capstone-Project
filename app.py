@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, jsonify, url_for, redirect, s
 import os
 from supabase import create_client, Client
 from dotenv import load_dotenv
-from api import get_concerts
+from api import get_concerts, example_concerts
 
 load_dotenv()
 url = os.environ.get("SUPABASE_URL")
@@ -216,14 +216,34 @@ def landing():
         session['user_info'] = user_info
         session['user_concerts'] = user_concerts
 
-    # For Concert Page
-    for genre in user_info['music_genre']:
-        get_concerts(genre, user_info['user_location'])
-
-
-
     return render_template("landing.html", user=user_info, concerts=user_concerts)
 
+# @app.route("/concerts")
+# def concerts():
+#     user_info = session.get('user_info')
+#     for genre in user_info['music_genre']:
+#         get_concerts(genre, user_info['user_location'])
+#     return render_template("concert.html")
+
+@app.route("/concerts")
+def concerts():
+    # user_info = session.get('user_info')
+    # concerts_list = []
+    # if user_info:
+    #     for genre in user_info['music_genre']:
+    #         concerts_by_genre = get_concerts(genre, user_info['user_location'])
+    #         concerts_list.append(concerts_by_genre)
+    # return render_template("concert_list.html", concerts=concerts_list)
+
+    concerts_list = example_concerts()
+    session['concerts_list'] = concerts_list
+    return render_template("concert_list.html", concerts=concerts_list)
+
+@app.route("/concerts/<concert_name>")
+def concert_detail(concert_name):
+    concerts = session.get('concerts_list')
+    concert = next((c for c in concerts if c['name'] == concert_name), None)
+    return render_template("concert.html", concert=concert)
 
 
 if __name__ == '__main__':
