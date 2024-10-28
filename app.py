@@ -127,7 +127,7 @@ def get_user_concerts(user_id):
     concerts = []
     try:
         # Get user concerts from the supabase 'user_concert' DB, where the id is user_id
-        response = supabase.table("user_concerts").select("concert_id, status").eq("id", user_id).execute()
+        response = supabase.table("user_concerts").select("user_concert_id, status").eq("id", user_id).execute()
         if response.status_code == 200:
             concerts = response.data 
         else:
@@ -225,25 +225,60 @@ def landing():
 #         get_concerts(genre, user_info['user_location'])
 #     return render_template("concert.html")
 
+# @app.route("/concerts")
+# def concerts():
+#     # user_info = session.get('user_info')
+#     # concerts_list = []
+#     # if user_info:
+#     #     for genre in user_info['music_genre']:
+#     #         concerts_by_genre = get_concerts(genre, user_info['user_location'])
+#     #         concerts_list.append(concerts_by_genre)
+#     # return render_template("concert_list.html", concerts=concerts_list)
+    
+#     concerts_list = example_concerts()
+#     return render_template("concert.html", concert=concerts_list)
+
 @app.route("/concerts")
 def concerts():
-    # user_info = session.get('user_info')
-    # concerts_list = []
-    # if user_info:
-    #     for genre in user_info['music_genre']:
-    #         concerts_by_genre = get_concerts(genre, user_info['user_location'])
-    #         concerts_list.append(concerts_by_genre)
-    # return render_template("concert_list.html", concerts=concerts_list)
-
+    list_index = 0
     concerts_list = example_concerts()
     session['concerts_list'] = concerts_list
-    return render_template("concert_list.html", concerts=concerts_list)
+    # # Ensure the index is within the valid range
+    # if index < 0 or index >= len(concerts_list):
+    #     return redirect(url_for('concerts', index=0))  # Redirect to the first concert if out of bounds
 
-@app.route("/concerts/<concert_name>")
-def concert_detail(concert_name):
-    concerts = session.get('concerts_list')
-    concert = next((c for c in concerts if c['name'] == concert_name), None)
-    return render_template("concert.html", concert=concert)
+    # current_concert = concerts_list[index]
+    return render_template("concert.html", concert=concerts_list[list_index])
+
+# Add this at the beginning of your Flask app file
+list_index = 0
+
+@app.route("/concerts/previous")
+def previous_concert():
+    global list_index  # Declare list_index as global
+    concerts_list = session.get('concerts_list')
+    
+    # Ensure the index does not go below 0
+    if list_index > 0:
+        list_index -= 1  # Decrease index to get the previous concert
+    return render_template("concert.html", concert=concerts_list[list_index])
+
+
+@app.route("/concerts/next")
+def next_concert():
+    global list_index  # Declare list_index as global
+    concerts_list = session.get('concerts_list')
+    
+    # Ensure the index does not go out of bounds
+    if list_index < len(concerts_list) - 1:
+        list_index += 1  # Increase index to get the next concert
+    return render_template("concert.html", concert=concerts_list[list_index])
+
+
+
+@app.route('/venues')
+def venues():
+    return render_template("smile.html")
 
 
 if __name__ == '__main__':

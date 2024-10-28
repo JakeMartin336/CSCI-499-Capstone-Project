@@ -4,26 +4,30 @@
 }
 
 body {
-    background-color: #e8f5ff;
-    font-family: "Montserrat", "arial";
+    background-image: url('https://static.vecteezy.com/system/resources/thumbnails/004/221/982/small_2x/silver-sparkle-star-on-black-background-starry-confetti-vector.jpg'); /* Path to your background image */
+    background-size: cover; /* Cover the entire viewport */
+    background-position: center; /* Center the image */
+    font-family: "Montserrat", "Arial";
     overflow: hidden;
 }
+
 
 /* NavbarTop */
 .navbar-top {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #fff;
-    color: #333;
-    box-shadow: 0px 4px 8px 0px grey;
+    background-color: #fb83bf; /* Pink */
+    color: #fff; /* White text for contrast */
+    box-shadow: 0px 4px 8px 0px rgba(255, 0, 127, 0.5);
     height: 70px;
+    padding: 0 20px; /* Added padding for a balanced look */
 }
 
 .title {
     font-size: 24px;
-    padding-left: 10px;
     font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7); /* Text shadow for depth */
 }
 
 .navbar-top ul {
@@ -31,32 +35,49 @@ body {
     margin: 0;
     padding: 0;
     display: flex;
-    margin-right: 40px;
 }
 
 .navbar-top ul li {
-    margin-left: 20px;
-}
+  
+    margin: 0 20px; 
 
-.navbar-top ul li a {
-    color: #333;
-    padding: 10px 10px;
-    text-align: center;
-    text-decoration: none;
 }
 
 .navbar-top button {
+    width: 110px; 
+    height: 40px; 
+    margin: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    gap: 10px;
+    background-color: rgb(197, 228, 98); /* Button background color */
+    border-radius: 30px; /* Rounded corners */
+    color: #b56aee; 
+    font-weight: 600;
     border: none;
-    background: none;
-    padding: 5px 10px;
-    cursor: pointer;
-    color: inherit;
-    font-size: 16px;
+    cursor: pointer; /* Pointer cursor on hover */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
+    transition: background-color 0.3s ease, transform 0.3s ease; 
 }
 
 .navbar-top button:hover {
-    background: rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent white on hover */
+    transform: scale(1.1); /* Slightly enlarge on hover */
+
 }
+
+.svgIcon {
+    height: 25px; /* Height for the SVG icon */
+    transition-duration: 1.5s; /* Transition for icon rotation */
+}
+
+.button:hover .svgIcon {
+    transform: rotate(250deg); /* Rotate on hover */
+    transition-duration: 1.5s; /* Duration of rotation */
+}
+
+
 
 /* End */
 
@@ -79,10 +100,10 @@ body {
 
 .profile-box,
 .concerts-box {
-    background-color: #f9f9f9;
+    background-color: #ffeb3b; /* Light neon yellow background */
     border-radius: 10px;
     padding: 15px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Slightly darker shadow for depth */
 }
 
 .profile {
@@ -94,6 +115,7 @@ body {
     font-size: 18px;
     font-weight: bold;
     margin-top: 10px;
+    color: #9b59b6; /* Purple */
 }
 
 .job {
@@ -109,6 +131,7 @@ body {
     display: block;
     text-align: center;
     border-radius: 75px;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease; /* Added transform for hover effect */
 }
 
 .sidenav-url hr {
@@ -119,14 +142,16 @@ body {
 }
 
 .sidenav-url .url a:hover {
-    background-color: #e8f5ff;
-    color: #000;
+    background-color: #ff5722; /* Neon Orange */
+    color: #fff; /* White text */
+    transform: scale(1.05); /* Slightly enlarge on hover */
 }
 
 .concerts-box h3 {
     font-size: 18px;
     margin-bottom: 10px;
     border-radius: 75px;
+    color: #ff007f; /* Pink */
 }
 
 .concerts-box ul {
@@ -146,12 +171,15 @@ body {
     padding: 8px;
     display: block;
     border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease; /* Added transform for hover effect */
 }
 
 .concerts-box ul li a:hover {
-    background-color: #e8f5ff;
-    color: #000;
+    background-color: #ffea00; /* Neon Yellow */
+    color: #000; /* Black text */
+    transform: scale(1.05); /* Slightly enlarge on hover */
 }
+
 /* End */
 
 /* Main */
@@ -162,17 +190,65 @@ body {
     width: 60%;
 }
 
-.main h2 {
-    color: #333;
-    font-family: "Montserrat";
-    font-size: 24px;
+
+.post-container {
+    background-color: #8ce9e9;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.post-form textarea {
+    width: 100%;
+    height: 80px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #de8b8b;
+    resize: none;
+}
+
+.post-form button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #9b59b6;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.feed-container {
+    background-color: #9cacf5;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.feed-container h2 {
+    margin-bottom: 15px;
+}
+
+.post {
+    background-color: #efefef;
+    padding: 10px;
     margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.post p {
+    font-size: 16px;
+    margin: 0;
+}
+
+.post span {
+    font-size: 12px;
+    color: #666;
 }
 
 .main .card {
-    background-color: #fff;
+    background-color: #ecfa6d;
     border-radius: 18px;
-    box-shadow: 1px 1px 8px 0 grey;
+    box-shadow: 1px 1px 8px 0 rgb(237, 241, 197);
     height: auto;
     margin-bottom: 20px;
     padding: 20px 0 20px 50px;
@@ -183,3 +259,4 @@ body {
     font-size: 16px;
     width: 80%;
 }
+
