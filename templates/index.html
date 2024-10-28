@@ -13,6 +13,8 @@
       href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
       rel="stylesheet"
     />
+   
+
     <!-- FontAwesome 5 -->
     <link
       rel="stylesheet"
@@ -22,7 +24,12 @@
   <body>
     <!-- Navbar top -->
     <div class="navbar-top">
-      <div class="title">Logo</div>
+      
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="ConcertConnect Logo" style="height: 75px; margin-right: 200px;" />
+      
+
+      
+      <div class="title">Concert Connect</div>
 
       <!-- Navbar -->
       <ul>
@@ -36,16 +43,8 @@
             <button>Venues</button>
           </a>
         </li>
-        <li>
-          <a href="#messages">
-            <button>Messages</button>
-          </a>
-        </li>
-        <li>
-          <a href="#my_list">
-            <button>My List</button>
-          </a>
-        </li>
+       
+     
         <li>
           <a href="#sign-out">
             <i class="fa fa-sign-out-alt fa-2x"></i>
@@ -91,7 +90,10 @@
 
         <div class="sidenav">
           <div class="concerts-box">
-            <h3>Interested Concerts</h3>
+            <h3>My Concert List</h3>
+            <h4>Going:</h4>
+            <h4>Interested:</h4>
+            <h4>Attended:</h4>
             <ul>
               {% if favorite_concerts %} {% for concert in favorite_concerts %}
                 <li><a href="#{{ concert.id }}">{{ concert.name }}</a></li>
