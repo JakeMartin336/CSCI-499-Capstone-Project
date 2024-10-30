@@ -1,0 +1,154 @@
+/* General Styling */
+body {
+    font-family: 'Roboto', sans-serif;  /* More modern font */
+    background-color: #f2f5f7;  /* Subtle off-white background */
+    color: #333;
+}
+
+/* Navigation Bar */
+nav {
+    background: linear-gradient(90deg, #038cfc, #FFD93D);  /* Gradient background for navbar */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-brand img {
+    width: 40px;  /* Smaller logo */
+    height: auto;
+}
+
+.navbar-nav .nav-link {
+    font-weight: 500;
+    color: white;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #FFDD57;  /* Hover color effect */
+    transition: color 0.3s ease;
+}
+
+/* Header Styling (Venue Name) */
+.header {
+    background: linear-gradient(135deg, #6bbcff, #FFD93D);
+    padding: 50px 0;
+    text-align: center;
+    color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: none;  /* Initially hidden */
+}
+
+.header h1 {
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+/* Search Bar */
+.input-group {
+    margin-bottom: 20px;
+}
+
+#venue-name {
+    border-radius: 25px;
+    padding: 10px;
+    border: 2px solid #038cfc;
+}
+
+#search-btn {
+    background-color: #038cfc;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 40px;
+    color: white;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+#search-btn:hover {
+    background-color: #FFD93D;  /* Button hover effect */
+    color: #333;
+}
+
+/* Map Section */
+.map-section {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: none;  /* Initially hidden */
+}
+
+.map-section img {
+    max-width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* Seat Finder */
+.seat-finder {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: none;  /* Initially hidden */
+}
+
+.seat-finder input {
+    border-radius: 20px;
+    padding: 10px;
+    border: 2px solid #6bbcff;
+}
+
+.seat-finder button {
+    background-color: #FFD93D;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    color: white;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.seat-finder button:hover {
+    background-color: #6bbcff;  /* Hover effect */
+    color: white;
+}
+
+/* Seat POV Section */
+.seat-pov {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: none;  /* Initially hidden */
+    justify-content: space-around;
+}
+
+.seat-pov img {
+    width: 150px;
+    height: 100px;
+    border-radius: 10px;
+    border: 2px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.seat-pov img:hover {
+    transform: scale(1.1);  /* Zoom effect on hover */
+}
+
+/* Footer Styling */
+footer {
+    background-color: #038cfc;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    margin-top: 50px;
+    border-radius: 10px 10px 0 0;
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+}
+
