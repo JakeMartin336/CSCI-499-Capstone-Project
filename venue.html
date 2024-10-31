@@ -128,7 +128,24 @@
         <img src="seat3.png" alt="Seat View 3">
     </div>
 
-   
+   <!-- Venues Section -->
+<div class="container mt-5">
+    <h2>Venue Information</h2>
+    <div class="row">
+        {% for venue in venues %}
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ venue.name }}</h5>
+                    <p class="card-text">{{ venue.description }}</p>
+                    <p class="card-text"><strong>Address:</strong> {{ venue.address }}</p>
+                    <a href="{{ venue.website }}" class="btn btn-primary" target="_blank">Visit Website</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
 
     <!-- Bootstrap JS and dependencies -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
