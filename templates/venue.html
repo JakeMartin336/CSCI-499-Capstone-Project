@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Concert Connect - Venue Information</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
+    <link rel="stylesheet" href="venue.css" />
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Logo</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        <form class="d-flex ms-auto" role="search">
+        <!-- <input class="form-control form-control-sm me-2" type="search" placeholder="Search" aria-label="Search"> -->
+        <!-- <button class="btn btn-outline-secondary btn-sm" type="submit">Search</button> -->
+        </form>
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item"></li>
+                <a class="nav-link" href="#home"><button class="btn">Home</button></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="#concerts"><button class="btn">Concerts</button></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#venues"><button class="btn">Venues</button></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#messages"><button class="btn">Messages</button></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#sign-out"><button class="btn"><i class="fa fa-sign-out-alt"></i> Sign Out</button></a>
+            </li>
+        </ul>
+        </div>
+        </div>
+    </nav>
+    <!-- Navbar End-->
+
+    <!-- Navigation Bar -->
+    <!-- <nav class="navbar navbar-expand-lg navbar-light">
+        <a class="navbar-brand" href="#"><img src="concert-connect-logo.png" alt="Concert Connect Logo" class="logo"></a> 
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Concerts</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Venues</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Messages</a>
+                </li>
+            </ul>
+        </div>
+    </nav> -->
+
+    <!-- Search Bar Section -->
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" id="venue-name" placeholder="Enter Venue Name (e.g., Madison Square Garden)">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" id="search-btn" type="button">Search</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header Section (Venue Name) -->
+    <div class="header" id="venue-header">
+        <h1 id="venue-title"></h1>
+    </div>
+
+    <!-- Map Section -->
+    <div class="container map-section" id="map-section">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <img src="venue-map-placeholder.png" alt="Map of the Venue" class="img-fluid" id="venue-map"/>
+            </div>
+        </div>
+    </div>
+
+    <!-- Seat POV Finder Section -->
+    <div class="container seat-finder" id="seat-finder">
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <button class="btn btn-warning btn-lg">Seat POV Finder</button>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-2">
+                <input type="text" id="section-number" class="form-control" placeholder="Section #">
+            </div>
+            <div class="col-md-2">
+                <input type="text" id="row-number" class="form-control" placeholder="Row #">
+            </div>
+            <div class="col-md-2">
+                <input type="text" id="seat-number" class="form-control" placeholder="Seat #">
+            </div>
+            <div class="col-md-2">
+                <button class="btn btn-primary" id="upload-pov">Upload a POV</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Seat POV Display Section -->
+    <div class="container seat-pov" id="seat-pov">
+        <img src="seat1.png" alt="Seat View 1">
+        <img src="seat2.png" alt="Seat View 2">
+        <img src="seat3.png" alt="Seat View 3">
+    </div>
+
+   <!-- Venues Section -->
+<div class="container mt-5">
+    <h2>Venue Information</h2>
+    <div class="row">
+        {% for venue in venues %}
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ venue.name }}</h5>
+                    <p class="card-text">{{ venue.description }}</p>
+                    <p class="card-text"><strong>Address:</strong> {{ venue.address }}</p>
+                    <a href="{{ venue.website }}" class="btn btn-primary" target="_blank">Visit Website</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Custom JS -->
+    <script src="venue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</body>
+</html>
+
