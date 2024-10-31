@@ -24,37 +24,27 @@
   <body>
     <!-- Navbar top -->
     <div class="navbar-top">
-      
-      <img src="{{ url_for('static', filename='logo.png') }}" alt="ConcertConnect Logo" style="height: 75px; margin-right: 50px;">
-      <p>Concert Connect</p>
-
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="ConcertConnect Logo" style="height: 90px; margin-right: 200px;" />
       <!-- Navbar -->
       <ul>
         <div class="explore-button-container">
           <button class="button" onclick="window.location.href='/venues'">
-            <svg class="svgIcon" viewBox="0 0 512 512" height="1em" xmlns="http://www.w3.org/2000/svg">
-              <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm50.7-186.9L162.4 380.6c-19.4 7.5-38.5-11.6-31-31l55.5-144.3c3.3-8.5 9.9-15.1 18.4-18.4l144.3-55.5c19.4-7.5 38.5 11.6 31 31L325.1 306.7c-3.2 8.5-9.9 15.1-18.4 18.4zM288 256a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"></path>
-            </svg>
             Explore Venues 
             <i class="fa fa-music"></i>
           </button>
         </div>
-
         <div class="explore-button-container">
           <button class="button" onclick="window.location.href='/concerts'">
-            <!-- <svg class="svgIcon" viewBox="0 0 512 512" height="1em" xmlns="http://www.w3.org/2000/svg">
-              <path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm50.7-186.9L162.4 380.6c-19.4 7.5-38.5-11.6-31-31l55.5-144.3c3.3-8.5 9.9-15.1 18.4-18.4l144.3-55.5c19.4-7.5 38.5 11.6 31 31L325.1 306.7c-3.2 8.5-9.9 15.1-18.4 18.4zM288 256a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"></path>
-            </svg> -->
             Explore Concerts
             <i class="fa fa-headphones"></i> 
           </button>
         </div>
-     
         <li>
-          <a href="/logout">
+          <a href="#sign-out">
             <button class="button" onclick="window.location.href='/logout'">
-            Log Out
-            <i class="fa fa-sign-out-alt fa-2x"></i>
+              Log Out
+              <i class="fa fa-sign-out-alt fa-2x"></i>
+            </button>
           </a>
         </li>
       </ul>
@@ -69,16 +59,24 @@
           <div class="profile-box">
             <div class="profile">
               <img
-                src="https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/626fd8140423801.6241b91e24d9c.png"
-                alt="Profile Picture"
-                width="100"
-                height="100"
+                src="https://i.pinimg.com/736x/4c/50/87/4c50870fef410d14ff495ea1f532565a.jpg" 
+                alt="Profile Picture" 
+                style="width: 125px; height: 125px; border-radius: 50%; object-fit: cover; overflow: hidden;"
               />
               <div class="name">
                 {{ user['user_name'] if user else 'User Name' }}
               </div>
               <div class="job">
                 {{ user['account_description'] if user else '' }}
+              </div>
+              <div class="age">
+                {{ user['age'] if user else '' }}
+              </div>
+              <div class="location">
+                {{ user['user_location'] if user else '' }}
+              </div>
+              <div class="music_genres">
+                {{ ', '.join(user['music_genre']) if user and 'music_genre' in user else '' }}
               </div>
             </div>
 
@@ -102,9 +100,11 @@
             <h4>Interested:</h4>
             <h4>Attended:</h4>
             <ul>
-              {% if favorite_concerts %} {% for concert in favorite_concerts %}
-                <li><a href="#{{ concert.id }}">{{ concert.name }}</a></li>
-              {% endfor %} {% else %}
+              {% if favorite_concerts %} 
+                {% for concert in favorite_concerts %}
+                  <li><a href="#{{ concert.id }}">{{ concert.name }}</a></li>
+                {% endfor %} 
+              {% else %}
                 <li>No concerts favorited yet.</li>
               {% endif %}
             </ul>
@@ -116,57 +116,64 @@
 
       <!-- Main -->
       <div class="main">
-      
-        
-            <!-- Write a Post Section -->
-            <div class="post-container">
-              <h3>Share your experience:</h3>
-              <div class="post-form">
-                <textarea id="postContent" placeholder="Who did you see perform tonight?"></textarea>
-                <button id="publishBtn">Publish</button>
-              </div>
-            </div>
-    
-            <!-- Feed Section -->
-            <div class="feed-container">
-              <h3>Feed</h3>
-              <div id="feed">
-                <!-- Posts will appear here -->
-              </div>
-            </div>
+        <!-- Write a Post Section -->
+        <div class="post-container">
+          <h3 style="color: rgb(91, 90, 90); font-size: 0.9em;">Share your experience:</h3>
+          <div class="post-form">
+            <textarea id="postContent" placeholder="Who did you see perform tonight?"></textarea>
+            <button id="publishBtn">Publish</button>
           </div>
         </div>
-
-        <div class="card">
-          <div class="card-body">
-            <table>
-              <tbody>
-                <tr>
-                  <td>Name</td>
-                  <td>:</td>
-                  <td>{{ user['user_name'] if user else 'User Name' }}</td>
-                </tr>
-                <tr>
-                  <td>Age</td>
-                  <td>:</td>
-                  <td>{{ user['age'] if user else 'N/A' }}</td>
-                </tr>
-                <tr>
-                  <td>Location</td>
-                  <td>:</td>
-                  <td>{{ user['user_location'] if user else 'Unknown' }}</td>
-                </tr>
-                <tr>
-                  <td>Music Genre</td>
-                  <td>:</td>
-                  <td>{{ user['music_genre'] if user else 'Unknown' }}</td>
-                </tr>
-              </tbody>
-            </table>
+    
+        <!-- Feed Section -->
+        <div class="feed-container">
+          <h3 style="color: rgb(91, 90, 90); font-size: 0.9em;">Feed</h3>
+          <div id="feed">
+            <!-- Posts will appear here -->
+            <div>
+              <img src="static/smiley.jpg" alt="Centered Image">
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <!-- End -->
+      
+      <!-- <div class="card">
+        <div class="card-body">
+          <table>
+            <tbody>
+              <tr>
+                <td>Name</td>
+                <td>:</td>
+                <td>{{ user['user_name'] if user else 'User Name' }}</td>
+              </tr>
+              <tr>
+                <td>Age</td>
+                <td>:</td>
+                <td>{{ user['age'] if user else 'N/A' }}</td>
+              </tr>
+              <tr>
+                <td>Location</td>
+                <td>:</td>
+                <td>{{ user['user_location'] if user else 'Unknown' }}</td>
+              </tr>
+              <tr>
+                <td>Music Genre</td>
+                <td>:</td>
+                <td>{{ user['music_genre'] if user else 'Unknown' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div> -->
+  
   </body>
 </html>
+
+<!-- How to run flask -->
+<!-- 1) python3 -m venv venv
+     2) source venv/bin/activate
+     3) flask run -->
+
+<!-- To check for account example: 
+ 1) add this to end of url: /?account_id=10001 -->
