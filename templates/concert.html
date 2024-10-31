@@ -50,9 +50,11 @@
     <!-- Concert Preview Section -->
     <section class="container-bg" id="preview">
 
-        <button class="arrow-button left-arrow" onclick="window.location.href='/concerts/previous'">
-            <i class="fas fa-chevron-left"></i>
-        </button>
+        {% if list_index > 0 %}
+            <button class="arrow-button left-arrow" onclick="window.location.href='/concerts/previous'">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+        {% endif %}
         
         <div class="container-md text-left">
          <div class="row">
@@ -69,13 +71,22 @@
                     <h2>{{ concert.name }}</h2>
                     <p>{{ concert.description }}</p>
                     <p>{{ concert.start_time }}</p>
-                    <div class="dropdown">
+                    <!-- <div class="dropdown">
                         <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             More Information
                         </button>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="#Venue">Venue Info</a></li>
                             <li><a class="dropdown-item" href="#Ticket">Buy Tickets</a></li>
+                        </ul>
+                    </div> -->
+                    <div class="dropdown">
+                        <button id="infoButton" class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            More Information
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" onclick="showInfo('venue');">Venue Info</a></li>
+                            <li><a class="dropdown-item" onclick="showInfo('tickets');">Buy Tickets</a></li>
                         </ul>
                     </div>
                 </div>
@@ -96,22 +107,38 @@
         </div>
         </div>
 
-        <button class="arrow-button right-arrow" onclick="window.location.href='/concerts/next'">
-            <i class="fas fa-chevron-right"></i>
-        </button>
+        {% if list_index < concert_count - 1 %}
+            <button class="arrow-button right-arrow" onclick="window.location.href='/concerts/next'">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+        {% endif %}
 
     </section>
     <!-- Concert Preview Section End -->
 
     <!-- Concert Seating Section -->
-    <section class="seating">
+    <!-- <section class="seating">
     <div class="container text-center">
         <h1> Venue Information</h1>
-        <p>{{ concert.venue.name }}</p>
-        <p>{{ concert.venue.address }}</p>
+        <p>{{ concert.venue_name }}</p>
+        <p>{{ concert.venue_address }}</p>
     </div>
-    </section>
+    </section> -->
     <!-- Concert Seating Section End -->
+    <section id="venueInfo" class="seating" style="display: none;">
+        <div class="container text-center">
+            <h1>Venue Information</h1>
+            <p>{{ concert.venue_name }}</p>
+            <p>{{ concert.venue_address }}</p>
+        </div>
+    </section>
+
+    <section id="ticketInfo" class="seating" style="display: none;">
+        <div class="container text-center">
+            <h1>Buy Tickets</h1>
+            <p>Details about how to buy tickets will go here.</p>
+        </div>
+    </section>
 
     <!-- Buddy Matching Section -->
     <section class="matching">
@@ -140,6 +167,7 @@
     </section>
 
     
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

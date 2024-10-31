@@ -238,43 +238,50 @@ def landing():
 #     concerts_list = example_concerts()
 #     return render_template("concert.html", concert=concerts_list)
 
+list_index = 0
+all_concerts = []
+
 @app.route("/concerts")
 def concerts():
-    list_index = 0
-    concerts_list = example_concerts()
-    session['concerts_list'] = concerts_list
-    # # Ensure the index is within the valid range
-    # if index < 0 or index >= len(concerts_list):
-    #     return redirect(url_for('concerts', index=0))  # Redirect to the first concert if out of bounds
+    global list_index
+    global all_concerts
 
-    # current_concert = concerts_list[index]
-    return render_template("concert.html", concert=concerts_list[list_index])
+    user_info = session.get('user_info')
+    user_genres = user_info['music_genre']
+    user_location = user_info['user_location']
+    
+    # all_concerts = example_concerts()
+    if len(all_concerts) == 0:
+        for genre in user_genres:
+            recc_concerts = get_concerts(genre, user_location)
+            all_concerts.extend(recc_concerts)
+    
+    # print(len(all_concerts))
+    # session['all_concerts'] = all_concerts
 
-# Add this at the beginning of your Flask app file
-list_index = 0
+    return render_template("concert.html", concert=all_concerts[list_index], list_index=list_index, concert_count=len(all_concerts))
+
 
 @app.route("/concerts/previous")
 def previous_concert():
-    global list_index  # Declare list_index as global
-    concerts_list = session.get('concerts_list')
-    
-    # Ensure the index does not go below 0
+    global list_index
+    # all_concerts = session.get('all_concerts')
+    global all_concerts 
+
     if list_index > 0:
-        list_index -= 1  # Decrease index to get the previous concert
-    return render_template("concert.html", concert=concerts_list[list_index])
+        list_index -= 1
+    return render_template("concert.html", concert=all_concerts[list_index], list_index=list_index, concert_count=len(all_concerts))
 
 
 @app.route("/concerts/next")
 def next_concert():
-    global list_index  # Declare list_index as global
-    concerts_list = session.get('concerts_list')
+    global list_index
+    # all_concerts = session.get('all_concerts')
+    global all_concerts
     
-    # Ensure the index does not go out of bounds
-    if list_index < len(concerts_list) - 1:
-        list_index += 1  # Increase index to get the next concert
-    return render_template("concert.html", concert=concerts_list[list_index])
-
-
+    if list_index < len(all_concerts) - 1:
+        list_index += 1 
+    return render_template("concert.html", concert=all_concerts[list_index], list_index=list_index, concert_count=len(all_concerts))
 
 @app.route('/venues')
 def venues():
