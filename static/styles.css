@@ -4,9 +4,9 @@
 }
 
 body {
-    background-image: url('https://static.vecteezy.com/system/resources/thumbnails/004/221/982/small_2x/silver-sparkle-star-on-black-background-starry-confetti-vector.jpg'); /* Path to your background image */
+    background-image: url('blue.gif'); /* Path to your background image */
     background-size: cover; /* Cover the entire viewport */
-    background-position: center; /* Center the image */
+    background-position: contain; /* fit the screen */ 
     font-family: "Montserrat", "Arial";
     overflow: hidden;
 }
@@ -17,9 +17,11 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #fb83bf; /* Pink */
+    /* background-color: #b4d2f5; Pink */
     color: #fff; /* White text for contrast */
-    box-shadow: 0px 4px 8px 0px rgba(255, 0, 127, 0.5);
+    /* box-shadow: 0px 4px 8px 0px rgb(252, 255, 86); */
+
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.109);
     height: 70px;
     padding: 0 20px; /* Added padding for a balanced look */
 }
@@ -51,7 +53,7 @@ body {
     align-items: center;
     justify-content: center; 
     gap: 10px;
-    background-color: rgb(197, 228, 98); /* Button background color */
+    background-color: #f1f9b7; /* Button background color */
     border-radius: 30px; /* Rounded corners */
     color: #b56aee; 
     font-weight: 600;
@@ -62,7 +64,7 @@ body {
 }
 
 .navbar-top button:hover {
-    background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent white on hover */
+    background-color: rgba(255, 255, 255, 0.772); /* Semi-transparent white on hover */
     transform: scale(1.1); /* Slightly enlarge on hover */
 
 }
@@ -100,7 +102,7 @@ body {
 
 .profile-box,
 .concerts-box {
-    background-color: #ffeb3b; /* Light neon yellow background */
+    background-color: #f7f6f5; /* Light neon yellow background */
     border-radius: 10px;
     padding: 15px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Slightly darker shadow for depth */
@@ -115,7 +117,7 @@ body {
     font-size: 18px;
     font-weight: bold;
     margin-top: 10px;
-    color: #9b59b6; /* Purple */
+    color: #817bd8;
 }
 
 .job {
@@ -151,7 +153,7 @@ body {
     font-size: 18px;
     margin-bottom: 10px;
     border-radius: 75px;
-    color: #ff007f; /* Pink */
+    color: #817bd8 /* Pink */
 }
 
 .concerts-box ul {
@@ -192,25 +194,27 @@ body {
 
 
 .post-container {
-    background-color: #8ce9e9;
+    background-color: #c1c4f7;
     padding: 15px;
-    border-radius: 8px;
+    border-radius: 10px;
     margin-bottom: 20px;
+    
 }
 
 .post-form textarea {
-    width: 100%;
+    width: 98%;
     height: 80px;
     padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #de8b8b;
+    border-radius: 15px;
+    border: 1px solid #f1f5d6;
     resize: none;
+    margin-top: 10px;
 }
 
 .post-form button {
     margin-top: 10px;
     padding: 10px 20px;
-    background-color: #9b59b6;
+    background-color: #817bd8;
     color: #fff;
     border: none;
     cursor: pointer;
@@ -218,7 +222,7 @@ body {
 }
 
 .feed-container {
-    background-color: #9cacf5;
+    background-color: #f1f9b7;
     padding: 15px;
     border-radius: 8px;
 }
