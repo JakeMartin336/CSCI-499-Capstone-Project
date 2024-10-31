@@ -283,9 +283,16 @@ def next_concert():
         list_index += 1 
     return render_template("concert.html", concert=all_concerts[list_index], list_index=list_index, concert_count=len(all_concerts))
 
-@app.route('/venues')
-def venues():
-    return render_template("smile.html")
+
+# Main page route
+@app.route('/')
+def main():
+    return render_template('main.html')
+
+# Venue page route
+@app.route('/venue')
+def venue():
+    return render_template('venue.html')
 
 
 if __name__ == '__main__':
