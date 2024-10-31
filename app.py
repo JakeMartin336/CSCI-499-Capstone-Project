@@ -284,15 +284,20 @@ def next_concert():
     return render_template("concert.html", concert=all_concerts[list_index], list_index=list_index, concert_count=len(all_concerts))
 
 
-# Main page route
-@app.route('/')
-def main():
-    return render_template('main.html')
-
-# Venue page route
-@app.route('/venue')
+@app.route('/venues')
 def venue():
     return render_template('venue.html')
+
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    global list_index
+    list_index = 0
+    global all_concerts
+    all_concerts = []
+    return redirect(url_for('home'))
+
 
 
 if __name__ == '__main__':
