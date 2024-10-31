@@ -25,7 +25,7 @@
     <!-- Navbar top -->
     <div class="navbar-top">
       
-      <img src="{{ url_for('static', filename='logo.png') }}" alt="ConcertConnect Logo" style="height: 75px; margin-right: 200px;">
+      <img src="{{ url_for('static', filename='logo.png') }}" alt="ConcertConnect Logo" style="height: 75px; margin-right: 50px;">
       <p>Concert Connect</p>
 
       <!-- Navbar -->
@@ -51,8 +51,8 @@
         </div>
      
         <li>
-          <a href="/sign-out">
-            <button class="button">
+          <a href="/logout">
+            <button class="button" onclick="window.location.href='/logout'">
             Log Out
             <i class="fa fa-sign-out-alt fa-2x"></i>
           </a>
