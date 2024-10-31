@@ -11,7 +11,7 @@ body {
     align-items: center;
     min-height: 100vh;
     /* background: url('background.jpg') no-repeat; */
-    background: orange;
+    background-image: url('blue.gif'); /* Path to your background image */
     background-size: cover;
     background-position: center;
 }
