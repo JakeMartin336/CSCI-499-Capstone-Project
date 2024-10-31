@@ -3,15 +3,26 @@
 }
 
 body {
-    background-color: #e8f5ff;
+    background-attachment: fixed;
+    background-image: url("../design5.gif") !important;
     font-family: "Montserrat", "arial";
 }
 
+section {
+    margin: 0;
+    padding: 0;
+}
+
 /* Navbar Styles */
+.navbar {
+    background-color: transparent !important;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.109);
+}
 .nav-link:hover {
     background-color: rgba(74, 91, 248, 0.169);
     border-radius: 10px;
     transition: all 0.2s;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.457);
 }
 
 .title {
@@ -23,10 +34,7 @@ body {
 
 /* Concert Preview Styles */
 .container-bg {
-    /* background-image: url("../concert-bg2.png");
-    background-size: contain; */
     padding: 1rem 5%;
-    background-color: #f3f7db;
     min-height: 20vh;
     height: auto;
 }
@@ -57,6 +65,7 @@ body {
     border: 1px solid #333;
     border-radius: 5px;
     margin-bottom: 20px; 
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.457);
 }
 
 .concert_preview_list_button:hover {
@@ -66,9 +75,10 @@ body {
 /* Concert Preview End */
 
 /* Custom Button Styles */
-.custom-button, .buddy_button {
+.custom-button {
     margin-top: 50%;
     background-color: rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.457);
     color: #333;             
     border: 1px solid #333;              
     border-radius: 0.25rem;   
@@ -89,9 +99,6 @@ body {
     border: #333 1px solid;
 }
 
-.custom-button:focus {
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5); 
-}
 /* Custom Button Styles End*/
 .network_info {
     display: flex;
@@ -107,6 +114,7 @@ body {
     border-radius: 5px;
     margin-bottom: 5px;
     width: 100%; 
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.457);
 }
 /* Network Info End*/
 
@@ -114,31 +122,6 @@ body {
 .dropdown-item:hover {
     background-color: rgba(74, 91, 248, 0.169);
 }
-
-/* Middle Column Styles */
-.concert_info {
-    display: flex;
-    flex-direction: column; 
-    justify-content: flex-start; 
-    align-items: flex-start; 
-    padding: 10px; 
-    width: calc(100% - 40px);;
-}
-
-.artist_name{
-    margin: 0; 
-    padding: 0; 
-    font-weight: bold; 
-    font-size: 18px; 
-}
-
-.location {
-    margin: 0; 
-    padding: 0; 
-    font-size: 14px; 
-    color: #666; 
-}
-/* Middle Column End */
 
 /* Concert Seating Chart */
 .image-container {
@@ -216,18 +199,33 @@ body {
 }
 /* Buddy Matching End */
 
-.seating {
-    background-color: antiquewhite;
-    padding: 10px;
-}
-
 .matching {
-    background-color: aliceblue;
+    display: none;
 }
 
+.matching h1 {
+    text-shadow: 0 0 1rem rgb(244, 255, 96);
+}
+
+.btn-left{
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+}
+
+.btn-right {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+}
 @media (max-width: 768px) {
     .buddy_button {
         margin-top: 5px;
         margin-left: 10px;
     }
 }
+
