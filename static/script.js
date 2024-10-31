@@ -20,3 +20,37 @@ if (checkboxes.length > 0) {
     });
   });
 }
+
+
+let currentInfo = null; // Track the currently displayed info section
+function showInfo(type) {
+    var venueInfo = document.getElementById("venueInfo");
+    var ticketInfo = document.getElementById("ticketInfo");
+    var infoButton = document.getElementById("infoButton");
+
+    // Hide both sections by default
+    venueInfo.style.display = "none";
+    ticketInfo.style.display = "none";
+
+    // Toggle the selected information section
+    if (type === "venue") {
+        if (currentInfo === "venue") {
+            currentInfo = null; // If the same section is clicked again, hide it
+            infoButton.innerText = "More Information"; // Reset button text
+        } else {
+            currentInfo = "venue"; // Set current section to venue
+            venueInfo.style.display = "block"; // Show venue info
+            ticketInfo.style.display = "none"; // Ensure ticket info is hidden
+        }
+    } else if (type === "tickets") {
+        if (currentInfo === "tickets") {
+            currentInfo = null; // If the same section is clicked again, hide it
+            infoButton.innerText = "More Information"; // Reset button text
+        } else {
+            currentInfo = "tickets"; // Set current section to tickets
+            ticketInfo.style.display = "block"; // Show ticket info
+            venueInfo.style.display = "none"; // Ensure venue info is hidden
+        }
+    }
+}
+
