@@ -5,10 +5,11 @@
 
 body {
     background-image: url('blue.gif'); /* Path to your background image */
+    background-attachment: fixed;
     background-size: cover; /* Cover the entire viewport */
     background-position: contain; /* fit the screen */ 
     font-family: "Montserrat", "Arial";
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 
@@ -121,6 +122,19 @@ body {
 }
 
 .job {
+    font-size: 14px;
+    color: #666;
+}
+
+.age {
+    font-size: 14px;
+    color: #666;
+}
+.location {
+    font-size: 14px;
+    color: #666;
+}
+.music_genres {
     font-size: 14px;
     color: #666;
 }
