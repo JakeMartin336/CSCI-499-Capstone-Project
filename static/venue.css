@@ -1,6 +1,6 @@
 /* General Styling */
 body {
-    background-color: #e8f5ff;
+     background-image: url('blue.gif'); /* Path to your background image */
     font-family: "Montserrat", "arial";
 }
 /* Navbar Styles */
