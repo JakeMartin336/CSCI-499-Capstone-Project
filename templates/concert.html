@@ -16,7 +16,7 @@
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">
-        <img src="../ConcertConnect.png" alt="Logo" style="height: 50px;">
+        <img src="../ConcertConnect.png" alt="Logo" class="">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -26,19 +26,54 @@
 
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             <li class="nav-item">
-                <a class="nav-link" href="#home"><button class="btn">Home</button></a>
+                <a class="nav-link" href="#home">
+                <div class="explore-button-container">
+                    <button class="button" onclick="window.location.href='/home'">
+                        Home
+                        <i class="fa fa-home"></i>
+                    </button>
+                </div>
+                </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link active" href="#concerts"><button class="btn">Concerts</button></a>
+                <a class="nav-link active" href="#concerts">
+                <div class="explore-button-container">
+                    <button class="button" onclick="window.location.href='/concerts'">
+                        Explore Concerts
+                        <i class="fa fa-headphones"></i> 
+                    </button>
+                </div>
+                </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#venues"><button class="btn">Venues</button></a>
+                <a class="nav-link" href="#venues">
+                <div class="explore-button-container">
+                    <button class="button" onclick="window.location.href='/venues'">
+                        Explore Venues 
+                        <i class="fa fa-music"></i>
+                    </button>
+                </div>
+                </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#messages"><button class="btn">Messages</button></a>
+                <a class="nav-link" href="#messages">
+                <div class="explore-button-container">
+                    <button class="button" onclick="window.location.href='/messages'">
+                        Messages
+                        <i class="fa fa-envelope"></i>
+                    </button>
+                </div>
+                </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#sign-out"><button class="btn"><i class="fa fa-sign-out-alt"></i> Sign Out</button></a>
+                <a class="nav-link" href="#sign-out">
+                <div class="explore-button-container">
+                    <button class="button" onclick="window.location.href='/logout'">
+                        Log Out
+                        <i class="fa fa-sign-out-alt"></i>
+                    </button>
+                </div>
+                </a>
             </li>
         </ul>
         </div>
@@ -49,13 +84,14 @@
     <!-- Concert Preview Section -->
 
     <section class="container-bg" id="preview">
-        <h1> Seach for a concert</h1>
-        <form class="d-flex ms-auto" role="search">
-        <input class="form-control form-control-md me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-secondary btn-sm" type="submit">Search</button>
+        
+        <form class="d-flex ms-auto p-4 mb-3 bg-outline-light rounded shadow" role="search">
+        <h3 class="text-left mb-0" style="color: #fff; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">Explore Concerts</h3>
+        <input class="form-control form-control-lg me-2" type="search" placeholder="Search for more concerts" aria-label="Search">
+        <button class="btn btn-outline-dark btn-lg" type="submit">Search</button>
         </form>
-        <div class="container-bg text-left">
         <button class="btn btn-outline-dark btn-left"><i class="fa fa-arrow-left"></i></button>
+        <div class="container-bg text-left">
         
          <div class="row">
             <div class="col-md-4 align-self-start text-center">
@@ -113,8 +149,8 @@
                 </div>
             </div>
         </div>
-        <button class="btn btn-outline-dark btn-right"><i class="fa fa-arrow-right"></i></button>
         </div>
+        <button class="btn btn-outline-dark btn-right"><i class="fa fa-arrow-right"></i></button>
     </section>
     <!-- Concert Preview Section End -->
 
