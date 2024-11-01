@@ -113,7 +113,7 @@ def get_user_info(account_id):
             columns = ["account_id", "created_at", "user_name", "age", "email_address", "account_description", 
                        "user_location", "music_genre", "budget", "travel_time", "contact_ids"]
             user_info = {col: user_info.get(col) for col in columns}  # Ensures consistent keys
-            print(f"Fetched user info: {user_info}")
+            # print(f"Fetched user info: {user_info}")
         else:
             print("No user found with that account_id.")
     

@@ -31,7 +31,16 @@ def get_concerts(genre, location, budget=0):
                     "venue_name": event.get('venue', {}).get('name', 'Unknown venue'),
                     "venue_address": event.get('venue', {}).get('full_address', 'Address not available'),
                     "venue_website": event.get('venue', {}).get('website', 'Not specified')
+
                 }
+                ticket_links = event.get("ticket_links", [])
+                curr_event["ticket_links"] = [
+                    {
+                        "source": ticket.get("source", "Unknown"),
+                        "link": ticket.get("link", "No link available")
+                    }
+                    for ticket in ticket_links
+                ]
                 final_events.append(curr_event)
         else:
             print("No events found.")

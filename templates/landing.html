@@ -6,7 +6,7 @@
     <title>Profile Page</title>
 
     <!-- Custom Css -->
-    <link rel="stylesheet" href="/static/styles.css" />
+    <link rel="stylesheet" href="/static/styles_landing.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -29,7 +29,7 @@
   <!-- Navbar -->
   <ul>
       <div class="explore-button-container">
-          <button class="button" onclick="window.location.href='/home'">
+          <button class="button" onclick="window.location.href='/landing'">
               Home 
               <i class="fa fa-headphones"></i>
           </button>
@@ -85,6 +85,15 @@
               <div class="job">
                 {{ user['account_description'] if user else '' }}
               </div>
+              <div class="age">
+                {{ user['age'] if user else '' }}
+              </div>
+              <div class="location">
+                {{ user['user_location'] if user else '' }}
+              </div>
+              <div class="music_genres">
+                {{ ', '.join(user['music_genre']) if user and 'music_genre' in user else '' }}
+              </div>
             </div>
 
             <div class="sidenav-url">
@@ -137,11 +146,14 @@
           <h3 style="color: rgb(91, 90, 90); font-size: 0.9em;">Feed</h3>
           <div id="feed">
             <!-- Posts will appear here -->
+            <div>
+              <img src="static/smiley.jpg" alt="Centered Image">
+            </div>
           </div>
         </div>
       </div>
       
-      <div class="card">
+      <!-- <div class="card">
         <div class="card-body">
           <table>
             <tbody>
@@ -168,7 +180,7 @@
             </tbody>
           </table>
         </div>
-      </div>
+      </div> -->
     </div>
     <!-- End -->
   </body>
