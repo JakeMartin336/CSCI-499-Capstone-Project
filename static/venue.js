@@ -28,3 +28,24 @@ document.getElementById('upload-pov').addEventListener('click', function() {
         alert('Please fill in all the fields.');
     }
 });
+
+// Event listener for "Seat POV Finder" button
+document.querySelector(".btn.btn-warning").addEventListener("click", function() {
+    // Get user input values
+    const section = document.getElementById('section-number').value;
+    const row = document.getElementById('row-number').value;
+    const seat = document.getElementById('seat-number').value;
+
+    // Check if all fields are filled
+    if (section && row && seat) {
+        // Display the seat POV container and images
+        document.getElementById('seat-pov').style.display = 'flex';
+        document.getElementById('seat-view-1').style.display = 'block';
+        document.getElementById('seat-view-2').style.display = 'block';
+        document.getElementById('seat-view-3').style.display = 'block';
+    } else {
+        // Show an alert if fields are missing
+        alert('Please fill in Section, Row, and Seat number.');
+    }
+});
+
