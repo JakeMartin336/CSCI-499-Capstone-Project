@@ -4,12 +4,11 @@
 }
 
 body {
-    background-image: url('blue.gif'); /* Path to your background image */
-    background-attachment: fixed;
-    background-size: cover; /* Cover the entire viewport */
+    background-image: url('blue.gif'); 
+    background-size: cover; 
     background-position: contain; /* fit the screen */ 
     font-family: "Montserrat", "Arial";
-    /* overflow: hidden; */
+    overflow: hidden;
 }
 
 
@@ -103,38 +102,28 @@ body {
 
 .profile-box,
 .concerts-box {
-    background-color: #f7f6f5; /* Light neon yellow background */
+    background-color: #f7f6f5; 
     border-radius: 10px;
     padding: 15px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Slightly darker shadow for depth */
+    font-family: 'Itim';
+    font-size: 20px;
 }
 
 .profile {
     text-align: center;
     margin-bottom: 15px;
+    font-size: 20px;
 }
 
 .name {
-    font-size: 18px;
+    font-size: 25px;
     font-weight: bold;
     margin-top: 10px;
     color: #817bd8;
 }
 
 .job {
-    font-size: 14px;
-    color: #666;
-}
-
-.age {
-    font-size: 14px;
-    color: #666;
-}
-.location {
-    font-size: 14px;
-    color: #666;
-}
-.music_genres {
     font-size: 14px;
     color: #666;
 }
@@ -158,13 +147,13 @@ body {
 }
 
 .sidenav-url .url a:hover {
-    background-color: #ff5722; /* Neon Orange */
+    background-color: #ff5722; 
     color: #fff; /* White text */
     transform: scale(1.05); /* Slightly enlarge on hover */
 }
 
 .concerts-box h3 {
-    font-size: 18px;
+    font-size: 25px;
     margin-bottom: 10px;
     border-radius: 75px;
     color: #817bd8 /* Pink */
@@ -233,6 +222,10 @@ body {
     border: none;
     cursor: pointer;
     border-radius: 5px;
+}
+
+.post-form button:hover {
+    background-color: #9b96e3; /* Lighter purple on hover */
 }
 
 .feed-container {
