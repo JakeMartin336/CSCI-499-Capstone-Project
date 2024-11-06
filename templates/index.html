@@ -15,42 +15,60 @@
     />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
-    <!-- FontAwesome 5 -->
+
+<link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
     />
   </head>
   <body>
-    <!-- Navbar top -->
-    <div class="navbar-top">
-      <img src="{{ url_for('static', filename='logo.png') }}" alt="ConcertConnect Logo" style="height: 90px; margin-right: 200px;" />
-      <!-- Navbar -->
-      <ul>
-        <div class="explore-button-container">
-          <button class="button" onclick="window.location.href='/venues'">
-            Explore Venues 
-            <i class="fa fa-music"></i>
+
+   <!-- Navbar top -->
+<div class="navbar-top">
+  <img src="{{ url_for('static', filename='logo.png') }}" alt="ConcertConnect Logo" style="height: 90px; margin-right: 200px;" />
+  
+  <!-- Navbar -->
+  <ul>
+      <div class="explore-button-container">
+          <button class="button" style="font-size: 18px; font-family: 'Itim';"  onclick="window.location.href='/home'">
+              Home 
+              <i class="fa fa-headphones"></i>
           </button>
-        </div>
-        <div class="explore-button-container">
-          <button class="button" onclick="window.location.href='/concerts'">
-            Explore Concerts
-            <i class="fa fa-headphones"></i> 
+      </div>
+
+      <div class="explore-button-container">
+          <button class="button" style="font-size: 18px; font-family: 'Itim';" onclick="window.location.href='/venues'">
+              Venues 
+              <i class="fa fa-music"></i>
           </button>
-        </div>
-        <li>
-          <a href="#sign-out">
-            <button class="button" onclick="window.location.href='/logout'">
-              Log Out
-              <i class="fa fa-sign-out-alt fa-2x"></i>
+      </div>
+
+      <div class="explore-button-container">
+          <button class="button" style="font-size: 18px; font-family: 'Itim';" onclick="window.location.href='/concerts'">
+              Concerts
+              <i class="fa fa-headphones"></i> 
+          </button>
+      </div>
+
+      <div class="explore-button-container">
+          <button class="button" style="font-size: 18px; font-family: 'Itim';" onclick="window.location.href='/messages'">
+              Messages 
+              <i class="fa fa-music"></i>
+          </button>
+      </div>
+  <!-- Moved Log Out button into the navbar structure -->
+        <div class="explore-button-container">
+            <button class="button" style="font-size: 18px; font-family: 'Itim';" onclick="window.location.href='/logout'">
+                Log Out
+                <i class="fa fa-sign-out-alt"></i>
             </button>
-          </a>
-        </li>
-      </ul>
-      <!-- End -->
-    </div>
+        </div>
+    </ul>
     <!-- End -->
+</div>
+      <!-- End -->
+  
 
     <!-- Sidenav -->
     <div class="container">
@@ -86,7 +104,8 @@
 
         <div class="sidenav">
           <div class="concerts-box">
-            <h3>My Concert List</h3>
+            <h3 style="color: #c28adc; text-align: center;">🎶 My Concert List 🎶</h3>
+
             <h4>Going:</h4>
             <h4>Interested:</h4>
             <h4>Attended:</h4>
@@ -109,16 +128,16 @@
       <div class="main">
         <!-- Write a Post Section -->
         <div class="post-container">
-          <h3 style="color: rgb(91, 90, 90); font-size: 0.9em;">Share your experience:</h3>
+          <h3 style="color: rgb(91, 90, 90); font-size: 0.9em;">🎤 Share your experience:</h3>
           <div class="post-form">
-            <textarea id="postContent" placeholder="Who did you see perform tonight?"></textarea>
+            <textarea id="postContent" placeholder="Who did you see perform tonight?" style = "font-size: 14px;"></textarea>
             <button id="publishBtn">Publish</button>
           </div>
         </div>
     
         <!-- Feed Section -->
         <div class="feed-container">
-          <h3 style="color: rgb(91, 90, 90); font-size: 0.9em;">Feed</h3>
+          <h3 style="color: rgb(91, 90, 90); font-size: 0.9em;">🎫 Feed:</h3>
           <div id="feed">
             <!-- Posts will appear here -->
           </div>
