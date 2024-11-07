@@ -79,30 +79,30 @@
                 alt="Profile Picture" 
                 style="width: 125px; height: 125px; border-radius: 50%; object-fit: cover; overflow: hidden;"
               />
-              <div class="name">
+              <div class="name" style = "font-family: 'Montserrat';">
                 {{ user['user_name'] if user else 'User Name' }}
               </div>
-              <div class="job">
+              <div class="job" style = "font-family: 'Montserrat';">
                 {{ user['account_description'] if user else '' }}
               </div>
-              <div class="age">
+              <div class="age" style = "font-family: 'Montserrat';">
                 {{ user['age'] if user else '' }}
               </div>
-              <div class="location">
+              <div class="location" style = "font-family: 'Montserrat';">
                 {{ user['user_location'] if user else '' }}
               </div>
-              <div class="music_genres">
+              <div class="music_genres" style = "font-family: 'Montserrat';">
                 {{ ', '.join(user['music_genre']) if user and 'music_genre' in user else '' }}
               </div>
             </div>
 
             <div class="sidenav-url">
               <div class="url">
-                <a href="#profile">Profile</a>
+                <a href="#profile" style = "font-family: 'Montserrat';">Profile</a>
                 <hr />
               </div>
               <div class="url">
-                <a href="#settings">Settings</a>
+                <a href="#settings"style = "font-family: 'Montserrat';" ">Settings</a>
                 <hr />
               </div>
             </div>
@@ -110,11 +110,11 @@
         </div>
 
         <div class="sidenav">
-          <div class="concerts-box">
-            <h3>My Concert List</h3>
-            <h4>Going:</h4>
-            <h4>Interested:</h4>
-            <h4>Attended:</h4>
+          <div class="concerts-box" style = "font-family: 'Montserrat';">
+            <h3 style = "font-size: 23px;">🎶My Concert List🎶</h3>
+            <h4 style = "color: rgb(90, 201, 156)">Going:</h4>
+            <h4 style = "color: sandybrown">Interested:</h4>
+            <h4 style = "color: skyblue">Attended:</h4>
             <ul>
               {% if favorite_concerts %} 
                 {% for concert in favorite_concerts %}
@@ -134,7 +134,7 @@
       <div class="main">
         <!-- Write a Post Section -->
         <div class="post-container">
-          <h3 style="color: rgb(91, 90, 90); font-size: 0.9em;">Share your experience:</h3>
+          <h3 style="color: rgb(91, 90, 90); font-size: 0.9em;">🎤 Share your experience:</h3>
           <div class="post-form">
             <textarea id="postContent" placeholder="Who did you see perform tonight?"></textarea>
             <button id="publishBtn">Publish</button>
@@ -143,7 +143,7 @@
     
         <!-- Feed Section -->
         <div class="feed-container">
-          <h3 style="color: rgb(91, 90, 90); font-size: 0.9em;">Feed</h3>
+          <h3 style="color: rgb(91, 90, 90); font-size: 0.9em;">🎫 Feed</h3>
           <div id="feed">
             <!-- Posts will appear here -->
             <div>
