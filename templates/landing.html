@@ -24,51 +24,63 @@
   </head>
   <body>
 
-   <!-- Navbar top -->
-<div class="navbar-top">
-  <img src="{{ url_for('static', filename='logo.png') }}" alt="ConcertConnect Logo" style="height: 90px; margin-right: 200px;" />
-  
-  <!-- Navbar -->
-  <ul>
-      <div class="explore-button-container">
-          <button class="button" style="font-size: 18px; font-family: 'Itim';"  onclick="window.location.href='/home'">
-              Home 
-              <i class="fa fa-headphones"></i>
-          </button>
-      </div>
+    <!-- Navbar top -->
+    <div class="navbar-top">
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="ConcertConnect Logo" style="height: 90px; margin-right: 200px;" />
+        <ul>
+            <div class="explore-button-container">
+                <button class="button" onclick="window.location.href='/home'">Home <i class="fa fa-home"></i></button>
+            </div>
+            <div class="explore-button-container">
+                <button class="button" onclick="window.location.href='/venues'">Venues <i class="fa fa-music"></i></button>
+            </div>
+            <div class="explore-button-container">
+                <button class="button" onclick="window.location.href='/concerts'">Concerts <i class="fa fa-headphones"></i></button>
+            </div>
+            <div class="explore-button-container">
+                <button class="button" onclick="window.location.href='/messages'">Messages <i class="fa fa-comments"></i></button>
+            </div>
+            <div class="explore-button-container">
+                <button class="button" onclick="window.location.href='/logout'">Log Out <i class="fa fa-sign-out-alt"></i></button>
+            </div>
+        </ul>
+    </div>
 
-      <div class="explore-button-container">
-          <button class="button" style="font-size: 18px; font-family: 'Itim';" onclick="window.location.href='/venues'">
-              Venues 
-              <i class="fa fa-music"></i>
-          </button>
-      </div>
+    <!-- Sidenav -->
+    <div class="container">
+        <div class="sidenav-container">
+            <div class="sidenav">
+                <div class="profile-box">
+                    <div class="profile">
+                        <img src="https://i.pinimg.com/736x/4c/50/87/4c50870fef410d14ff495ea1f532565a.jpg" alt="Profile Picture" style="width: 125px; height: 125px; border-radius: 50%; object-fit: cover; overflow: hidden;" />
+                        <div class="name">{{ user['user_name'] if user else 'User Name' }}</div>
+                        <div class="job">{{ user['account_description'] if user else '' }}</div>
+                    </div>
+                    <div class="sidenav-url">
+                        <div class="url"><a href="#profile">Profile</a><hr /></div>
+                        <div class="url"><a href="#settings">Settings</a><hr /></div>
+                    </div>
+                </div>
+            </div>
 
-      <div class="explore-button-container">
-          <button class="button" style="font-size: 18px; font-family: 'Itim';" onclick="window.location.href='/concerts'">
-              Concerts
-              <i class="fa fa-headphones"></i> 
-          </button>
-      </div>
-
-      <div class="explore-button-container">
-          <button class="button" style="font-size: 18px; font-family: 'Itim';" onclick="window.location.href='/messages'">
-              Messages 
-              <i class="fa fa-music"></i>
-          </button>
-      </div>
-  <!-- Moved Log Out button into the navbar structure -->
-        <div class="explore-button-container">
-            <button class="button" style="font-size: 18px; font-family: 'Itim';" onclick="window.location.href='/logout'">
-                Log Out
-                <i class="fa fa-sign-out-alt"></i>
-            </button>
+            <div class="sidenav">
+                <div class="concerts-box">
+                    <h3 style="color: #c28adc; text-align: center; font-size: 22px;">🎶 My Concert List 🎶</h3>
+                    <h4 style="color:#61d1b2;">Going:</h4>
+                    <h4 style="color:#d6a351;">Interested:</h4>
+                    <h4 style="color:#e05c8f;">Attended:</h4>
+                    <ul>
+                        {% if favorite_concerts %}
+                            {% for concert in favorite_concerts %}
+                                <li><a href="#{{ concert.id }}">{{ concert.name }}</a></li>
+                            {% endfor %}
+                        {% else %}
+                            <li>No concerts favorited yet.</li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
         </div>
-    </ul>
-    <!-- End -->
-</div>
-      <!-- End -->
-  
 
     <!-- Sidenav -->
     <div class="container">
