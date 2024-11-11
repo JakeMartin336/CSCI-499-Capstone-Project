@@ -1,16 +1,16 @@
 /* General Styling */
 * {
     margin: 0;
-    box-sizing: border-box; /* Ensure elements behave as expected */
+    box-sizing: border-box; 
 }
 
 body {
     background-image: url('blue.gif'); 
     background-size: cover; 
-    background-position: contain; /* fit the screen */ 
+    background-position: contain; 
     font-family: "Montserrat", "Arial";
-    overflow-y: auto; /* Allow vertical scrolling */
-    min-height: 100vh; /* Ensure the body takes up at least the full viewport height */
+    overflow-y: auto;
+    min-height: 100vh; 
 }
 
 /* Navbar */
@@ -136,8 +136,8 @@ body {
 }
 
 .sidenav-url .url a:hover {
-    background-color: #ff5722; 
-    color: #fff; /* White text */
+    background-color:#f1f9b7;
+    color: #7e7e7e; /* White text */
     transform: scale(1.05); /* Slightly enlarge on hover */
 }
 
@@ -310,20 +310,25 @@ body {
     padding: 10px;
     border-radius: 20px;
     border: 1px solid #ccc;
-    font-size: 16px;
+    font-size: 14px;
     box-sizing: border-box;
+    font-family: "Montserrat";
 }
 
 .message-input button {
-    background-color: #817bd8;
     border: none;
-    padding: 10px;
-    border-radius: 50%;
-    color: #fff;
+    background: transparent;
+    color: #9b96e3;
     cursor: pointer;
+    padding: 15px; 
+    font-size: 20px; /* Larger font size for the icon */
+    width: 50px; /* Set width for a larger button */
+    height: 50px; /* Set height for a larger button */
+    border-radius: 50%; /* Keep it circular */
     transition: background-color 0.3s ease;
 }
 
+
 .message-input button:hover {
-    background-color: #9b96e3;
+    color: #d7d7e7;
 }
