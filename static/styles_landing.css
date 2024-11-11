@@ -9,6 +9,7 @@ body {
     background-position: contain; /* fit the screen */ 
     font-family: "Montserrat", "Arial";
     overflow: hidden;
+    overflow-y: auto;
 }
 
 
@@ -61,6 +62,8 @@ body {
     cursor: pointer; /* Pointer cursor on hover */
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
     transition: background-color 0.3s ease, transform 0.3s ease; 
+    font-family: "Itim";
+    font-size: 18px;
 }
 
 .navbar-top button:hover {
@@ -147,16 +150,15 @@ body {
 }
 
 .sidenav-url .url a:hover {
-    background-color: #ff5722; 
-    color: #fff; /* White text */
-    transform: scale(1.05); /* Slightly enlarge on hover */
+    background-color:#f1f9b7;
+    color: #7e7e7e; 
+    transform: scale(1.05); 
 }
 
 .concerts-box h3 {
-    font-size: 25px;
     margin-bottom: 10px;
     border-radius: 75px;
-    color: #817bd8 /* Pink */
+    color: #817bd8 
 }
 
 .concerts-box ul {
@@ -176,13 +178,13 @@ body {
     padding: 8px;
     display: block;
     border-radius: 5px;
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease; /* Added transform for hover effect */
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease; 
 }
 
 .concerts-box ul li a:hover {
-    background-color: #ffea00; /* Neon Yellow */
-    color: #000; /* Black text */
-    transform: scale(1.05); /* Slightly enlarge on hover */
+    background-color: #ffea00;
+    color: #000; 
+    transform: scale(1.05); 
 }
 
 /* End */
@@ -201,6 +203,7 @@ body {
     padding: 15px;
     border-radius: 10px;
     margin-bottom: 20px;
+    
     
 }
 
@@ -232,10 +235,13 @@ body {
     background-color: #f1f9b7;
     padding: 15px;
     border-radius: 8px;
+ 
 }
 
+
+
 .feed-container h2 {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 .post {
