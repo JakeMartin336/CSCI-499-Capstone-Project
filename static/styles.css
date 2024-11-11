@@ -1,6 +1,7 @@
-/* Import Font Dancing Script */
+/* General Styling */
 * {
     margin: 0;
+    box-sizing: border-box; /* Ensure elements behave as expected */
 }
 
 body {
@@ -8,28 +9,19 @@ body {
     background-size: cover; 
     background-position: contain; /* fit the screen */ 
     font-family: "Montserrat", "Arial";
-    overflow: hidden;
+    overflow-y: auto; /* Allow vertical scrolling */
+    min-height: 100vh; /* Ensure the body takes up at least the full viewport height */
 }
 
-
-/* NavbarTop */
+/* Navbar */
 .navbar-top {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    /* background-color: #b4d2f5; Pink */
-    color: #fff; /* White text for contrast */
-    /* box-shadow: 0px 4px 8px 0px rgb(252, 255, 86); */
-
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.109);
     height: 70px;
-    padding: 0 20px; /* Added padding for a balanced look */
-}
-
-.title {
-    font-size: 24px;
-    font-weight: bold;
-    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7); /* Text shadow for depth */
+    padding: 0 20px;
+    color: #fff;
 }
 
 .navbar-top ul {
@@ -39,49 +31,44 @@ body {
     display: flex;
 }
 
-.navbar-top ul li {
-  
-    margin: 0 20px; 
-
+.navbar-top .explore-button-container {
+    margin: 0 10px;
 }
 
-.navbar-top button {
-    width: 110px; 
-    height: 40px; 
-    margin: 0 10px;
+.navbar-top .button {
+    width: 110px;
+    height: 40px;
     display: flex;
     align-items: center;
-    justify-content: center; 
+    justify-content: center;
     gap: 10px;
-    background-color: #f1f9b7; /* Button background color */
-    border-radius: 30px; /* Rounded corners */
-    color: #b56aee; 
+    background-color: #f1f9b7;
+    border-radius: 30px;
+    color: #b56aee;
     font-weight: 600;
     border: none;
-    cursor: pointer; /* Pointer cursor on hover */
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
-    transition: background-color 0.3s ease, transform 0.3s ease; 
+    cursor: pointer;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    font-family: 'Itim', sans-serif;
+    font-size: 18px;
 }
 
-.navbar-top button:hover {
-    background-color: rgba(255, 255, 255, 0.772); /* Semi-transparent white on hover */
-    transform: scale(1.1); /* Slightly enlarge on hover */
-
+.navbar-top .button:hover {
+    background-color: rgba(255, 255, 255, 0.772);
+    transform: scale(1.1);
 }
 
-.svgIcon {
-    height: 25px; /* Height for the SVG icon */
-    transition-duration: 1.5s; /* Transition for icon rotation */
+/* Navbar Icon */
+.navbar-top .svgIcon {
+    height: 25px;
+    transition-duration: 1.5s;
 }
 
-.button:hover .svgIcon {
-    transform: rotate(250deg); /* Rotate on hover */
-    transition-duration: 1.5s; /* Duration of rotation */
+.navbar-top .button:hover .svgIcon {
+    transform: rotate(250deg);
+    transition-duration: 1.5s;
 }
-
-
-
-/* End */
 
 /* Sidenav */
 .container {
@@ -94,6 +81,8 @@ body {
     width: 275px;
     color: #333;
     padding: 20px;
+    max-height: 100vh; /* Ensure it doesn't overflow */
+    overflow-y: auto; /* Allow scrolling within the sidenav if necessary */
 }
 
 .sidenav {
@@ -187,86 +176,154 @@ body {
 
 /* End */
 
-/* Main */
-.main {
-    margin-top: 2%;
-    font-size: 28px;
-    padding: 0 10px;
-    width: 60%;
+
+/* Messaging Container */
+.messaging-container {
+    display: flex;
+    height: calc(100vh - 90px); /* Full height minus navbar */
+    overflow-y: auto; /* Allow vertical scrolling in the messaging container */
 }
 
-
-.post-container {
-    background-color: #c1c4f7;
-    padding: 15px;
+/* Contacts Panel */
+.contacts-panel {
+    width: 25%;
+    background-color: #f7f6f5;
+    padding: 20px;
+    box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
-    margin-bottom: 20px;
-    
+    height: 100%; /* Ensure the contacts panel takes up full height */
+    box-sizing: border-box; /* Ensure padding doesn't add extra height */
 }
 
-.post-form textarea {
-    width: 98%;
-    height: 80px;
-    padding: 10px;
-    border-radius: 15px;
-    border: 1px solid #f1f5d6;
-    resize: none;
-    margin-top: 10px;
-}
-
-.post-form button {
-    margin-top: 10px;
-    padding: 10px 20px;
-    background-color: #817bd8;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-.post-form button:hover {
-    background-color: #9b96e3; /* Lighter purple on hover */
-}
-
-.feed-container {
-    background-color: #f1f9b7;
-    padding: 15px;
-    border-radius: 8px;
-}
-
-.feed-container h2 {
+.contacts-panel h3 {
+    font-family: 'Itim', sans-serif;
+    color: #817bd8;
+    text-align: center;
+    font-size: 24px;
     margin-bottom: 15px;
 }
 
-.post {
-    background-color: #efefef;
+.contact-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    color: rgb(95, 95, 95)
+}
+
+.contact {
     padding: 10px;
     margin-bottom: 10px;
+    background-color: #c1c4f7;
     border-radius: 5px;
-    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-.post p {
-    font-size: 16px;
-    margin: 0;
+.contact:hover {
+    background-color: #9b96e3;
 }
 
-.post span {
-    font-size: 12px;
-    color: #666;
+/* Chat Window */
+.chat-window {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: #f1f9b7;
+    padding: 20px; /* Reduced padding to fit content */
+    border-radius: 10px;
+    margin-left: 20px;
+    height: 100%; /* Ensures full height */
+    overflow-y: auto; /* Allow scrolling if chat content exceeds height */
 }
 
-.main .card {
-    background-color: #ecfa6d;
-    border-radius: 18px;
-    box-shadow: 1px 1px 8px 0 rgb(237, 241, 197);
-    height: auto;
-    margin-bottom: 20px;
-    padding: 20px 0 20px 50px;
+/* Chat Header */
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #c1c4f7;
 }
 
-.main .card table {
+.contact-name {
+    font-family: 'Poppins', sans-serif;
+    color: #333;
+    font-size: 1.2em;
+}
+
+.chat-options .icon-button {
+    background-color: transparent;
     border: none;
+    color: #817bd8;
+    font-size: 1.5em;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.chat-options .icon-button:hover {
+    color: #9b96e3;
+}
+
+/* Chat Messages */
+.chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding-top: 10px; /* Adds space between messages and the top */
+    padding-bottom: 10px; /* Adds space between messages and the bottom */
+}
+
+/* Chat Message */
+.message {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 0.9em;
+    max-width: 70%;
+    word-wrap: break-word;
+}
+
+.received {
+    background-color: #f7f6f5;
+    align-self: flex-start;
+}
+
+.sent {
+    background-color: #c1c4f7;
+    align-self: flex-end;
+    margin-left: auto; /* place sent messages to the right */
+}
+
+/* Message Input */
+.message-input {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px; 
+    border-top: 2px solid #c1c4f7;
+}
+
+.message-input input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
     font-size: 16px;
-    width: 80%;
+    box-sizing: border-box;
+}
+
+.message-input button {
+    background-color: #817bd8;
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.message-input button:hover {
+    background-color: #9b96e3;
 }
