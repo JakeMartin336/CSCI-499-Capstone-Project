@@ -125,7 +125,7 @@ body {
     display: block;
     text-align: center;
     border-radius: 75px;
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease; /* Added transform for hover effect */
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease; 
 }
 
 .sidenav-url hr {
@@ -137,8 +137,8 @@ body {
 
 .sidenav-url .url a:hover {
     background-color:#f1f9b7;
-    color: #7e7e7e; /* White text */
-    transform: scale(1.05); /* Slightly enlarge on hover */
+    color: #7e7e7e; 
+    transform: scale(1.05); 
 }
 
 .concerts-box h3 {
@@ -165,13 +165,13 @@ body {
     padding: 8px;
     display: block;
     border-radius: 5px;
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease; /* Added transform for hover effect */
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease; 
 }
 
 .concerts-box ul li a:hover {
-    background-color: #ffea00; /* Neon Yellow */
-    color: #000; /* Black text */
-    transform: scale(1.05); /* Slightly enlarge on hover */
+    background-color: #ffea00;
+    color: #000; 
+    transform: scale(1.05);
 }
 
 /* End */
@@ -180,8 +180,8 @@ body {
 /* Messaging Container */
 .messaging-container {
     display: flex;
-    height: calc(100vh - 90px); /* Full height minus navbar */
-    overflow-y: auto; /* Allow vertical scrolling in the messaging container */
+    height: calc(100vh - 90px);
+    overflow-y: auto; 
 }
 
 /* Contacts Panel */
@@ -191,8 +191,9 @@ body {
     padding: 20px;
     box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
-    height: 100%; /* Ensure the contacts panel takes up full height */
-    box-sizing: border-box; /* Ensure padding doesn't add extra height */
+    height: 95%; 
+    box-sizing: border-box; 
+    margin-top: 20px;
 }
 
 .contacts-panel h3 {
@@ -231,11 +232,13 @@ body {
     display: flex;
     flex-direction: column;
     background-color: #f1f9b7;
-    padding: 20px; /* Reduced padding to fit content */
+    padding: 20px; 
     border-radius: 10px;
     margin-left: 20px;
-    height: 100%; /* Ensures full height */
-    overflow-y: auto; /* Allow scrolling if chat content exceeds height */
+    height: 95%; 
+    overflow-y: auto; 
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 /* Chat Header */
@@ -270,8 +273,8 @@ body {
 .chat-messages {
     flex: 1;
     overflow-y: auto;
-    padding-top: 10px; /* Adds space between messages and the top */
-    padding-bottom: 10px; /* Adds space between messages and the bottom */
+    padding-top: 10px; 
+    padding-bottom: 10px; 
 }
 
 /* Chat Message */
@@ -321,10 +324,10 @@ body {
     color: #9b96e3;
     cursor: pointer;
     padding: 15px; 
-    font-size: 20px; /* Larger font size for the icon */
-    width: 50px; /* Set width for a larger button */
-    height: 50px; /* Set height for a larger button */
-    border-radius: 50%; /* Keep it circular */
+    font-size: 20px; 
+    width: 50px; 
+    height: 50px; 
+    border-radius: 50%; 
     transition: background-color 0.3s ease;
 }
 
@@ -332,3 +335,30 @@ body {
 .message-input button:hover {
     color: #d7d7e7;
 }
+
+/* Contact Images */
+.contact-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+    vertical-align: middle;
+    object-fit: cover;
+}
+.contact {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #c1c4f7;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.contact:hover {
+    background-color: #9b96e3;
+}
+
