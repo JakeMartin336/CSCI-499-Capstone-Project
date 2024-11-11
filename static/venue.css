@@ -18,29 +18,37 @@ body {
 
 /* Kirsten NavbarTop */
 /* Navbar Styles */
+/* NavbarTop */
 .navbar-top {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    /* background-color: #b4d2f5; Pink */
     color: #fff; /* White text for contrast */
+    /* box-shadow: 0px 4px 8px 0px rgb(252, 255, 86); */
+
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.109);
     height: 70px;
-    padding: 0 20px;
+    padding: 0 20px; /* Added padding for a balanced look */
 }
 
-/* Ensure navbar buttons have consistent styling */
+.title {
+    font-size: 24px;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7); /* Text shadow for depth */
+}
+
 .navbar-top ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
     display: flex;
-    gap: 20px; /* Add space between buttons */
 }
 
-/* Style for individual navbar items */
 .navbar-top ul li {
-    display: flex;
-    align-items: center;
+  
+    margin: 0 20px; 
+
 }
 
 .navbar-top button {
@@ -51,7 +59,7 @@ body {
     align-items: center;
     justify-content: center; 
     gap: 10px;
-    background-color: #f1f9b7; /* Button background color */ 
+    background-color: #f1f9b7; /* Button background color */
     border-radius: 30px; /* Rounded corners */
     color: #b56aee; 
     font-weight: 600;
@@ -59,13 +67,15 @@ body {
     cursor: pointer; /* Pointer cursor on hover */
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
     transition: background-color 0.3s ease, transform 0.3s ease; 
+    font-family: "Itim";
+    font-size: 18px;
 }
 
 .navbar-top button:hover {
     background-color: rgba(255, 255, 255, 0.772); /* Semi-transparent white on hover */
     transform: scale(1.1); /* Slightly enlarge on hover */
-}
 
+}
 /* end of Kirsten navbar */
 
 /* Header Styling (Venue Name) */
