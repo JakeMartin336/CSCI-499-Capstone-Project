@@ -12,9 +12,11 @@
     <header>
         <h2 class="logo">Concert Connect</h2>
         <nav class="navigation">
-            <a href="#">Home</a>
-            <a href="#">Concerts</a>
-            <a href="venue.html">Venues</a>
+          <a href="{{ url_for('landing.html') }}">Home</a>
+          <a href="{{ url_for('concert.html') }}">Concerts</a>
+          <a href="{{ url_for('venue.html') }}">Venues</a>
+          <a href="{{ url_for('messages.html') }}">Messages</a>
+        
             <button class="btnLogin-popup" onclick="GoToLogin()">Login</button>
         </nav>
     </header>

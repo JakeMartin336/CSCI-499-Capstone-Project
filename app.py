@@ -288,6 +288,10 @@ def next_concert():
 def venue():
     return render_template('venue.html')
 
+@app.route('/messages')
+def messages():
+    return render_template('messages.html')
+
 
 @app.route('/logout')
 def logout():

@@ -2,7 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: sans-serif;
+    font-family: 'Montserrat', sans-serif;
 }
 
 body {
@@ -10,8 +10,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    /* background: url('background.jpg') no-repeat; */
-    background-image: url('blue.gif'); /* Path to your background image */
+    background-image: url('blue.gif'); /* Update with your image path */
     background-size: cover;
     background-position: center;
 }
@@ -31,7 +30,6 @@ header {
 .error-message {
     color: red;
     text-align: center;
-    margin: 0;
     padding: 10px;
     font-weight: bold;
 }
@@ -43,7 +41,6 @@ header {
 }
 
 .navigation a {
-    position: relative;
     font-size: 1.1em;
     color: #fff;
     text-decoration: none;
@@ -51,79 +48,39 @@ header {
     margin-left: 40px;
 }
 
-.navigation a::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: -6px;
-    width: 100%;
-    height: 3px;
-    background: #fff;
-    border-radius: 5px;
-    transform-origin: right;
-    transform: scaleX(0);
-    transition: transform .5s;
-}
-
-.navigation a:hover::after {
-    transform-origin: left;
-    transform: scaleX(1);
-}
-
-.navigation .btnLogin-popup {
-    width: 130px;
-    height: 50px;
-    background: transparent;
-    border: 2px solid #fff;
-    outline: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 1.1em;
-    color: #fff;
-    font-weight: 500;
-    margin-left: 40px;
-    transition: .5s;
-}
-
-.navigation .btnLogin-popup:hover {
-    background: #fff;
-    color: #162938;
+.navigation a:hover {
+    color: #5c5dba;
+    text-decoration: underline;
 }
 
 .wrapper {
     position: relative;
     width: 400px;
-    height: auto;
-    background: transparent;
-    border: 2px solid rgba(255, 255, 255, .5);
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.5);
     border-radius: 20px;
-    backdrop-filter: blur(20px);
-    box-shadow: 0 0 30px rgba(0, 0, 0, .5);
+    backdrop-filter: blur(15px);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
-    /* Disable transition for standalone forms */
-    transform: scale(1);
-}
-
-.wrapper .form-box {
-    width: 100%;
     padding: 40px;
 }
 
 .form-box h2 {
     font-size: 2em;
-    color: #162938;
+    color: #5387af;
     text-align: center;
+    margin-bottom: 20px;
 }
 
 .input-box {
     position: relative;
     width: 100%;
     height: 50px;
-    border-bottom: 2px solid #162938;
     margin: 30px 0;
+    border-bottom: 2px solid white; /* Added line to separate each field */
 }
 
 .input-box label {
@@ -132,15 +89,17 @@ header {
     left: 5px;
     transform: translateY(-50%);
     font-size: 1em;
-    color: #162938;
+    color: white; /* Change to white */
     font-weight: 500;
     pointer-events: none;
-    transition: .5s;
+    transition: 0.3s ease;
 }
 
 .input-box input:focus ~ label,
 .input-box input:valid ~ label {
-    top: -5px;
+    top: -20px;
+    font-size: 0.8em;
+    color: white; /* Keep the label white when input is filled */
 }
 
 .input-box input {
@@ -150,7 +109,7 @@ header {
     border: none;
     outline: none;
     font-size: 1em;
-    color: #162938;
+    color: white; /* Text color is white */
     font-weight: 600;
     padding: 0 35px 0 5px;
 }
@@ -158,14 +117,14 @@ header {
 .input-box .icon {
     position: absolute;
     right: 8px;
-    font-size: 1.2em;
-    color: #162938;
+    font-size: 1.5em;
+    color: rgb(225, 173, 231); /* Icon color */
     line-height: 57px;
 }
 
 .remember-forget {
-    font-size: .9em;
-    color: #162938;
+    font-size: 0.9em;
+    color: white;
     font-weight: 500;
     margin: -15px 0 15px;
     display: flex;
@@ -178,7 +137,7 @@ header {
 }
 
 .remember-forget a {
-    color: #162938;
+    color: white;
     text-decoration: none;
 }
 
@@ -189,7 +148,7 @@ header {
 .btn {
     width: 100%;
     height: 45px;
-    background: #162938;
+    background: #576cb9;
     border: none;
     outline: none;
     border-radius: 6px;
@@ -197,18 +156,23 @@ header {
     font-size: 1em;
     color: #fff;
     font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background: #7a8fd4;
 }
 
 .login-register {
-    font-size: .9em;
-    color: #162938;
+    font-size: 1em;
+    color: #f6f8f9;
     text-align: center;
     font-weight: 500;
     margin: 25px 0 10px;
 }
 
 .login-register p a {
-    color: #162938;
+    color: #e9f3ae;
     text-decoration: none;
     font-weight: 600;
 }
@@ -217,8 +181,6 @@ header {
     text-decoration: underline;
 }
 
-
-/* Styling the "X" button */
 .to-home {
     font-size: 25px;
     color: white;
@@ -231,9 +193,5 @@ header {
 }
 
 .to-home:hover {
-    color: red;
-}
-
-.back-home {
-    position: relative;
+    color: rgb(233, 238, 168);
 }
