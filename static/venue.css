@@ -17,19 +17,14 @@ body {
 }
 
 /* Kirsten NavbarTop */
-/* Navbar Styles */
-/* NavbarTop */
 .navbar-top {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    /* background-color: #b4d2f5; Pink */
     color: #fff; /* White text for contrast */
-    /* box-shadow: 0px 4px 8px 0px rgb(252, 255, 86); */
-
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.109);
     height: 70px;
-    padding: 0 20px; /* Added padding for a balanced look */
+    padding: 0 20px;
 }
 
 .title {
@@ -38,6 +33,7 @@ body {
     text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7); /* Text shadow for depth */
 }
 
+/* Ensure navbar buttons have consistent styling */
 .navbar-top ul {
     list-style-type: none;
     margin: 0;
@@ -59,7 +55,7 @@ body {
     align-items: center;
     justify-content: center; 
     gap: 10px;
-    background-color: #f1f9b7; /* Button background color */
+    background-color: #f1f9b7; /* Button background color */ 
     border-radius: 30px; /* Rounded corners */
     color: #b56aee; 
     font-weight: 600;
@@ -74,8 +70,8 @@ body {
 .navbar-top button:hover {
     background-color: rgba(255, 255, 255, 0.772); /* Semi-transparent white on hover */
     transform: scale(1.1); /* Slightly enlarge on hover */
-
 }
+
 /* end of Kirsten navbar */
 
 /* Header Styling (Venue Name) */
@@ -123,20 +119,32 @@ body {
     color: #333;
 }
 
-/* Map Section */
+/* Map Section - Centering */
 .map-section {
+    display: flex;
+    justify-content: center;   /* Centers horizontally */
+    align-items: center;       /* Centers vertically */
     margin-top: 20px;
-    padding: 20px;
-    /* background-color: white; */
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    display: none;  /* Initially hidden */
+    margin-bottom: 20px;
+    width: 100%;               /* Ensure it spans full width of its container */
+    height: auto;              /* Adjust height as needed */
 }
 
-.map-section img {
-    max-width: 100%;
+/* Responsive styling for the image */
+#venue-map {
+    max-width: 90%;            /* Ensure the image does not exceed 90% of the container width */
+    max-height: 80vh;          /* Limits height to 80% of the viewport height */
     border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); /* Adds a subtle shadow around the map */
+}
+
+
+/* Style for the map image */
+.map-section img {
+    max-width: 90%;       /* Ensure the image does not exceed 90% of the container width */
+    max-height: 80vh;     /* Limit the height to 80% of the viewport height */
+    border-radius: 10px;
+     /* Adds a subtle shadow around the map */
 }
 
 /* Seat Finder */
