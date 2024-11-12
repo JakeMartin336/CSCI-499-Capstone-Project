@@ -1,51 +1,67 @@
-document.getElementById('search-btn').addEventListener('click', function() {
-    const venueName = document.getElementById('venue-name').value;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticketmaster Event Seat Map Test</title>
+</head>
+<body>
+    <h1>Ticketmaster Event Seat Map Test</h1>
+    
+    <!-- Input field and search button -->
+    <label for="venue-input">Enter Venue Name:</label>
+    <input type="text" id="venue-input" placeholder="e.g., Madison Square Garden">
+    <button id="search-venue">Search</button>
 
-    if (venueName) {
-        // Display venue name in header and show the other sections
-        document.getElementById('venue-title').innerText = venueName;
-        document.getElementById('venue-header').style.display = 'block';
-        document.getElementById('map-section').style.display = 'block';
-        document.getElementById('seat-finder').style.display = 'block';
-        document.getElementById('seat-pov').style.display = 'flex'; // Display seat POV section
-        
-        // You could dynamically change the map or other elements here based on the venueName if needed
-    } else {
-        alert('Please enter a venue name.');
-    }
-});
+    <!-- Placeholder for seat map image -->
+    <div id="result" style="margin-top: 20px;">
+        <img id="venue-map" src="" alt="Venue Seat Map" style="max-width: 500px; display: none;">
+        <p id="message"></p>
+    </div>
 
-// Simulate POV upload button
-document.getElementById('upload-pov').addEventListener('click', function() {
-    const section = document.getElementById('section-number').value;
-    const row = document.getElementById('row-number').value;
-    const seat = document.getElementById('seat-number').value;
+    <script>
+        document.getElementById('search-venue').addEventListener('click', function() {
+            const venueName = document.getElementById('venue-input').value.trim();
+            if (!venueName) {
+                alert('Please enter a venue name.');
+                return;
+            }
+            searchEventsByVenue(venueName);
+        });
 
-    if (section && row && seat) {
-        alert(`Seat POV for Section: ${section}, Row: ${row}, Seat: ${seat} uploaded!`);
-        // Logic to fetch and display seat views can go here
-    } else {
-        alert('Please fill in all the fields.');
-    }
-});
+        async function searchEventsByVenue(venueName) {
+            const apiKey = 'bv3fIbkBp4hjBLjVOBBessILI48oEYGG'; // <--- Replace with your Ticketmaster API key
+            try {
+                const response = await fetch(`https://app.ticketmaster.com/discovery/v2/events.json?keyword=${encodeURIComponent(venueName)}&apikey=${apiKey}`);
+                const data = await response.json();
 
-// Event listener for "Seat POV Finder" button
-document.querySelector(".btn.btn-warning").addEventListener("click", function() {
-    // Get user input values
-    const section = document.getElementById('section-number').value;
-    const row = document.getElementById('row-number').value;
-    const seat = document.getElementById('seat-number').value;
+                console.log(data); // Log the data to see the response structure
 
-    // Check if all fields are filled
-    if (section && row && seat) {
-        // Display the seat POV container and images
-        document.getElementById('seat-pov').style.display = 'flex';
-        document.getElementById('seat-view-1').style.display = 'block';
-        document.getElementById('seat-view-2').style.display = 'block';
-        document.getElementById('seat-view-3').style.display = 'block';
-    } else {
-        // Show an alert if fields are missing
-        alert('Please fill in Section, Row, and Seat number.');
-    }
-});
+                if (data._embedded && data._embedded.events.length > 0) {
+                    const event = data._embedded.events[0];
+                    console.log("Event Data:", event);
+                    displaySeatMapFromEvent(event);
+                } else {
+                    document.getElementById('venue-map').style.display = 'none';
+                    document.getElementById('message').textContent = `No events found for "${venueName}".`;
+                }
+            } catch (error) {
+                console.error("Error fetching event data:", error);
+                document.getElementById('message').textContent = "There was an error retrieving the event information.";
+            }
+        }
+
+        function displaySeatMapFromEvent(event) {
+            if (event.seatmap && event.seatmap.staticUrl) {
+                document.getElementById('venue-map').src = event.seatmap.staticUrl;
+                document.getElementById('venue-map').style.display = 'block';
+                document.getElementById('message').textContent = `Seat map for ${event.name}`;
+            } else {
+                document.getElementById('venue-map').style.display = 'none';
+                document.getElementById('message').textContent = "Seat map not available for this event.";
+            }
+        }
+    </script>
+</body>
+</html>
 
