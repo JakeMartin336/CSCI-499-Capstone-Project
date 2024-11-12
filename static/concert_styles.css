@@ -24,42 +24,75 @@ section {
     padding: 0;
 }
 
-/* Navbar Styles */
-.navbar {
-    background-color: transparent !important;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.109);
-}
 
-.nav-item button {
-    font-size: small;
-    padding: 25px;
-    width: 110px; 
-    height: 40px; 
-    margin: 0 5px;
+/* NavbarTop */
+.navbar-top {
     display: flex;
     align-items: center;
-    justify-content: center; 
-    gap: 10px;
-    background-color: #f1f9b7;
-    border-radius: 30px;
-    color: #b56aee; 
-    font-weight: 600;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0px 4px 8px rgba(232, 255, 23, 0.598); /* can give a little glow, ask team if they like (or keep it white) */
-    transition: background-color 0.3s ease, transform 0.3s ease; 
-}
+    justify-content: space-between;
+    /* background-color: #b4d2f5; Pink */
+    color: #fff; /* White text for contrast */
+    /* box-shadow: 0px 4px 8px 0px rgb(252, 255, 86); */
 
-.nav-item:hover {
-    transform: scale(1.1); /* Slightly enlarge on hover */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.109);
+    height: 90px;
+    padding: 0 20px; /* Added padding for a balanced look */
 }
 
 .title {
     font-size: 24px;
-    padding-left: 10px;
     font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7); /* Text shadow for depth */
 }
 
+.navbar-top ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.navbar-top ul li {
+  
+    margin: 0 20px; 
+
+}
+
+.navbar-top button {
+    width: 110px; 
+    height: 45px; 
+    margin: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    gap: 10px;
+    background-color: #f1f9b7; /* Button background color */
+    border-radius: 30px; /* Rounded corners */
+    color: #b56aee; 
+    font-weight: 600;
+    border: none;
+    cursor: pointer; /* Pointer cursor on hover */
+    box-shadow: 0px 4px 8px rgba(232, 255, 23, 0.598);
+    transition: background-color 0.3s ease, transform 0.3s ease; 
+    font-family: "Itim";
+    font-size: 18px;
+}
+
+.navbar-top button:hover {
+    background-color: rgba(255, 255, 255, 0.772); /* Semi-transparent white on hover */
+    transform: scale(1.1); /* Slightly enlarge on hover */
+
+}
+
+.svgIcon {
+    height: 25px; /* Height for the SVG icon */
+    transition-duration: 1.5s; /* Transition for icon rotation */
+}
+
+.button:hover .svgIcon {
+    transform: rotate(250deg); /* Rotate on hover */
+    transition-duration: 1.5s; /* Duration of rotation */
+}
 
 /* Concert Preview Styles */
 .container-bg {

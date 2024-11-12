@@ -8,79 +8,32 @@
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css">
     <link rel="stylesheet" href="/static/concert_styles.css" />
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">
-            <img src="{{ url_for('static', filename='logo.png') }}" alt="ConcertConnect Logo" style="height: 75px; margin-right: 50px;">
-            
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-                <a class="nav-link" href="/landing">
-                <div class="explore-button-container">
-                    <button class="button" onclick="window.location.href='/landing'">
-                        Home
-                        <i class="fa fa-home"></i>
-                    </button>
-                </div>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/venues">
-                <div class="explore-button-container">
-                    <button class="button" onclick="window.location.href='/venues'">
-                        Venues 
-                        <i class="fa fa-music"></i>
-                    </button>
-                </div>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="/concerts">
-                <div class="explore-button-container">
-                    <button class="button" onclick="window.location.href='/concerts'">
-                        Concerts
-                        <i class="fa fa-headphones"></i> 
-                    </button>
-                </div>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/messages">
-                <div class="explore-button-container">
-                    <button class="button" onclick="window.location.href='/messages'">
-                        Messages
-                        <i class="fa fa-envelope"></i>
-                    </button>
-                </div>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/logout">
-                <div class="explore-button-container">
-                    <button class="button" onclick="window.location.href='/logout'">
-                        Log Out
-                        <i class="fa fa-sign-out-alt"></i>
-                    </button>
-                </div>
-                </a>
-            </li>
-        </ul>
+      <!-- Navbar top -->
+   <div class="navbar-top">
+    <img src="{{ url_for('static', filename='logo.png') }}" alt="ConcertConnect Logo" style="height: 120px; margin-right: 200px;" />
+    <ul>
+        <div class="explore-button-container">
+            <button class="button" onclick="window.location.href='/landing'">Home <i class="fa fa-home"></i></button>
         </div>
+        <div class="explore-button-container">
+            <button class="button" onclick="window.location.href='/venues'">Venues <i class="fa fa-music"></i></button>
         </div>
-    </nav>
-    <!-- Navbar End-->
+        <div class="explore-button-container">
+            <button class="button" onclick="window.location.href='/concerts'">Concerts <i class="fa fa-headphones"></i></button>
+        </div>
+        <div class="explore-button-container">
+            <button class="button" onclick="window.location.href='/messages'">Messages <i class="fa fa-comments"></i></button>
+        </div>
+        <div class="explore-button-container">
+            <button class="button" onclick="window.location.href='/logout'">Log Out <i class="fa fa-sign-out-alt"></i></button>
+        </div>
+    </ul>
+</div>
 
     <!-- Concert Preview Section -->
 
