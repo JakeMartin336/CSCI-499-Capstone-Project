@@ -131,6 +131,21 @@ body {
     color: #666;
 }
 
+.age {
+    font-size: 14px;
+    color: #666;
+}
+
+.location {
+    font-size: 14px;
+    color: #666;
+}
+
+.music_genres {
+    font-size: 14px;
+    color: #666;
+}
+
 .sidenav-url .url a {
     color: #333;
     font-size: 16px;
@@ -275,4 +290,35 @@ body {
     border: none;
     font-size: 16px;
     width: 80%;
+}
+
+.goingConcerts li,
+.interestedConcerts li {
+    list-style-type: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.goingConcerts li img,
+.interestedConcerts li img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+}
+
+.concert-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.concert-name {
+    font-weight: bold;
+}
+
+.concert-date {
+    font-size: 0.9em;
+    color: gray;
 }
