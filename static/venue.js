@@ -8,7 +8,7 @@ document.getElementById('search-btn').addEventListener('click', function() {
         document.getElementById('map-section').style.display = 'block';
         document.getElementById('seat-finder').style.display = 'block';
         document.getElementById('seat-pov').style.display = 'none'; // Ensure seat POV section is hidden initially
-        
+
         // Call the function to search for events and display seat map
         searchEventsByVenue(venueName);
     } else {
@@ -21,9 +21,10 @@ async function searchEventsByVenue(venueName) {
     const apiKey = 'bv3fIbkBp4hjBLjVOBBessILI48oEYGG'; // Replace with your Ticketmaster API key
     try {
         const response = await fetch(`https://app.ticketmaster.com/discovery/v2/events.json?keyword=${encodeURIComponent(venueName)}&apikey=${apiKey}`);
-        const data = await response.json();
+        console.log("Response received:", response);
 
-        console.log(data); // Log the data to see the response structure
+        const data = await response.json();
+        console.log(data);
 
         if (data._embedded && data._embedded.events.length > 0) {
             const event = data._embedded.events[0];
@@ -42,6 +43,9 @@ async function searchEventsByVenue(venueName) {
 // Function to display the seat map from event data
 function displaySeatMapFromEvent(event) {
     if (event.seatmap && event.seatmap.staticUrl) {
+        if (event._embedded && event._embedded.venues && event._embedded.venues[0] && event._embedded.venues[0].name) {
+            document.getElementById('venue-title').innerText = event._embedded.venues[0].name;
+        }
         document.getElementById('venue-map').src = event.seatmap.staticUrl;
         document.getElementById('venue-map').style.display = 'block';
         document.getElementById('message').textContent = `Seat map for ${event.name}`;

@@ -55,6 +55,9 @@
                     <img src="https://i.pinimg.com/736x/4c/50/87/4c50870fef410d14ff495ea1f532565a.jpg" alt="Profile Picture" style="width: 125px; height: 125px; border-radius: 50%; object-fit: cover; overflow: hidden;" />
                     <div class="name">{{ user['user_name'] if user else 'User Name' }}</div>
                     <div class="job">{{ user['account_description'] if user else '' }}</div>
+                    <div class="age">{{ user['age'] if user else '' }}</div>
+                    <div class="location">{{ user['user_location'] if user else '' }}</div>
+                    <div class="music_genres">{{ ', '.join(user['music_genre']) if user and 'music_genre' in user else '' }}</div>
                 </div>
                 <div class="sidenav-url">
                     <div class="url"><a href="#profile">Profile</a><hr /></div>
@@ -65,19 +68,51 @@
 
         <div class="sidenav">
             <div class="concerts-box">
-                <h3 style="color: #c28adc; text-align: center; font-size: 25px;">🎶 My Concert List 🎶</h3>
+                <h3 style="color: #c28adc; text-align: center; font-size: 24px;">🎶 My Concert List 🎶</h3>
+                
                 <h4 style="color:#61d1b2;">Going:</h4>
-                <h4 style="color:#d6a351;">Interested:</h4>
-                <h4 style="color:#e05c8f;">Attended:</h4>
-                <ul>
-                    {% if favorite_concerts %}
-                        {% for concert in favorite_concerts %}
-                            <li><a href="#{{ concert.id }}">{{ concert.name }}</a></li>
-                        {% endfor %}
-                    {% else %}
-                        <li>No concerts favorited yet.</li>
-                    {% endif %}
+                <!-- Going Concerts List -->
+                {% if concerts %}
+                <ul class="goingConcerts">
+                    {% for concert in concerts %}
+                        {% if concert.concert_status == 'going' %}
+                            <li>
+                                <img src="{{ concert.concert_image }}" alt="Concert Image"><br>
+                                <div class="concert-text">
+                                  <span class="concert-name">{{ concert.concert_name }}</span>
+                                  <span class="concert-date">{{ concert.concert_date }}</span>
+                                </div>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
                 </ul>
+                {% else %}
+                  <p style="font-size: 0.9em; color: gray;">No concerts have been selected.</p>
+                {% endif %}
+                
+                <h4 style="color:#d6a351;">Interested:</h4>
+                <!-- Interested Concerts List -->
+                {% if concerts %}
+                <ul class="interestedConcerts">
+                    {% for concert in concerts %}
+                        {% if concert.concert_status == 'interested' %}
+                            <li>
+                              <img src="{{ concert.concert_image }}" alt="Concert Image"><br>
+                              <div class="concert-text">
+                                <span class="concert-name">{{ concert.concert_name }}</span>
+                                <span class="concert-date">{{ concert.concert_date }}</span>
+                              </div>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+                {% else %}
+                  <p style="font-size: 0.9em; color: gray;">No concerts have been selected.</p>
+                {% endif %}
+                
+                <h4 style="color:#e05c8f;">Attended:</h4>
+                <!-- Attended Concerts List -->
+                <p style="font-size: 0.9em; color: gray;">No concerts have been attended.</p>
             </div>
         </div>
     </div>

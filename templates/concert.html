@@ -51,26 +51,50 @@
         
          <div class="row">
             <div class="col-md-4 align-self-start text-center">
-            <div class="dropdown">
+            <!-- <div class="dropdown">
                         <button class="btn concert_preview_list_button btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Add to List
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#Going">
+                            <li><a class="dropdown-item" href="#Going" onclick="saveConcertInfo('going', '{{ concert.name }}', '{{ concert.thumbnail }}','{{ concert.start_time }}')">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="Checkme2"/>
                                 <label class="form-check-label" for="Checkme2">Going</label>
                             </div>
                             </a></li>
-                            <li><a class="dropdown-item" href="#Interested">
+                            <li><a class="dropdown-item" href="#Interested" onclick="saveConcertInfo('interested', '{{ concert.name }}', '{{ concert.thumbnail }}','{{ concert.start_time }}')">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="" id="Checkme2"/>
                                 <label class="form-check-label" for="Checkme2">Interested</label>
                             </div>
-                            
                             </a></li>
                         </ul>
+                </div> -->
+
+                <div class="dropdown">
+                    <button class="btn concert_preview_list_button btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: None; border-color: None;">
+                        Add to List
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" href="#Going" onclick="saveConcertInfo('going', '{{ concert.name }}', '{{ concert.thumbnail }}','{{ concert.start_time }}')">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="concertStatus" id="goingRadio"/>
+                                    <label class="form-check-label" for="goingRadio">Going</label>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#Interested" onclick="saveConcertInfo('interested', '{{ concert.name }}', '{{ concert.thumbnail }}','{{ concert.start_time }}')">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="concertStatus" id="interestedRadio"/>
+                                    <label class="form-check-label" for="interestedRadio">Interested</label>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
+
                 <div class="concert_image_info">
                     <img src="{{ concert.thumbnail }}" alt="Concert Image" class="img-fluid"/>
                 </div>
@@ -124,10 +148,10 @@
     </section>
     <!-- Concert Preview Section End -->
     
-    <section id="venueInfo" class="seating" style="display: none;">
+    <section id="venueInfo" class="seating" style="display: none; font-size: 20px;">
         <div class="container text-center">
-            <h1>Venue Information</h1>
-            <p>{{ concert.venue_name }}</p>
+            <h1>Venue Info</h1>
+            <p><strong>{{ concert.venue_name }}</strong></p>
             <p>{{ concert.venue_address }}</p>
         </div>
     </section>

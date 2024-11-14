@@ -124,16 +124,58 @@ def get_user_info(account_id):
 
 
 def get_user_concerts(user_id):
-    concerts = []
+    # concerts = []
+    # try:
+    #     # Get user concerts from the supabase 'user_concert' DB, where the id is user_id
+    #     response = supabase.table("concerts").select("*").eq("user_id", user_id).execute()
+    #     if response.status_code == 200:
+    #         concerts = response.data 
+    #     else:
+    #         print(f"Error fetching user concerts: {response.error}")
+    # except Exception as error:
+    #     print(f"Error fetching user concerts: {error}")
+    response = supabase.table("concerts").select("*").eq("user_id", user_id).execute()
+    concerts = response.data
+    return concerts
+
+def insert_concert(user_id, concert_status, concert_name, concert_image, concert_date):
     try:
-        # Get user concerts from the supabase 'user_concert' DB, where the id is user_id
-        response = supabase.table("user_concerts").select("user_concert_id, status").eq("id", user_id).execute()
-        if response.status_code == 200:
-            concerts = response.data 
+        get_concert = (
+            supabase.table("concerts")
+            .select("*")
+            .eq("user_id", user_id)
+            .eq("concert_name", concert_name)
+            .eq("concert_image", concert_image)
+            .eq("concert_date", concert_date)
+            .execute()
+        )
+        if get_concert.data:
+            update_concert = (
+                supabase.table("concerts")
+                .update({
+                    "concert_status" : concert_status
+                })
+                .eq("user_id", user_id)
+                .eq("concert_name", concert_name)
+                .eq("concert_image", concert_image)
+                .eq("concert_date", concert_date)
+                .execute()
+            )
         else:
-            print(f"Error fetching user concerts: {response.error}")
+            insert_concert = (
+                supabase.table("concerts")
+                .insert({
+                    "user_id": user_id,
+                    "concert_status": concert_status,
+                    "concert_name": concert_name,
+                    "concert_image": concert_image,
+                    "concert_date": concert_date
+                })
+                .execute()
+            )
     except Exception as error:
-        print(f"Error fetching user concerts: {error}")
+        print(f"Error getting concert info: {error}")
+        # return "Database connection error. Please try again later."
 
 
 @app.route('/')
@@ -213,9 +255,9 @@ def landing():
         user_info = get_user_info(account_id)
         user_concerts = get_user_concerts(account_id)
 
-        session['user_info'] = user_info
-        session['user_concerts'] = user_concerts
-
+    session['user_info'] = user_info
+    # session['user_concerts'] = user_concerts
+    # print(user_concerts)
     return render_template("landing.html", user=user_info, concerts=user_concerts)
 
 # @app.route("/concerts")
@@ -250,13 +292,12 @@ def concerts():
     user_genres = user_info['music_genre']
     user_location = user_info['user_location']
     
-    # all_concerts = example_concerts()
     if len(all_concerts) == 0:
-        for genre in user_genres:
-            recc_concerts = get_concerts(genre, user_location)
-            all_concerts.extend(recc_concerts)
+        all_concerts = example_concerts()
+        # for genre in user_genres:
+        #     recc_concerts = get_concerts(genre, user_location)
+        #     all_concerts.extend(recc_concerts)
     
-    # print(len(all_concerts))
     # session['all_concerts'] = all_concerts
 
     return render_template("concert.html", concert=all_concerts[list_index], list_index=list_index, concert_count=len(all_concerts))
@@ -288,6 +329,7 @@ def next_concert():
 def venue():
     return render_template('venue.html')
 
+
 @app.route('/messages')
 def messages():
     return render_template('messages.html')
@@ -302,6 +344,19 @@ def logout():
     all_concerts = []
     return redirect(url_for('home'))
 
+
+@app.route('/save_concert', methods=['POST'])
+def save_concert():
+    data = request.get_json()
+    user_id = session.get('user_id')
+    status = data.get('status')
+    name = data.get('name')
+    thumbnail = data.get('thumbnail')
+    start_time = data.get('start_time')
+
+    insert_concert(user_id, status, name, thumbnail, start_time)
+
+    return jsonify({"message": f"Concert '{name}' has been marked as {status}!"})
 
 
 if __name__ == '__main__':

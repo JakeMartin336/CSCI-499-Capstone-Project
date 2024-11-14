@@ -8,16 +8,21 @@ body {
     font-family: "Montserrat", "arial";
 }
 
-/* .ticket-links {
-    list-style-type: none; 
-    padding: 0;
-    margin: 0;
-}
 
 .ticket-links li {
-    display: inline;        
-    margin-right: 15px;
-} */
+    list-style-type: none;
+}
+
+#venueInfo,
+#ticketInfo {
+    background: linear-gradient(135deg, #6bbcff, #f1f9b7);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 60%; /* You can adjust this width */
+    margin: 0 auto; /* This will center the section horizontally */
+    padding: 20px; /* Optional, add padding to space the content inside */
+}
+
 
 section {
     margin: 0;
@@ -117,6 +122,8 @@ section {
     border: 2px solid #000;
 }
 
+
+
 .concert_preview_list_button, .buddy_button {
     margin-top: 10px; 
     width: auto;
@@ -181,6 +188,7 @@ section {
 /* Network Info End*/
 
 /* Dropdown Item Styles */
+
 .dropdown-item:hover {
     background-color: rgba(74, 91, 248, 0.169);
 }
@@ -294,4 +302,3 @@ section {
 
     }
 }
-
