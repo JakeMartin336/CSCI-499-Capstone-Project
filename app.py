@@ -3,10 +3,17 @@ import os
 from supabase import create_client, Client
 from dotenv import load_dotenv
 from api import get_concerts, example_concerts
+from faiss_test6 import (
+    initialize_recommendation_count,
+    get_user_info_as_text,
+    find_similar_user,
+    fetch_all_users_as_json
+)
 
 load_dotenv()
 url = os.environ.get("SUPABASE_URL")
 key = os.environ.get("SUPABASE_KEY")
+openai_key = os.getenv("OPENAI_API_KEY")
 supabase = create_client(url, key)
 
 app = Flask(__name__, static_folder='static')
@@ -14,7 +21,6 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 import secrets
 app.secret_key = secrets.token_hex(16)
-
 
 def insert_survey(user_id, age, location, genres, budget, travel_time, account_description):
     if account_description == "FAIL ME":
@@ -122,6 +128,14 @@ def get_user_info(account_id):
     
     return user_info
 
+@app.route('/api/user-info/<user_id>', methods=['GET', 'POST'])
+def user_info(user_id):
+    user_info = get_user_info(int(user_id))
+    if user_info:
+        print("I am user_info", user_info)
+        return jsonify(user_info)  # Respond with user info as JSON
+    else:
+        return jsonify({"error": "User not found"}), 404
 
 def get_user_concerts(user_id):
     concerts = []
@@ -247,41 +261,40 @@ def concerts():
     global all_concerts
 
     user_info = session.get('user_info')
-    user_genres = user_info['music_genre']
-    user_location = user_info['user_location']
+
     
     # all_concerts = example_concerts()
-    if len(all_concerts) == 0:
-        for genre in user_genres:
-            recc_concerts = get_concerts(genre, user_location)
-            all_concerts.extend(recc_concerts)
+    # if len(all_concerts) == 0:
+    #     for genre in user_genres:
+    #         recc_concerts = get_concerts(genre, user_location)
+    #         all_concerts.extend(recc_concerts)
     
     # print(len(all_concerts))
     # session['all_concerts'] = all_concerts
 
-    return render_template("concert.html", concert=all_concerts[list_index], list_index=list_index, concert_count=len(all_concerts))
+    return render_template("concert.html")
 
 
-@app.route("/concerts/previous")
-def previous_concert():
-    global list_index
-    # all_concerts = session.get('all_concerts')
-    global all_concerts 
+# @app.route("/concerts/previous")
+# def previous_concert():
+#     global list_index
+#     # all_concerts = session.get('all_concerts')
+#     global all_concerts 
 
-    if list_index > 0:
-        list_index -= 1
-    return render_template("concert.html", concert=all_concerts[list_index], list_index=list_index, concert_count=len(all_concerts))
+#     if list_index > 0:
+#         list_index -= 1
+#     return render_template("concert.html", concert=all_concerts[list_index], list_index=list_index, concert_count=len(all_concerts))
 
 
-@app.route("/concerts/next")
-def next_concert():
-    global list_index
-    # all_concerts = session.get('all_concerts')
-    global all_concerts
+# @app.route("/concerts/next")
+# def next_concert():
+#     global list_index
+#     # all_concerts = session.get('all_concerts')
+#     global all_concerts
     
-    if list_index < len(all_concerts) - 1:
-        list_index += 1 
-    return render_template("concert.html", concert=all_concerts[list_index], list_index=list_index, concert_count=len(all_concerts))
+#     if list_index < len(all_concerts) - 1:
+#         list_index += 1 
+#     return render_template("concert.html", concert=all_concerts[list_index], list_index=list_index, concert_count=len(all_concerts))
 
 
 @app.route('/venues')
@@ -299,6 +312,33 @@ def logout():
     return redirect(url_for('home'))
 
 
+def initialize_app():
+    print("Initializing app...")
+    fetch_all_users_as_json()  
+    initialize_recommendation_count()  
+    
+
+@app.route('/api/buddy/recommend', methods=['GET', 'POST'])
+def recommend_user():
+    print("Route hit!")
+    account_id = session.get('user_id')
+    print("Account", account_id)
+
+    if not account_id:
+        return jsonify({"error": "User ID is required"}), 400
+
+    current_user_text = get_user_info_as_text(account_id)
+    # Find similar users based on the user's text description
+    list_of_rec = find_similar_user (current_user_text)
+    if not list_of_rec:
+        return jsonify({"message": "No similar users found."}), 200
+
+    recommended_user_ids = [user.page_content.split("| id:")[1].strip() for user in list_of_rec]
+    if str(account_id) in recommended_user_ids:
+        recommended_user_ids.remove(str(account_id))
+    print("Recommended ID:", recommended_user_ids)
+    return jsonify({"recommended_user_ids": recommended_user_ids})
 
 if __name__ == '__main__':
+    initialize_app()
     app.run(debug=True)
