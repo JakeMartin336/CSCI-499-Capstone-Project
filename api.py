@@ -101,9 +101,9 @@ def example_concerts():
             'venue_address': '10 Columbus Circle, New York, NY 10019, United States',
             'venue_website': 'http://www.jazz.org/venues/the-appel-room-64/',
             'ticket_links': [
-                {'source': 'Ticketmaster', 'link': 'https://ticketmaster.com/sample'},
-                {'source': 'StubHub', 'link': 'https://stubhub.com/sample'},
-                {'source': 'Live Nation', 'link': 'https://livenation.com/sample'}
+                {'source': 'Ticketmaster', 'link': 'https://ticketmaster.com/linkedin'},
+                {'source': 'StubHub', 'link': 'https://stubhub.com/linkedin'},
+                {'source': 'Live Nation', 'link': 'https://livenation.com/linkedin'}
             ]
         },
         {
@@ -115,9 +115,9 @@ def example_concerts():
             'venue_address': 'Address not available',
             'venue_website': 'http://www.barclayscenter.com/',
             'ticket_links': [
-                {'source': 'Ticketmaster', 'link': 'https://ticketmaster.com/sample'},
-                {'source': 'StubHub', 'link': 'https://stubhub.com/sample'},
-                {'source': 'Live Nation', 'link': 'https://livenation.com/sample'}
+                {'source': 'Ticketmaster', 'link': 'https://ticketmaster.com/spotify'},
+                {'source': 'StubHub', 'link': 'https://stubhub.com/spotify'},
+                {'source': 'Live Nation', 'link': 'https://livenation.com/spotify'}
             ]
         },
         {
@@ -129,9 +129,9 @@ def example_concerts():
             'venue_address': '25 11th Avenue, New York, NY 10011, United States',
             'venue_website': 'https://citywinery.com/new-york-city?utm_source=gmb&utm_medium=local-seo&utm_campaign=city-winery-new-york-city',
             'ticket_links': [
-                {'source': 'Ticketmaster', 'link': 'https://ticketmaster.com/sample'},
-                {'source': 'StubHub', 'link': 'https://stubhub.com/sample'},
-                {'source': 'Live Nation', 'link': 'https://livenation.com/sample'}
+                {'source': 'Ticketmaster', 'link': 'https://ticketmaster.com/youtube'},
+                {'source': 'StubHub', 'link': 'https://stubhub.com/youtube'},
+                {'source': 'Live Nation', 'link': 'https://livenation.com/youtube'}
             ]
         }
     ]

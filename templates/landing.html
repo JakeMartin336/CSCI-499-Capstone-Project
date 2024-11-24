@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile Page</title>
+
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="/static/styles_landing.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome 5 -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
+    />
+  </head>
+  <body>
+
+   <!-- Navbar top -->
+   <div class="navbar-top">
+    <img src="{{ url_for('static', filename='logo.png') }}" alt="ConcertConnect Logo" style="height: 120px; margin-right: 200px;" />
+    <ul>
+        <div class="explore-button-container">
+            <button class="button" onclick="window.location.href='/landing'">Home <i class="fa fa-home"></i></button>
+        </div>
+        <div class="explore-button-container">
+            <button class="button" onclick="window.location.href='/venues'">Venues <i class="fa fa-music"></i></button>
+        </div>
+        <div class="explore-button-container">
+            <button class="button" onclick="window.location.href='/concerts'">Concerts <i class="fa fa-headphones"></i></button>
+        </div>
+        <div class="explore-button-container">
+            <button class="button" onclick="window.location.href='/messages'">Messages <i class="fa fa-comments"></i></button>
+        </div>
+        <div class="explore-button-container">
+            <button class="button" onclick="window.location.href='/logout'">Log Out <i class="fa fa-sign-out-alt"></i></button>
+        </div>
+    </ul>
+</div>
+
+<!-- Sidenav -->
+<div class="container">
+    <div class="sidenav-container">
+        <div class="sidenav">
+            <div class="profile-box">
+                <div class="profile">
+                    <img src="https://i.pinimg.com/736x/4c/50/87/4c50870fef410d14ff495ea1f532565a.jpg" alt="Profile Picture" style="width: 125px; height: 125px; border-radius: 50%; object-fit: cover; overflow: hidden;" />
+                    <div class="name">{{ user['user_name'] if user else 'User Name' }}</div>
+                    <div class="job">{{ user['account_description'] if user else '' }}</div>
+                    <div class="age">{{ user['age'] if user else '' }}</div>
+                    <div class="location">{{ user['user_location'] if user else '' }}</div>
+                    <div class="music_genres">{{ ', '.join(user['music_genre']) if user and 'music_genre' in user else '' }}</div>
+                </div>
+                <div class="sidenav-url">
+                    <div class="url"><a href="#profile">Profile</a><hr /></div>
+                    <div class="url"><a href="#settings">Settings</a><hr /></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="sidenav">
+            <div class="concerts-box">
+                <h3 style="color: #c28adc; text-align: center; font-size: 24px;">🎶 My Concert List 🎶</h3>
+                
+                <h4 style="color:#61d1b2;">Going:</h4>
+                <!-- Going Concerts List -->
+                {% if concerts %}
+                <ul class="goingConcerts">
+                    {% for concert in concerts %}
+                        {% if concert.concert_status == 'going' %}
+                            <li>
+                                <img src="{{ concert.concert_image }}" alt="Concert Image"><br>
+                                <div class="concert-text">
+                                  <span class="concert-name">{{ concert.concert_name }}</span>
+                                  <span class="concert-date">{{ concert.concert_date }}</span>
+                                </div>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+                {% else %}
+                  <p style="font-size: 0.9em; color: gray;">No concerts have been selected.</p>
+                {% endif %}
+                
+                <h4 style="color:#d6a351;">Interested:</h4>
+                <!-- Interested Concerts List -->
+                {% if concerts %}
+                <ul class="interestedConcerts">
+                    {% for concert in concerts %}
+                        {% if concert.concert_status == 'interested' %}
+                            <li>
+                              <img src="{{ concert.concert_image }}" alt="Concert Image"><br>
+                              <div class="concert-text">
+                                <span class="concert-name">{{ concert.concert_name }}</span>
+                                <span class="concert-date">{{ concert.concert_date }}</span>
+                              </div>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+                {% else %}
+                  <p style="font-size: 0.9em; color: gray;">No concerts have been selected.</p>
+                {% endif %}
+                
+                <h4 style="color:#e05c8f;">Attended:</h4>
+                <!-- Attended Concerts List -->
+                <p style="font-size: 0.9em; color: gray;">No concerts have been attended.</p>
+            </div>
+        </div>
+    
+    </div>
+
+
+      <!-- End -->
+
+      <!-- Main -->
+      <div class="main">
+        <!-- Write a Post Section -->
+        <div class="post-container">
+          <h3 style="color: rgb(91, 90, 90); font-size: 0.9em; ">🎤 Share your experience:</h3>
+          <div class="post-form">
+            <textarea id="postContent" placeholder="Who did you see perform tonight?"></textarea>
+            <button id="publishBtn">Publish</button>
+          </div>
+        </div>
+    
+        <!-- Feed Section -->
+        <div class="feed-container">
+          <h3 style="color: rgb(91, 90, 90); font-size: 0.9em; margin-bottom: 15px;">🎫 Feed</h3>
+          <div id="feed">
+            <!-- Posts will appear here -->
+            <div>
+              <img src="static/smiley.jpg" alt="Centered Image">
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- <div class="card">
+        <div class="card-body">
+          <table>
+            <tbody>
+              <tr>
+                <td>Name</td>
+                <td>:</td>
+                <td>{{ user['user_name'] if user else 'User Name' }}</td>
+              </tr>
+              <tr>
+                <td>Age</td>
+                <td>:</td>
+                <td>{{ user['age'] if user else 'N/A' }}</td>
+              </tr>
+              <tr>
+                <td>Location</td>
+                <td>:</td>
+                <td>{{ user['user_location'] if user else 'Unknown' }}</td>
+              </tr>
+              <tr>
+                <td>Music Genre</td>
+                <td>:</td>
+                <td>{{ user['music_genre'] if user else 'Unknown' }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div> -->
+    </div>
+    <!-- End -->
+  </body>
+</html>
+
+<!-- How to run flask -->
+<!-- 1) python3 -m venv venv
+     2) source venv/bin/activate
+     3) flask run -->
+
+<!-- To check for account example: 
+ 1) add this to end of url: /?account_id=10001 -->
