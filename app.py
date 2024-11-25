@@ -103,21 +103,19 @@ def create_user(username, email, password):
 
 
 def get_user_info(account_id):
-    # Get user information from the Supabase "users" table
+    # Get user information from the supabase "users" table
     user_info = None
     try:
-        # Use `select` to retrieve the columns where id == account_id(`eq` to filter by `id`)
+        # Fetch user where id is the same in supabase
         response = supabase.table("users").select("*").eq("id", account_id).execute()
         
         # Check if data exists in the response
         if response.data:
             user_info = response.data[0] 
 
-            # Convert response to dictionary with preferred column names, if necessary
             columns = ["id", "created_at", "user_name", "age", "email_address", "account_description", 
                        "user_location", "music_genre", "budget", "travel_time", "contact_ids"]
-            user_info = {col: user_info.get(col) for col in columns}  # Ensures consistent keys
-            # print(f"Fetched user info: {user_info}")
+            user_info = {col: user_info.get(col) for col in columns}  
         else:
             print("No user found with that account_id.")
     
@@ -131,7 +129,7 @@ def user_info(user_id):
     user_info = get_user_info(int(user_id))
     if user_info:
         print("I am user_info", user_info)
-        return jsonify(user_info)  # Respond with user info as JSON
+        return jsonify(user_info)  # Respond with user info in json format
     else:
         return jsonify({"error": "User not found"}), 404
 
@@ -294,11 +292,9 @@ def concerts():
 #         list_index += 1 
 #     return render_template("concert.html", concert=all_concerts[list_index], list_index=list_index, concert_count=len(all_concerts))
 
-
 @app.route('/venues')
 def venue():
     return render_template('venue.html')
-
 
 @app.route('/logout')
 def logout():
@@ -311,51 +307,7 @@ def logout():
 
 def initialize_app():
     print("Initializing app...")
-    fetch_all_users_as_json()  
-    # initialize_recommendation_count() 
-
-    # Initialize empty lists
-    # user_embeddings = []
-    # user_ids = []
-
-    # for user in user_data:
-    #     if user['survey_complete']:  # Only consider users with complete surveys or we can include everyone
-    #         embedding = generate_user_vector(user)
-    #         user_embeddings.append(embedding)
-    #         user_ids.append(user['id'])
-
-    # # Convert list of embeddings to numpy array
-    # user_embeddings = np.array(user_embeddings, dtype='float32')
-
-    # # Set up Faiss index for similarity search
-    # dimension = user_embeddings.shape[1] 
-    # faiss_index = faiss.IndexFlatL2(dimension)  
-    # faiss_index.add(user_embeddings)  # Add user embeddings to the index
-    # print('Users', user_ids )
-    # # Initialize a dictionary to store recommendation history
-    # recommendation_history = load_recommendation_history()
-    
-
-# @app.route('/api/buddy/recommend', methods=['GET', 'POST'])
-# def recommend_user():
-#     print("Route hit!")
-#     account_id = session.get('user_id')
-#     print("Account", account_id)
-
-#     if not account_id:
-#         return jsonify({"error": "User ID is required"}), 400
-
-#     current_user_text = get_user_info_as_text(account_id)
-#     # Find similar users based on the user's text description
-#     list_of_rec = find_similar_user (current_user_text)
-#     if not list_of_rec:
-#         return jsonify({"message": "No similar users found."}), 200
-
-#     recommended_user_ids = [user.page_content.split("| id:")[1].strip() for user in list_of_rec]
-#     if str(account_id) in recommended_user_ids:
-#         recommended_user_ids.remove(str(account_id))
-#     print("Recommended ID:", recommended_user_ids)
-#     return jsonify({"recommended_user_ids": recommended_user_ids})
+    fetch_all_users_as_json()  # This will load all the users from supabase into a json so we can use them 
 
 @app.route('/api/buddy/recommend', methods=['GET', 'POST'])
 def recommend():

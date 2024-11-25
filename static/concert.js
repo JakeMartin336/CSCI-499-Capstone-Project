@@ -18,11 +18,10 @@ async function generateNewBuddy() {
 
         if (!response.ok) {
             try {
-                // Try to get JSON error if available
                 const errorData = await response.json();
                 throw new Error(errorData.error || 'Network response was not ok');
             } catch (jsonError) {
-                // If JSON parsing fails, throw generic error
+                // If JSON parsing fails, throw error
                 throw new Error('Network response was not ok');
             }
         }
@@ -34,7 +33,7 @@ async function generateNewBuddy() {
         // Only select one
         if (recommendedUserIds) {
             console.log(recommendedUserIds)
-            await updateCardWithNewUser(recommendedUserIds);  // Await the update
+            await updateCardWithNewUser(recommendedUserIds);  // wait for the update
         } else {
             alert('No new recommendations available!');
         }
@@ -63,7 +62,7 @@ async function updateCardWithNewUser(userId) {
             formattedGenres = 'Not specified'; 
         }
 
-        // Format the card content with user information
+        // Format the card content with user information or we can use the explanation to convince ppl that they should "say hi" to this person :)
         const formattedText = `Hey, my name is ${userData.user_name}! I am from ${userData.user_location}, and I love listening to ${formattedGenres}.`;
 
         console.log("I am userData", userData)
