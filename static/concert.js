@@ -15,21 +15,26 @@ async function generateNewBuddy() {
                 'Content-Type': 'application/json',
             },
         });
-        console.log("I am response", response)
 
         if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || 'Network response was not ok');
+            try {
+                // Try to get JSON error if available
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Network response was not ok');
+            } catch (jsonError) {
+                // If JSON parsing fails, throw generic error
+                throw new Error('Network response was not ok');
+            }
         }
 
         const data = await response.json();
         console.log("Im data", data)
-        const recommendedUserIds = data.recommended_user_ids;
-        
+        const recommendedUserIds = data.recommended_user_ids.id;
+        console.log(recommendedUserIds)
         // Only select one
-        if (recommendedUserIds.length > 0) {
-            const recommendedUserId = recommendedUserIds[0];
-            updateCardWithNewUser(recommendedUserId);
+        if (recommendedUserIds) {
+            console.log(recommendedUserIds)
+            await updateCardWithNewUser(recommendedUserIds);  // Await the update
         } else {
             alert('No new recommendations available!');
         }
@@ -38,6 +43,7 @@ async function generateNewBuddy() {
         console.error('Error fetching new buddy:', error);
     }
 }
+
 
 
 async function updateCardWithNewUser(userId) {

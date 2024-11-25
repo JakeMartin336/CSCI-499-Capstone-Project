@@ -2,13 +2,11 @@ from flask import Flask, render_template, request, jsonify, url_for, redirect, s
 import os
 from supabase import create_client, Client
 from dotenv import load_dotenv
+import faiss
 from api import get_concerts, example_concerts
-from faiss_test6 import (
-    initialize_recommendation_count,
-    get_user_info_as_text,
-    find_similar_user,
-    fetch_all_users_as_json
-)
+from fetch_user import fetch_all_users_as_json
+import numpy as np
+from faiss_match import recommend_best_match_faiss
 
 load_dotenv()
 url = os.environ.get("SUPABASE_URL")
@@ -116,7 +114,7 @@ def get_user_info(account_id):
             user_info = response.data[0] 
 
             # Convert response to dictionary with preferred column names, if necessary
-            columns = ["account_id", "created_at", "user_name", "age", "email_address", "account_description", 
+            columns = ["id", "created_at", "user_name", "age", "email_address", "account_description", 
                        "user_location", "music_genre", "budget", "travel_time", "contact_ids"]
             user_info = {col: user_info.get(col) for col in columns}  # Ensures consistent keys
             # print(f"Fetched user info: {user_info}")
@@ -311,33 +309,73 @@ def logout():
     all_concerts = []
     return redirect(url_for('home'))
 
-
 def initialize_app():
     print("Initializing app...")
     fetch_all_users_as_json()  
-    initialize_recommendation_count()  
+    # initialize_recommendation_count() 
+
+    # Initialize empty lists
+    # user_embeddings = []
+    # user_ids = []
+
+    # for user in user_data:
+    #     if user['survey_complete']:  # Only consider users with complete surveys or we can include everyone
+    #         embedding = generate_user_vector(user)
+    #         user_embeddings.append(embedding)
+    #         user_ids.append(user['id'])
+
+    # # Convert list of embeddings to numpy array
+    # user_embeddings = np.array(user_embeddings, dtype='float32')
+
+    # # Set up Faiss index for similarity search
+    # dimension = user_embeddings.shape[1] 
+    # faiss_index = faiss.IndexFlatL2(dimension)  
+    # faiss_index.add(user_embeddings)  # Add user embeddings to the index
+    # print('Users', user_ids )
+    # # Initialize a dictionary to store recommendation history
+    # recommendation_history = load_recommendation_history()
     
 
+# @app.route('/api/buddy/recommend', methods=['GET', 'POST'])
+# def recommend_user():
+#     print("Route hit!")
+#     account_id = session.get('user_id')
+#     print("Account", account_id)
+
+#     if not account_id:
+#         return jsonify({"error": "User ID is required"}), 400
+
+#     current_user_text = get_user_info_as_text(account_id)
+#     # Find similar users based on the user's text description
+#     list_of_rec = find_similar_user (current_user_text)
+#     if not list_of_rec:
+#         return jsonify({"message": "No similar users found."}), 200
+
+#     recommended_user_ids = [user.page_content.split("| id:")[1].strip() for user in list_of_rec]
+#     if str(account_id) in recommended_user_ids:
+#         recommended_user_ids.remove(str(account_id))
+#     print("Recommended ID:", recommended_user_ids)
+#     return jsonify({"recommended_user_ids": recommended_user_ids})
+
 @app.route('/api/buddy/recommend', methods=['GET', 'POST'])
-def recommend_user():
+def recommend():
     print("Route hit!")
-    account_id = session.get('user_id')
-    print("Account", account_id)
-
-    if not account_id:
-        return jsonify({"error": "User ID is required"}), 400
-
-    current_user_text = get_user_info_as_text(account_id)
-    # Find similar users based on the user's text description
-    list_of_rec = find_similar_user (current_user_text)
-    if not list_of_rec:
-        return jsonify({"message": "No similar users found."}), 200
-
-    recommended_user_ids = [user.page_content.split("| id:")[1].strip() for user in list_of_rec]
-    if str(account_id) in recommended_user_ids:
-        recommended_user_ids.remove(str(account_id))
-    print("Recommended ID:", recommended_user_ids)
-    return jsonify({"recommended_user_ids": recommended_user_ids})
+    target_id = session.get('user_id')
+    print("Account", target_id)
+    if not target_id:
+        return jsonify({"error": "target_id parameter is required"}), 400
+    
+    try:
+        target_id = int(target_id)
+        matched_user, explanation = recommend_best_match_faiss(target_id)
+        print(f"Matched User from recommend_best_match_faiss: {matched_user}")
+        print(f"Explanation from recommend_best_match_faiss: {explanation}")
+        if matched_user:
+            return jsonify({"recommended_user_ids": matched_user}), 200
+        else:
+            return jsonify({"message": "No suitable match found."}), 404
+    except ValueError:
+        return jsonify({"error": "Invalid target_id parameter"}), 400
 
 if __name__ == '__main__':
     initialize_app()
