@@ -4,6 +4,7 @@
 }
 
 body {
+    background-attachment: fixed;
     background-image: url('blue.gif'); 
     background-size: cover; 
     background-position: contain; /* fit the screen */ 
