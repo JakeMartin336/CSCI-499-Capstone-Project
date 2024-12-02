@@ -2,11 +2,16 @@ from flask import Flask, render_template, request, jsonify, url_for, redirect, s
 import os
 from supabase import create_client, Client
 from dotenv import load_dotenv
+import faiss
 from api import get_concerts, example_concerts
+from fetch_user import fetch_all_users_as_json
+import numpy as np
+from faiss_match import recommend_best_match_faiss, setup_faiss_index
 
 load_dotenv()
 url = os.environ.get("SUPABASE_URL")
 key = os.environ.get("SUPABASE_KEY")
+openai_key = os.getenv("OPENAI_API_KEY")
 supabase = create_client(url, key)
 
 app = Flask(__name__, static_folder='static')
@@ -122,6 +127,26 @@ def get_user_info(account_id):
     
     return user_info
 
+@app.route('/api/user-info/<user_id>', methods=['GET', 'POST'])
+def user_info(user_id):
+    user_info = get_user_info(int(user_id))
+    if user_info:
+        print("I am user_info", user_info)
+        return jsonify(user_info)  # Respond with user info in json format
+    else:
+        return jsonify({"error": "User not found"}), 404
+
+def get_user_concerts(user_id):
+    concerts = []
+    try:
+        # Get user concerts from the supabase 'user_concert' DB, where the id is user_id
+        response = supabase.table("user_concerts").select("user_concert_id, status").eq("id", user_id).execute()
+        if response.status_code == 200:
+            concerts = response.data 
+        else:
+            print(f"Error fetching user concerts: {response.error}")
+    except Exception as error:
+        print(f"Error fetching user concerts: {error}")
 
 def get_user_concerts(user_id):
     # concerts = []
@@ -180,6 +205,7 @@ def insert_concert(user_id, concert_status, concert_name, concert_image, concert
 
 @app.route('/')
 def home():
+    initialize_app()
     # return render_template('index.html')
     return redirect(url_for('login'))
 
@@ -187,6 +213,7 @@ def home():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
+    fetch_all_users_as_json()
     if request.method == 'POST':
         user_email = request.form['user_email']
         user_password = request.form['user_password']
@@ -359,5 +386,35 @@ def save_concert():
     return jsonify({"message": f"Concert '{name}' has been marked as {status}!"})
 
 
+def initialize_app():
+    print("Initializing app...")
+    if not os.path.exists("users_data.json"):
+        print("'users_data.json' not found. Creating it...")
+        fetch_all_users_as_json()
+    else:
+        print("'users_data.json' already exists.") # This will load all the users from supabase into a json so we can use them 
+
+    setup_faiss_index()
+@app.route('/api/buddy/recommend', methods=['GET', 'POST'])
+def recommend():
+    print("Route hit!")
+    target_id = session.get('user_id')
+    print("Account", target_id)
+    if not target_id:
+        return jsonify({"error": "target_id parameter is required"}), 400
+    
+    try:
+        target_id = int(target_id)
+        matched_user, explanation = recommend_best_match_faiss(target_id)
+        print(f"Matched User from recommend_best_match_faiss: {matched_user}")
+        print(f"Explanation from recommend_best_match_faiss: {explanation}")
+        if matched_user:
+            return jsonify({"recommended_user_ids": matched_user}), 200
+        else:
+            return jsonify({"message": "No suitable match found."}), 404
+    except ValueError:
+        return jsonify({"error": "Invalid target_id parameter"}), 400
+
 if __name__ == '__main__':
+    initialize_app()
     app.run(debug=True)
