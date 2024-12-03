@@ -11,6 +11,7 @@ Main functionalities include:
   3. Concert Recommendations: Based on survey data, the application recommends concerts. Users can navigate through concert options using "previous" and "next" controls. Concerts are fetched dynamically, allowing a personalized experience.
   4. Error Handling: Each database interaction is wrapped in error handling to ensure robust responses in case of connectivity issues or input errors.
   5. Session Management: Sessions track user-specific data across requests, and session clearing is implemented upon logout for privacy and data reset.
+  6. User Recommendation: Based on the survey data, the application will recommend other users that the current user can match with to attend concerts together.
 
 ### api.py:
 This script uses the requests library to fetch live concert event data from the "real-time-events-search" API based on genre, location, and optional budget parameters. It organizes the results into a structured format and includes a sample function with example data, which can be used as a placeholder or test data.
