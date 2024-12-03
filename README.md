@@ -17,3 +17,23 @@ This script uses the requests library to fetch live concert event data from the 
 Main functionalities include:
 1. get_concerts: Fetches concerts matching specified criteria (genre, location, budget) and organizes the information into a list of dictionaries with concert details. The function processes JSON data from the API response, extracting details like concert name, description, time, and venue info.
 2. example_concerts: Returns a predefined list of concert event data, simulating what a real API call might return. Contains sample concerts with fields such as name, description, start_time, thumbnail, and venue information.
+
+- fetch_user.py:
+This script sets up a user JSON file which fetches all the users that have signed up for an account. This serves as a helper function to initialize a user JSON file to match people.
+Main functionalities include:
+1. Connecting to the Supabase DB through the Supabase API.
+2. Fetching all users that are currently signed up and storing them in a JSON format.
+
+- faiss_match.py:
+This script uses FAISS to perform a similarity search on users to recommend to the currently logged-in user. First, each user's information is turned into an embedding that gets stored in the FAISS vector database. The database is then searched later to recommend people to the current user. A history of previously recommended users is also maintained to avoid recommending the same users again.
+
+Main functionalities include:
+1. Turning each user's information into an embedding & storing it in a FAISS vector store.
+2. Querying through the vector database to find the most similar user to the current user through the use of nearest-neighbor searches [similarity search].
+For more information, visit: https://www.datacamp.com/blog/faiss-facebook-ai-similarity-search
+
+Optional functionality:
+1. Including prompt engineering to provide a reason for the given recommendation. This is done in the hope of convincing users why the two matched users are a good match, resulting in more successful matches.
+
+
+
