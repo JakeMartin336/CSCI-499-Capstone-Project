@@ -35,5 +35,67 @@ Main functionalities include:
 Optional functionality:
   1. Including prompt engineering to provide a reason for the given recommendation. This is done in the hope of convincing users why the two matched users are a good match, resulting in more successful matches.
 
+# Getting Started:
+These are the steps on setting up the project locally.
 
+### Prerequisites
+  1. Make sure you have Python installed on your local machine. You can check if you have Python installed by running the following command:
+      ```sh
+      python --version
+      ```
+      - If not, install python. For more information, visit: 
+        - https://realpython.com/installing-python/
+        - https://docs.python.org/3/installing/index.html
+  2. Install pip and virtualenv
+      - Make sure that pip (Python's package installer) and virtualenv (for creating isolated Python environments) are installed. You can check by running these command:
+        ```sh
+         pip --version
+        ```
+        - If not installed, visit this website to set up 'pip'
+          - https://pip.pypa.io/en/stable/installation/
+        - if installed:
+          - Continue to install python virtual environment:
+            ```sh
+            pip install virtualenv
+            ```
+### Installation
+
+Installing and setting up the app:
+
+1. Clone the repo
+   ```sh
+   git clone https://github.com/JakeMartin336/CSCI-499-Capstone-Project.git
+   ```
+2. Set up a virtual environment:
+   ```sh
+     python3 -m venv venv
+   ```
+   Once that is complete:
+
+   For Mac:
+   ```sh
+   source venv/bin/activate # Mac
+   ```
+   For Windows:
+   ```sh
+     .\venv\Scripts\Activate # Windows
+   ```
+   For more information on python virtual environment, visit: https://www.geeksforgeeks.org/creating-python-virtual-environment-windows-linux/
+4. Once the virtual environment is activated, install all the required packages:
+   ```sh
+   pip install -r requirements.txt # if requirements.txt is not found, make sure to include the specific path to requirements.txt
+   ```
+5. Create a  `.env` file in your root of your project.
+  - Copy the following template and fill in your own values:
+     ```bash
+     SUPABASE_URL=your-supabase-url
+     SUPABASE_API_KEY=your-api-key
+     OPENAI_API_KEY=your-openai-api-key
+     ```
+5. Once everything is set up, run this command:
+   ```sh
+   flask run
+   ```
+   This should run the application and you are able to access it on your local machine.
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
