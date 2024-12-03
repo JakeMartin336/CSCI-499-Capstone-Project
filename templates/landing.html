@@ -118,6 +118,9 @@
     </div>
 
 
+    
+
+
       <!-- End -->
 
       <!-- Main -->
@@ -142,35 +145,35 @@
           </div>
         </div>
       </div>
+
+      <div class="rightsidenav">
+        <div class="requests-box">
+          <h3 style="color: #ff7675; text-align: center; font-size: 24px;">🤝 Match Requests</h3>
       
-      <!-- <div class="card">
-        <div class="card-body">
-          <table>
-            <tbody>
-              <tr>
-                <td>Name</td>
-                <td>:</td>
-                <td>{{ user['user_name'] if user else 'User Name' }}</td>
-              </tr>
-              <tr>
-                <td>Age</td>
-                <td>:</td>
-                <td>{{ user['age'] if user else 'N/A' }}</td>
-              </tr>
-              <tr>
-                <td>Location</td>
-                <td>:</td>
-                <td>{{ user['user_location'] if user else 'Unknown' }}</td>
-              </tr>
-              <tr>
-                <td>Music Genre</td>
-                <td>:</td>
-                <td>{{ user['music_genre'] if user else 'Unknown' }}</td>
-              </tr>
-            </tbody>
-          </table>
+          <!-- Match Requests List -->
+          <ul class="matchRequests">
+            {% if match_requests %}
+              {% for request in match_requests %}
+                <li>
+                  <div class="request-details">
+                    <img src="{{ request.user_image }}" alt="User Image" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; overflow: hidden;">
+                    <div class="request-info">
+                      <span class="user-name">{{ request.user_name }}</span><br>
+                      <span class="concert-name">{{ request.concert_name }}</span>
+                    </div>
+                    <div class="actions">
+                      <button class="accept-btn">Accept</button>
+                      <button class="decline-btn">Decline</button>
+                    </div>
+                  </div>
+                </li>
+              {% endfor %}
+            {% else %}
+              <p style="font-size: 0.9em; color: gray; text-align: center;">No match requests yet.</p>
+            {% endif %}
+          </ul>
         </div>
-      </div> -->
+      </div>
     </div>
     <!-- End -->
   </body>
@@ -181,5 +184,4 @@
      2) source venv/bin/activate
      3) flask run -->
 
-<!-- To check for account example: 
- 1) add this to end of url: /?account_id=10001 -->
+

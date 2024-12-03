@@ -77,7 +77,7 @@
                     </button>
                     <ul class="dropdown-menu">
                         <li>
-                            <a class="dropdown-item" href="#Going" onclick="saveConcertInfo('going', '{{ concert.name }}', '{{ concert.thumbnail }}','{{ concert.start_time }}')">
+                            <a class="dropdown-item" href="#Going" onclick="saveConcertInfo('going', '{{ concert.name }}', '{{ concert.thumbnail }}','{{ concert.start_time }}'), toggleBuddyButton()">
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="concertStatus" id="goingRadio"/>
                                     <label class="form-check-label" for="goingRadio">Going</label>
@@ -85,7 +85,7 @@
                             </a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="#Interested" onclick="saveConcertInfo('interested', '{{ concert.name }}', '{{ concert.thumbnail }}','{{ concert.start_time }}')">
+                            <a class="dropdown-item" href="#Interested" onclick="saveConcertInfo('interested', '{{ concert.name }}', '{{ concert.thumbnail }}','{{ concert.start_time }}'), toggleBuddyButton()">
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="concertStatus" id="interestedRadio"/>
                                     <label class="form-check-label" for="interestedRadio">Interested</label>
@@ -128,16 +128,17 @@
                 </div>
             </div>
             <div class="col-md-4 align-self-end">
-                <button type="button" class="buddy_button custom-button w-50" onclick="showMatchingSection()">
+                <button type="button" class="buddy_button custom-button w-50" style="display: none;" onclick="showMatchingSection()">
                     Match with a Buddy!
                 </button>
-                <div class="network_info d-none d-md-block">
+            </div>
+                <!-- <div class="network_info d-none d-md-block">
                     <div class="network_info_going">
-                        <span>Friends X, Y are going!</span>
+                        <span>Friends X, Y are going!</span> 
                     </div>
                     <div class="network_info_interested">
                         <span>Friends X, Y are interested!</span>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>

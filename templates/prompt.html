@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ConcertConnect - Find Your Buddy</title>
+    <link rel="stylesheet" href="/static/prompt.css">
+</head>
+<body>
+    <div class="container">
+        <h1>ConcertConnect Matchmaking</h1>
+        <form method="POST">
+            <label for="user_id">Enter Your User ID:</label>
+            <input type="text" id="user_id" name="user_id" required>
+            <button type="submit">Find Buddies</button>
+        </form>
+
+        {% if error %}
+        <div class="error">{{ error }}</div>
+        {% endif %}
+
+        {% if recommended_users %}
+        <h2>Recommended Concert Buddies</h2>
+        <ul>
+            {% for user in recommended_users %}
+            <li>
+                <strong>{{ user['user_name'] }}</strong> - {{ user['location'] }},
+                Music: {{ ", ".join(user['music_genres']) }}
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+</body>
+</html>

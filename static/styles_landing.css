@@ -7,7 +7,7 @@ body {
     background-attachment: fixed;
     background-image: url('blue.gif'); 
     background-size: cover; 
-    background-position: contain; /* fit the screen */ 
+    background-position: contain; 
     font-family: "Montserrat", "Arial";
     overflow: hidden;
     overflow-y: auto;
@@ -20,18 +20,18 @@ body {
     align-items: center;
     justify-content: space-between;
     /* background-color: #b4d2f5; Pink */
-    color: #fff; /* White text for contrast */
+    color: #fff; 
     /* box-shadow: 0px 4px 8px 0px rgb(252, 255, 86); */
 
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.109);
     height: 90px;
-    padding: 0 20px; /* Added padding for a balanced look */
+    padding: 0 20px; 
 }
 
 .title {
     font-size: 24px;
     font-weight: bold;
-    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7); /* Text shadow for depth */
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7); 
 }
 
 .navbar-top ul {
@@ -55,12 +55,12 @@ body {
     align-items: center;
     justify-content: center; 
     gap: 10px;
-    background-color: #f1f9b7; /* Button background color */
-    border-radius: 30px; /* Rounded corners */
+    background-color: #f1f9b7; 
+    border-radius: 30px; 
     color: #b56aee; 
     font-weight: 600;
     border: none;
-    cursor: pointer; /* Pointer cursor on hover */
+    cursor: pointer; 
     box-shadow: 0px 4px 8px rgba(232, 255, 23, 0.598);
     transition: background-color 0.3s ease, transform 0.3s ease; 
     font-family: "Itim";
@@ -68,20 +68,11 @@ body {
 }
 
 .navbar-top button:hover {
-    background-color: rgba(255, 255, 255, 0.772); /* Semi-transparent white on hover */
-    transform: scale(1.1); /* Slightly enlarge on hover */
+    background-color: rgba(255, 255, 255, 0.772); 
+    transform: scale(1.1); 
 
 }
 
-.svgIcon {
-    height: 25px; /* Height for the SVG icon */
-    transition-duration: 1.5s; /* Transition for icon rotation */
-}
-
-.button:hover .svgIcon {
-    transform: rotate(250deg); /* Rotate on hover */
-    transition-duration: 1.5s; /* Duration of rotation */
-}
 
 
 
@@ -109,7 +100,7 @@ body {
     background-color: #f7f6f5; 
     border-radius: 10px;
     padding: 15px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Slightly darker shadow for depth */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); 
     font-family: 'Itim';
     font-size: 20px;
 }
@@ -155,7 +146,7 @@ body {
     display: block;
     text-align: center;
     border-radius: 75px;
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease; /* Added transform for hover effect */
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease; 
 }
 
 .sidenav-url hr {
@@ -207,7 +198,7 @@ body {
 
 /* Main */
 .main {
-    margin-top: 2%;
+    margin-top: 20px;
     font-size: 28px;
     padding: 0 10px;
     width: 60%;
@@ -241,10 +232,11 @@ body {
     border: none;
     cursor: pointer;
     border-radius: 5px;
+    font-family: "Montserrat"
 }
 
 .post-form button:hover {
-    background-color: #9b96e3; /* Lighter purple on hover */
+    background-color: #9b96e3; 
 }
 
 .feed-container {
@@ -322,4 +314,77 @@ body {
 .concert-date {
     font-size: 0.9em;
     color: gray;
+}
+
+
+
+/* requests section */
+.rightsidenav h3 {
+    color: #ff7675;
+    text-align: center;
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+/* Requests Box Styling */
+.rightsidenav .requests-box {
+    background-color: #f7f6f5; 
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    margin-top: 20px;
+    flex-grow: 1; 
+    margin-left: 20px; 
+    margin-right: 20px; 
+}
+
+
+.rightsidenav .requests-box ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.rightsidenav .requests-box .matchRequests li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+    
+}
+
+.rightsidenav .requests-box .matchRequests .request-details {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.rightsidenav .requests-box .matchRequests .request-info {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9em;
+}
+
+.rightsidenav .requests-box .matchRequests .actions {
+    display: flex;
+    gap: 10px;
+}
+
+.rightsidenav .requests-box .matchRequests .accept-btn,
+.rightsidenav .requests-box .matchRequests .decline-btn {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.8em;
+}
+
+.rightsidenav .requests-box .matchRequests .accept-btn {
+    background-color: #55efc4;
+    color: white;
+}
+
+.rightsidenav .requests-box .matchRequests .decline-btn {
+    background-color: #ff7675;
+    color: white;
 }

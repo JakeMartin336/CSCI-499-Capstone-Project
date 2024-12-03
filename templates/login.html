@@ -11,9 +11,10 @@
 </head>
 
 <body>
-    <header>
-        <!-- <h2 class="logo">Concert Connect</h2> -->
-        <img src="{{ url_for('static', filename='logo.png') }}" alt="ConcertConnect Logo" style="height: 220px; padding-bottom: 20px; ">
+    <header style="display: flex; justify-content: center; align-items: center; padding: 20px 0; width: 100%; flex-shrink: 0;">
+        <img src="{{ url_for('static', filename='logo.png') }}" 
+             alt="ConcertConnect Logo" 
+             style="height: 25vh; max-height: 200px; width: auto;">
     </header>
     <div class="wrapper">
         <div class="form-box login">
