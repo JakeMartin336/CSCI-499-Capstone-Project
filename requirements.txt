@@ -1,0 +1,7 @@
+flask==3.0.3 
+supabase==2.6.0 
+python-dotenv==1.0.1 
+faiss-cpu  # Replace with 'faiss-gpu' if you are using GPU.
+numpy==1.24.4     
+requests
+openai
