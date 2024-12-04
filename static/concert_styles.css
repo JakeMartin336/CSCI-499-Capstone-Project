@@ -1,10 +1,12 @@
 * {
     margin: 0;
+    padding: 0;
 }
 
 body {
     background-attachment: fixed;
-    background-image: url("blue.gif") !important;
+    background-image: url("blue.gif") ;
+    background-size: cover;
     font-family: "Montserrat", "arial";
 }
 
