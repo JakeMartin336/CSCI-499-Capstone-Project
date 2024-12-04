@@ -36,6 +36,19 @@ Main functionalities include:
 Optional functionality:
   1. Including prompt engineering to provide a reason for the given recommendation. This is done in the hope of convincing users why the two matched users are a good match, resulting in more successful matches.
 
+Sample Matching Test Case:
+
+We are currently in user 'ninh' who is 25, have a certain music genre that they said they liked in their survey & we try to find a buddy that they could match with.
+
+  ![Screenshot 2024-12-03 at 8 17 23 PM](https://github.com/user-attachments/assets/14b4c1b9-ed07-4b35-bedb-aa72cd8299cf)
+
+We created a sample user named 'sameuserasninh' who is a test user that has all the similar information as 'ninh'. We are expecting this to get recommended when we click 'match me with a buddy' for user 'ninh'.
+
+  ![Screenshot 2024-12-03 at 8 17 14 PM](https://github.com/user-attachments/assets/45ae06ce-cb1f-4a72-8fa9-216ef051ecc4)
+
+As expected, for user 'ninh', the test user 'sameuserasninh' was recommended.
+
+
 # Getting Started:
 These are the steps on setting up the project locally.
 
