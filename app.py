@@ -5,7 +5,6 @@ from supabase import create_client, Client
 from dotenv import load_dotenv
 from api import get_concerts, example_concerts
 import secrets
-import faiss
 from fetch_user import fetch_all_users_as_json
 import numpy as np
 from faiss_match import recommend_best_match_faiss, setup_faiss_index
