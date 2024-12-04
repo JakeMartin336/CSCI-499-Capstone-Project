@@ -1,0 +1,204 @@
+/* General Styling */
+body {
+    background-image: url('blue.gif');
+    font-family: "Montserrat", "arial";
+    background-attachment: fixed;
+    background-size: cover; /* Cover the entire viewport */
+    background-position: contain; /* fit the screen */ 
+}
+/* Navbar Styles */
+.nav-link:hover {
+    background-color: rgba(74, 91, 248, 0.169);
+    border-radius: 10px;
+    transition: all 0.2s;
+}
+
+.title {
+    font-size: 24px;
+    padding-left: 10px;
+    font-weight: bold;
+}
+
+/* Kirsten NavbarTop */
+.navbar-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #fff; /* White text for contrast */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.109);
+    height: 90px;
+    padding: 0 20px;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7);
+}
+
+/* Ensure navbar buttons have consistent styling */
+.navbar-top ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.navbar-top ul li {
+  
+    margin: 0 20px; 
+
+}
+
+.navbar-top button {
+    width: 110px; 
+    height: 45px; 
+    margin: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    gap: 10px;
+    background-color: #f1f9b7; /* Button background color */ 
+    border-radius: 30px; /* Rounded corners */
+    color: #b56aee; 
+    font-weight: 600;
+    border: none;
+    cursor: pointer; /* Pointer cursor on hover */
+    box-shadow: 0px 4px 8px rgba(232, 255, 23, 0.598);
+    transition: background-color 0.3s ease, transform 0.3s ease; 
+    font-family: "Itim";
+    font-size: 18px;
+}
+
+.navbar-top button:hover {
+    background-color: rgba(255, 255, 255, 0.772); /* Semi-transparent white on hover */
+    transform: scale(1.1); /* Slightly enlarge on hover */
+}
+
+/* end of Kirsten navbar */
+
+.container-search {
+    padding: 1rem 5%;
+    min-height: 20vh;
+    height: auto;
+}
+
+/* Header Styling (Venue Name) */
+.header {
+    background: linear-gradient(135deg, #6bbcff, #f1f9b7);
+    padding: 50px 0;
+    text-align: center;
+    /* color: white; */
+    color:black;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: none;  /* Initially hidden */
+    width: 92%;
+    max-width: 1320px;  /* Set a maximum width */
+    margin: 0 auto;    /* Center align it */
+}
+
+.header h1 {
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+/* Search Bar */
+.input-group {
+    margin-bottom: 20px;
+}
+
+/* Map Section - Centering */
+.map-section {
+    display: flex;
+    justify-content: center;   /* Centers horizontally */
+    align-items: center;       /* Centers vertically */
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 100%;               /* Ensure it spans full width of its container */
+    height: auto;              /* Adjust height as needed */
+}
+
+/* Responsive styling for the image */
+#venue-map {
+    max-width: 90%;            /* Ensure the image does not exceed 90% of the container width */
+    max-height: 80vh;          /* Limits height to 80% of the viewport height */
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); /* Adds a subtle shadow around the map */
+}
+
+
+/* Style for the map image */
+.map-section img {
+    max-width: 90%;       /* Ensure the image does not exceed 90% of the container width */
+    max-height: 80vh;     /* Limit the height to 80% of the viewport height */
+    border-radius: 10px;
+     /* Adds a subtle shadow around the map */
+}
+
+/* Seat Finder */
+.seat-finder {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #f1f9b7;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: none;  /* Initially hidden */
+}
+
+.seat-finder input {
+    border-radius: 20px;
+    padding: 10px;
+    border: 2px solid #6bbcff;
+}
+
+.seat-finder button {
+    background-color: #b56aee;
+    border: 10px;
+    padding: 10px 20px;
+    border-radius: 25px;
+    margin-bottom: 20px;
+    color: white;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.seat-finder button:hover {
+    background-color: #6bbcff;  /* Hover effect */
+    color: white;
+}
+
+/* Seat POV Section */
+.seat-pov {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #f1f9b7;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: none;  /* Initially hidden */
+    justify-content: space-around;
+}
+
+.seat-pov img {
+    width: 400px;
+    height: 300px;
+    border-radius: 10px;
+    border: 2px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.seat-pov img:hover {
+    transform: scale(1.1);  /* Zoom effect on hover */
+}
+
+/* Footer Styling */
+footer {
+    background-color: #038cfc;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    margin-top: 50px;
+    border-radius: 10px 10px 0 0;
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+}
