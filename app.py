@@ -10,7 +10,7 @@ import numpy as np
 from faiss_match import recommend_best_match_faiss, setup_faiss_index
 import asyncio
 import threading
-from realtime import AsyncRealtimeChannel, AsyncRealtimeClient
+from realtime import AsyncRealtimeClient
 
 load_dotenv()
 url = os.environ.get("SUPABASE_URL")
