@@ -3,7 +3,7 @@
 }
 
 body {
-    background-attachment: fixed !important;
+    background-attachment: fixed;
     background-image: url("blue.gif") !important;
     font-family: "Montserrat", "arial";
 }
@@ -191,6 +191,14 @@ section {
 
 .dropdown-item:hover {
     background-color: rgba(74, 91, 248, 0.169);
+}
+.form-check-input:checked + .form-check-label {
+    color: green; /* Green text color for the label */
+}
+
+.form-check-input:checked {
+    background-color: green;  /* Green background for the selected radio */
+    border-color: green;      /* Green border for consistency */
 }
 
 /* Concert Seating Chart */

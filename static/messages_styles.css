@@ -18,10 +18,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    /* background-color: #b4d2f5; Pink */
-    color: #fff; /* White text for contrast */
-    /* box-shadow: 0px 4px 8px 0px rgb(252, 255, 86); */
-
+    color: #fff;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.109);
     height: 90px;
     padding: 0 20px; /* Added padding for a balanced look */
@@ -41,9 +38,7 @@ body {
 }
 
 .navbar-top ul li {
-  
     margin: 0 20px; 
-
 }
 
 .navbar-top button {
@@ -69,38 +64,22 @@ body {
 .navbar-top button:hover {
     background-color: rgba(255, 255, 255, 0.772); /* Semi-transparent white on hover */
     transform: scale(1.1); /* Slightly enlarge on hover */
-
 }
-
-.svgIcon {
-    height: 25px; /* Height for the SVG icon */
-    transition-duration: 1.5s; /* Transition for icon rotation */
-}
-
-.button:hover .svgIcon {
-    transform: rotate(250deg); /* Rotate on hover */
-    transition-duration: 1.5s; /* Duration of rotation */
-}
-
 
 /* Sidenav */
 .container {
     display: flex;
+    justify-content: space-evenly;
 }
 
 .sidenav-container {
     display: flex;
     flex-direction: column;
-    width: 275px;
+    width: 300px;
     color: #333;
     padding: 20px;
 }
 
-.sidenav {
-    margin-bottom: 15px;
-}
-
-.profile-box,
 .concerts-box {
     background-color: #f7f6f5; 
     border-radius: 10px;
@@ -108,48 +87,6 @@ body {
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Slightly darker shadow for depth */
     font-family: 'Itim';
     font-size: 20px;
-}
-
-.profile {
-    text-align: center;
-    margin-bottom: 15px;
-    font-size: 20px;
-}
-
-.name {
-    font-size: 25px;
-    font-weight: bold;
-    margin-top: 10px;
-    color: #817bd8;
-}
-
-.job {
-    font-size: 14px;
-    color: #666;
-}
-
-.sidenav-url .url a {
-    color: #333;
-    font-size: 16px;
-    text-decoration: none;
-    padding: 8px;
-    display: block;
-    text-align: center;
-    border-radius: 75px;
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease; /* Added transform for hover effect */
-}
-
-.sidenav-url hr {
-    border: 0;
-    border-top: 1px solid #ddd;
-    margin: 8px 0;
-    width: 100%;
-}
-
-.sidenav-url .url a:hover {
-    background-color:#f1f9b7;
-    color: #7e7e7e; 
-    transform: scale(1.05); 
 }
 
 .concerts-box h3 {
@@ -200,7 +137,6 @@ body {
     padding: 20px;
     box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
-    height: 95%; 
     box-sizing: border-box; 
     margin-top: 20px;
     overflow-y: auto;
@@ -218,7 +154,7 @@ body {
     list-style: none;
     padding: 0;
     margin: 0;
-    color: rgb(95, 95, 95)
+    color: rgb(95, 95, 95);
 }
 
 .contact {
@@ -245,10 +181,10 @@ body {
     padding: 20px; 
     border-radius: 10px;
     margin-left: 20px;
-    height: 95%; 
     overflow-y: auto; 
     margin-top: 20px;
     margin-bottom: 20px;
+    margin-right: 20px;
 }
 
 /* Chat Header */
@@ -370,4 +306,35 @@ body {
 
 .contact:hover {
     background-color: #9b96e3;
+}
+
+.goingConcerts li,
+.interestedConcerts li {
+    list-style-type: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.goingConcerts li img,
+.interestedConcerts li img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+}
+
+.concert-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.concert-name {
+    font-weight: bold;
+}
+
+.concert-date {
+    font-size: 0.9em;
+    color: gray;
 }

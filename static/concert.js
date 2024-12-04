@@ -1,3 +1,4 @@
+
 async function showMatchingSection() {
     const matchingSection = document.querySelector('.matching');
     matchingSection.style.display = 'none';
@@ -80,82 +81,73 @@ async function updateCardWithNewUser(userId) {
     }
 }
 
-// document.addEventListener("DOMContentLoaded", function() {
-//     firstConcert(allConcerts);
-// });
 
-// function firstConcert(allConcerts) {
-//     let concert = allConcerts[0];
 
-//     document.getElementById('concertImage').querySelector('img').src = concert.thumbnail;
-//     document.getElementById('concertName').innerText = concert.name;
-//     document.getElementById('concertDescription').innerText = concert.description;
-//     document.getElementById('concertStartTime').innerText = concert.start_time;
+let currentIndex = 0;
 
-//     document.getElementById('concertVenueName').innerText = concert.venue_name;
-//     document.getElementById('concertVenueAddress').innerText = concert.venue_address;
+document.addEventListener("DOMContentLoaded", function () {
+    updateConcertDetails(currentIndex);
+    document.getElementById('prevTicket').style.display = "none";
+});
 
-//     document.getElementById('prevTicket').style = "display: none";
+function updateConcertDetails(index) {
+    // if (allConcertsData.length === 0){
+    //     displayEmptyConcertList();
+    // }
+    // else{
+    const concert = allConcertsData[index];
+    document.getElementById("concertImage").src = concert.thumbnail || "";
+    document.getElementById("concertName").textContent = concert.name || "No Name";
+    document.getElementById("concertDescription").textContent = concert.description || "No Description";
+    document.getElementById("concertTime").textContent = concert.start_time || "No Time";
 
-//     const ticketLinks = document.getElementById('ticketLinks');
-//     let concertTickets = concert.ticket_links
-//     concertTickets.forEach(function(ticket) {
-//         const li = document.createElement('li');
-//         li.innerHTML = `<strong>${ticket.source}:</strong> <a href="${ticket.link}" target="_blank">${ticket.link}</a>`;
-//         ticketLinks.appendChild(li);
-//     });
-//     document.getElementById('ticketInfo').style.display = 'block';
+    document.getElementById('concertVenueName').innerText = concert.venue_name;
+    document.getElementById('concertVenueAddress').innerText = concert.venue_address;
+
+    const ticketLinks = document.getElementById('ticketLinks');
+    ticketLinks.innerHTML = '';
+    let concertTickets = concert.ticket_links
+    concertTickets.forEach(function(ticket) {
+        const li = document.createElement('li');
+        li.innerHTML = `<strong>${ticket.source}:</strong> <a href="${ticket.link}" target="_blank">${ticket.link}</a>`;
+        ticketLinks.appendChild(li);
+    });
+    // }
+};
+
+// function displayEmptyConcertList(){
+//     document.getElementById('prevTicket').style.display = "none";
+//     document.getElementById('nextTicket').style.display = "none";
+//     document.getElementById('saveConcertButton').style.display = "none";
+//     document.getElementById('infoButton').style.display = "none";
 // }
 
+function showConcertIndex(direction) { 
+    if (direction === 'next' && currentIndex < allConcertsData.length - 1) {
+        currentIndex++;
+    }
+    if (direction === 'previous' && currentIndex > 0) {
+        currentIndex--;
+    }
 
+    if (currentIndex === 0) {
+        document.getElementById('prevTicket').style.display = "none";
+    } else {
+        document.getElementById('prevTicket').style.display = "block";
+    }
 
-// let concertIndex = 0;
-// function showConcertIndex(direction) {
-//     // Ensure prev and next buttons visibility
-//     if (concertIndex == 0) {
-//         document.getElementById('prevTicket').style.display = "none";
-//     } else {
-//         document.getElementById('prevTicket').style.display = "block";
-//     }
+    if (currentIndex === allConcertsData.length - 1) {
+        document.getElementById('nextTicket').style.display = "none";
+    } else {
+        document.getElementById('nextTicket').style.display = "block";
+    }
 
-//     if (concertIndex == allConcerts.length - 1) {
-//         document.getElementById('nextTicket').style.display = "none";
-//     } else {
-//         document.getElementById('nextTicket').style.display = "block";
-//     }
-
-//     // Update concertIndex based on direction
-//     if (direction == 'next' && concertIndex < allConcerts.length - 1) {
-//         concertIndex++;
-//     } else if (direction == 'previous' && concertIndex > 0) {
-//         concertIndex--;
-//     }
-
-//     // Update concert details on the page
-//     document.getElementById('concertImage').src = allConcerts[concertIndex].thumbnail;
-//     document.getElementById('concertName').textContent = allConcerts[concertIndex].name;
-//     document.getElementById('concertDescription').textContent = allConcerts[concertIndex].description;
-//     document.getElementById('concertStartTime').textContent = allConcerts[concertIndex].start_time;
-
-//     // Update venue details
-//     document.getElementById('concertVenueName').textContent = allConcerts[concertIndex].venue_name;
-//     document.getElementById('concertVenueAddress').textContent = allConcerts[concertIndex].venue_address;
-
-//     // Update ticket information dynamically
-//     const ticketLinks = document.getElementById('ticketLinks');
-//     ticketLinks.innerHTML = '';  // Clear existing ticket links
-//     let concertTickets = allConcerts[concertIndex].ticket_links;
-//     concertTickets.forEach(function(ticket) {
-//         const li = document.createElement('li');
-//         li.innerHTML = `<strong>${ticket.source}:</strong> <a href="${ticket.link}" target="_blank">${ticket.link}</a>`;
-//         ticketLinks.appendChild(li);
-//     });
-//     document.getElementById('ticketInfo').style.display = 'block';
-// }
+    updateConcertDetails(currentIndex);
+}
 
 
 
-let currentInfo = null; // Track the currently displayed info section
+let currentInfo = null;
 function showInfo(type) {
     var venueInfo = document.getElementById("venueInfo");
     var ticketInfo = document.getElementById("ticketInfo");
@@ -188,7 +180,16 @@ function showInfo(type) {
 }
 
 
-function saveConcertInfo(status, name, thumbnail, start_time) {
+function saveConcertInfo(status, event) {
+    if (event) {
+        event.preventDefault(); // Prevent default link behavior
+        event.stopPropagation(); // Stop the event from bubbling
+    }
+    
+    var name = document.getElementById("concertName").textContent;
+    var thumbnail = document.getElementById("concertImage").src;
+    var start_time = document.getElementById("concertTime").textContent;
+    
     const button = event.currentTarget;
     button.disabled = true;  // Disable button to prevent double-clicking
     
@@ -224,23 +225,3 @@ function saveConcertInfo(status, name, thumbnail, start_time) {
 }
 
 
-// function OldsaveConcertInfo(status, concertName, concertImage, concertDate) {
-//     $.ajax({
-//         type: 'POST',
-//         url: "~/app.py",
-//         contentType: 'application/json',
-//         data: {
-//             concert_status: status,
-//             concert_name: concertName,
-//             concert_image : concertImage,
-//             concert_date: concertDate
-//         },
-//         success: function(response) {
-//             alert(`Marked as ${status.charAt(0).toUpperCase() + status.slice(1)}: ${concertName}`);
-//         },
-//         error: function(error) {
-//             console.error('Error saving concert info:', error);
-//             alert('There was an error. Please try again.');
-//         }
-//     });
-//   }

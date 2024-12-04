@@ -4,7 +4,6 @@
 }
 
 body {
-    background-attachment: fixed;
     background-image: url('blue.gif'); 
     background-size: cover; 
     background-position: contain; /* fit the screen */ 
@@ -294,7 +293,8 @@ body {
 }
 
 .goingConcerts li,
-.interestedConcerts li {
+.interestedConcerts li,
+.attendedConcerts li {
     list-style-type: none;
     display: flex;
     align-items: center;
@@ -303,7 +303,8 @@ body {
 }
 
 .goingConcerts li img,
-.interestedConcerts li img {
+.interestedConcerts li img,
+.attendedConcerts li img {
     width: 45px;
     height: 45px;
     border-radius: 50%;
@@ -323,3 +324,56 @@ body {
     font-size: 0.9em;
     color: gray;
 }
+
+/* Styling for attendance div */
+.past-concert-container{
+    display: flex;
+    margin-bottom: 10px;
+}
+
+/* Styling for the buttons */
+.past-concert-button-yes {
+    background-color: green;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    margin: 0 5px;
+    transition: background-color 0.3s ease;
+  }
+
+  .past-concert-button-no {
+    background-color: red;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    margin: 0 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .past-concert-button-yes:hover,
+  .past-concert-button-no:hover{
+    background-color: rgb(46, 44, 44);
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 600px) {
+    .past-concert-container {
+      max-width: 100%;
+      padding: 8px;
+    }
+  
+    .past-concert-button-yes {
+      padding: 6px 10px;
+      font-size: 12px;
+    }
+    .past-concert-button-no {
+        padding: 6px 10px;
+        font-size: 12px;
+      }
+  }
