@@ -9,7 +9,9 @@ import faiss
 from fetch_user import fetch_all_users_as_json
 import numpy as np
 from faiss_match import recommend_best_match_faiss, setup_faiss_index
-
+import asyncio
+import threading
+from realtime import AsyncRealtimeChannel, AsyncRealtimeClient
 
 load_dotenv()
 url = os.environ.get("SUPABASE_URL")
@@ -448,14 +450,41 @@ def user_info(user_id):
 
 def initialize_app():
     print("Initializing app...")
+    listener_thread = threading.Thread(target=start_async_realtime_client, daemon=True)
+    listener_thread.start()
+    
+    print("Listening...")
     if not os.path.exists("users_data.json"):
         print("'users_data.json' not found. Creating it...")
         fetch_all_users_as_json()
     else:
         print("'users_data.json' already exists.") # This will load all the users from supabase into a json so we can use them 
-
+        fetch_all_users_as_json()
     setup_faiss_index()
 
+# References:
+# https://github.com/supabase/supabase-py/issues/909
+# https://github.com/supabase/realtime-py/blob/main/example/app.py#L66
+# This is a function that will fetch users in json once there are changes in the DB
+def postgres_changes_callback(payload, *args):
+    print("*: ", payload)
+    fetch_all_users_as_json()
+
+async def setup_async_realtime_client():
+    socket = AsyncRealtimeClient(f"{url}/realtime/v1", key, auto_reconnect=True)
+    await socket.connect()
+
+    # Setting up Postgres changes
+    channel = socket.channel("public:todos")
+    await channel.on_postgres_changes(
+        "*", callback=postgres_changes_callback
+    ).subscribe()
+
+    # Listen indefinitely
+    await socket.listen()
+
+def start_async_realtime_client():
+    asyncio.run(setup_async_realtime_client())
 
 @app.route('/api/buddy/recommend', methods=['GET', 'POST'])
 def recommend():
@@ -476,8 +505,6 @@ def recommend():
             return jsonify({"message": "No suitable match found."}), 404
     except ValueError:
         return jsonify({"error": "Invalid target_id parameter"}), 400
-
-
 
 
 if __name__ == '__main__':
