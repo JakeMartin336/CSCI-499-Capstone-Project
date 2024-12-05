@@ -55,24 +55,79 @@ function displaySeatMapFromEvent(event) {
 }
 
 // Event listener for "Seat POV Finder" button to display seat images
-document.querySelector('.seat-finder .btn-warning').addEventListener('click', function() {
-    // Show the seat POV section and images only after clicking "Seat POV Finder"
-    document.getElementById('seat-pov').style.display = 'flex';
+document.querySelector('.seat-finder .btn-warning').addEventListener('click', async function() {
     const venueName = document.getElementById('venue-name').value.trim();
-    // First, try to fetch venue images from the database
-    fetchVenueImages(venueName).then(images => {
-        // If there are images in the database, use them
-        if (images.length > 0) {
-            updateVenueUI(images);
-        } else {
-            // If no images are found, use the default images
-            useDefaultImages();
-        }
-    }).catch(error => {
-        console.error('Error fetching venue images:', error);
-        useDefaultImages();
-    });
+    const section = document.getElementById('section-number').value.trim();
+    const row = document.getElementById('row-number').value.trim();
+    const seat = document.getElementById('seat-number').value.trim();
+
+    if (!venueName || !section || !row || !seat) {
+        alert('Please fill out all fields to search for a seat POV.');
+        return;
+    }
+
+    const images = await fetchSeatPOV(venueName, section, row, seat);
+    if (images.length > 0) {
+        updateVenueUI(images);
+    } else {
+        alert('No images found for the specified seat.');
+    }
 });
+
+async function fetchSeatPOV(venueName, section, row, seat) {
+    console.log(`Fetching seat POV with: Venue=${venueName}, Section=${section}, Row=${row}, Seat=${seat}`); // Log inputs
+
+    try {
+        const response = await fetch(`/get_venue_images?venue_name=${encodeURIComponent(venueName)}&section=${encodeURIComponent(section)}&row=${encodeURIComponent(row)}&seat=${encodeURIComponent(seat)}`);
+        const data = await response.json();
+
+        console.log('Response from /get_venue_images:', data); // Log response
+
+        if (!response.ok) {
+            console.error('Error:', data.error || data.message);
+            return [];
+        }
+        return data.image_urls || [];
+    } catch (error) {
+        console.error('Network Error:', error);
+        return [];
+    }
+}
+
+
+function updateVenueUI(images) {
+    const seatPovContainer = document.getElementById('seat-pov');
+    console.log('Initial display state:', seatPovContainer.style.display);
+
+    // Clear previous content
+    seatPovContainer.innerHTML = '';
+
+    if (images.length === 0) {
+        seatPovContainer.textContent = 'No images found for the specified seat.';
+        seatPovContainer.style.display = 'block'; // Make container visible even if no images
+        console.log('No images found. Display set to block.');
+        return;
+    }
+
+    // Add images to the container
+    images.forEach(image => {
+        const imgElement = document.createElement('img');
+        imgElement.src = image.image_url;
+        imgElement.alt = 'Seat POV for the specified seat';
+        imgElement.classList.add('venue-image');
+        seatPovContainer.appendChild(imgElement);
+    });
+
+    // Make the container visible
+    seatPovContainer.style.display = 'block';
+    seatPovContainer.classList.add('active');
+    console.log('Images added and display set to block.');
+}
+
+
+
+
+
 
 // Function to use default images when no images are available from the database
 function useDefaultImages() {
@@ -131,20 +186,6 @@ async function fetchVenueImages(venueName) {
 }
 
 
-// Function to update the UI with fetched venue images
-function updateVenueUI(images) {
-    const venueMapContainer = document.getElementById('seat-pov');
-    venueMapContainer.innerHTML = ''; // Clear any previous content
-
-    images.forEach(image => {
-        const imgElement = document.createElement('img');
-        imgElement.src = image.image_url; // Use the `image_url` field from your Supabase database
-        imgElement.alt = `Image for ${image.venue_name}`;
-        imgElement.classList.add('venue-image');
-        venueMapContainer.appendChild(imgElement);
-    });
-}
-
 // Function to add a new venue image via the Flask backend
 async function addVenueImage(formData) {
     fetch('/add_venue_image', {
@@ -155,6 +196,7 @@ async function addVenueImage(formData) {
     .then(data => {
         if (data.message) {
             alert(data.message); // Handle the response
+            alert('Upload was successful!');
         }
     })
     .catch(error => {
