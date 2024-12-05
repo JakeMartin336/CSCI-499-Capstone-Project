@@ -210,38 +210,44 @@ body {
     transition: transform 0.3s ease;
 } */
 
-.seat-pov {
+/* Initially hide the seat-pov container */
+#seat-pov {
+    display: none !important; /* Ensure it starts hidden */
     margin-top: 30px;
     margin-bottom: 30px;
-    
-    padding:10px;
-
+    padding: 10px;
     background-color: #f1f9b7;
     border-radius: 10px;
     border: 2px solid #ddd;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
-    
-    box-sizing: border-box;
-    display: flex;
     flex-wrap: wrap; /* Ensures images wrap to the next row if needed */
     justify-content: space-around; /* Centers the images */
+    box-sizing: border-box;
 }
-.seat-pov img {
+
+/* Make the seat-pov container visible when active */
+#seat-pov.active {
+    display: flex !important; /* Use flexbox to arrange images */
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
+/* Styles for images inside the seat-pov container */
+#seat-pov img {
     max-width: 100%;
     display: block;
     border-radius: 10px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
     overflow: hidden;
-    margin-top:10px;
-    margin-bottom:10px;
+    margin: 10px;
+    transition: transform 0.3s ease; /* Smooth zoom effect */
 }
 
-
-
-.seat-pov img:hover {
-    transform: scale(1.1);  /* Zoom effect on hover */
+#seat-pov img:hover {
+    transform: scale(1.1); /* Zoom effect on hover */
 }
+
 
 /* Footer Styling */
 footer {
