@@ -8,3 +8,4 @@ requests
 realtime
 openai
 gunicorn==19.7.1
+typing-extensions
