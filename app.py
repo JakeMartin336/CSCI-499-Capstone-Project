@@ -12,9 +12,19 @@ import asyncio
 import threading
 from realtime import AsyncRealtimeClient
 
-load_dotenv()
-url = os.environ.get("SUPABASE_URL")
-key = os.environ.get("SUPABASE_KEY")
+from dotenv import load_dotenv
+import os
+
+# Load .env file
+load_dotenv(dotenv_path="C:/Users/farhi/OneDrive/Desktop/CSCI-499-Capstone-Project/.env")
+
+# Check if variables are loaded
+url = os.getenv("SUPABASE_URL")
+key = os.getenv("SUPABASE_API_KEY")
+
+print(f"SUPABASE_URL: {url}")
+print(f"SUPABASE_API_KEY: {key}")
+
 openai_key = os.getenv("OPENAI_API_KEY")
 supabase = create_client(url, key)
 
@@ -509,18 +519,38 @@ def recommend():
 @app.route('/get_venue_images', methods=['GET'])
 def get_venue_images():
     venue_name = request.args.get('venue_name')
+    section = request.args.get('section')
+    row = request.args.get('row')
+    seat = request.args.get('seat')
+    
+    print(f"Parameters received: Venue={venue_name}, Section={section}, Row={row}, Seat={seat}")  # Debug log
+
     if not venue_name:
         return jsonify({'error': 'Venue name is required.'}), 400
+
+    query = supabase.table("venue-images").select("image_url")
+    query = query.eq("venue_name", venue_name)
+    
+    if section:
+        query = query.eq("section", section)
+    if row:
+        query = query.eq("row", row)
+    if seat:
+        query = query.eq("seat", seat)
+    
     try:
-        response = supabase.table("venue-images").select("image_url").eq("venue_name", venue_name).execute()
+        response = query.execute()
+        print(f"Query response: {response.data}")  # Debug log
+
         if not response.data:
-            return jsonify({'message': 'No images found for this venue.'}), 404
-        else:
-            print(response.data)
-            return jsonify({'image_urls': response.data}), 200
+            return jsonify({'message': 'No images found for the specified criteria.'}), 404
+        return jsonify({'image_urls': response.data}), 200
     except Exception as e:
-        print(f"Error fetching venue images: {str(e)}")
+        print(f"Error fetching venue images: {str(e)}")  # Debug log
         return jsonify({'error': 'An error occurred while fetching venue images.'}), 500
+
+
+
 
 
 @app.route('/add_venue_image', methods=['POST'])
