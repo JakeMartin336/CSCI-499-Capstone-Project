@@ -106,11 +106,11 @@ Installing and setting up the app:
      SUPABASE_API_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6anlqbnNoemthbm16YmlkbWxiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjkwOTU1MzQsImV4cCI6MjA0NDY3MTUzNH0.nTzxoslmmR1A-dsomD9EP-sUeAlA0Zk-ViMsM9exN-A"
      OPENAI_API_KEY=your-openai-api-key
      ```
-5. Once everything is set up, run this command:
+5. Once everything is set up, run this command in the terminal:
    ```sh
    flask run
    ```
-   This should run the application and you are able to access it on your local machine.
+   This will run the application and provide you with a localhost link where you are able to access it on your local machine.
 
 6. Add this line to terminal
    ```sh
