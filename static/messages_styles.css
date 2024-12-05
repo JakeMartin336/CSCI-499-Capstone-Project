@@ -5,7 +5,7 @@
 }
 
 body {
-    background-image: url('blue.gif'); 
+    background-image: url('img/blue.gif'); 
     background-size: cover; 
     background-position: contain; 
     font-family: "Montserrat", "Arial";

@@ -10,7 +10,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-image: url('blue.gif'); /* Update with your image path */
+    background-image: url('img/blue.gif'); /* Update with your image path */
     background-size: cover;
     background-position: center;
 }
