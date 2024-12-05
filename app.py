@@ -313,10 +313,10 @@ def concerts():
     user_location = session.get('user_info')['user_location']
 
     if len(all_concerts) == 0:
-        # all_concerts = example_concerts()
-        for genre in user_genres:
-            recc_concerts = get_concerts(genre, user_location)
-            all_concerts.extend(recc_concerts)
+        all_concerts = example_concerts()
+        # for genre in user_genres:
+        #     recc_concerts = get_concerts(genre, user_location)
+        #     all_concerts.extend(recc_concerts)
     
     return render_template("concert.html", all_concerts=all_concerts,)
 
@@ -379,6 +379,9 @@ def messages():
     friends = get_user_friends(account_id)
     concerts = get_user_concerts(account_id)
     return render_template('messages.html', friends=friends, concerts=concerts, username=username)
+
+
+
 
 
 @socketio.on('join')
@@ -461,10 +464,6 @@ def initialize_app():
         fetch_all_users_as_json()
     setup_faiss_index()
 
-# References:
-# https://github.com/supabase/supabase-py/issues/909
-# https://github.com/supabase/realtime-py/blob/main/example/app.py#L66
-# This is a function that will fetch users in json once there are changes in the DB
 def postgres_changes_callback(payload, *args):
     print("*: ", payload)
     fetch_all_users_as_json()
@@ -504,6 +503,64 @@ def recommend():
             return jsonify({"message": "No suitable match found."}), 404
     except ValueError:
         return jsonify({"error": "Invalid target_id parameter"}), 400
+
+
+
+@app.route('/get_venue_images', methods=['GET'])
+def get_venue_images():
+    venue_name = request.args.get('venue_name')
+    if not venue_name:
+        return jsonify({'error': 'Venue name is required.'}), 400
+    try:
+        response = supabase.table("venue-images").select("image_url").eq("venue_name", venue_name).execute()
+        if not response.data:
+            return jsonify({'message': 'No images found for this venue.'}), 404
+        else:
+            print(response.data)
+            return jsonify({'image_urls': response.data}), 200
+    except Exception as e:
+        print(f"Error fetching venue images: {str(e)}")
+        return jsonify({'error': 'An error occurred while fetching venue images.'}), 500
+
+
+@app.route('/add_venue_image', methods=['POST'])
+def add_venue_image():
+    venue_name = request.form.get('venue_name')
+    section = request.form.get('section')
+    row = request.form.get('row')
+    seat = request.form.get('seat')
+    image = request.files.get('image')
+    
+    if not image:
+        return jsonify({'error': 'No image file provided.'}), 400
+
+    try:
+        image_bytes = image.read()
+        image_filename = f"{image.filename}"
+        
+        upload_response = supabase.storage.from_('venue-images-bucket').upload(image_filename, image_bytes)
+        public_url = supabase.storage.from_('venue-images-bucket').get_public_url(image_filename)
+
+        insert_response = (
+            supabase.table("venue-images")
+            .insert({
+                "venue_name": venue_name,
+                "section": section,
+                "row": row,
+                "seat": seat,
+                "image_url": public_url,
+            })
+            .execute()
+        )
+
+        if insert_response.get('status_code', 200) != 200:
+            return jsonify({'error': 'Failed to insert image metadata into database.'}), 500
+
+        return jsonify({'message': 'Venue image added successfully!', 'image_url': public_url}), 201
+
+    except Exception as e:
+        print(f"Error occurred: {str(e)}")
+        return jsonify({'error': f"Failed to upload image: {str(e)}"}), 500
 
 
 if __name__ == '__main__':
