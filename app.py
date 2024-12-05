@@ -16,14 +16,11 @@ from dotenv import load_dotenv
 import os
 
 # Load .env file
-load_dotenv(dotenv_path="C:/Users/farhi/OneDrive/Desktop/CSCI-499-Capstone-Project/.env")
+load_dotenv()
 
 # Check if variables are loaded
 url = os.getenv("SUPABASE_URL")
-key = os.getenv("SUPABASE_API_KEY")
-
-print(f"SUPABASE_URL: {url}")
-print(f"SUPABASE_API_KEY: {key}")
+key = os.getenv("SUPABASE_KEY")
 
 openai_key = os.getenv("OPENAI_API_KEY")
 supabase = create_client(url, key)
