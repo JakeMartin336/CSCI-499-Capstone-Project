@@ -117,7 +117,7 @@ Installing and setting up the app:
    python app.py
    ```
    This will provide you with a link to where you can run the application. Follow the link and you can start using the application!
-## or
+## or you can follow this link to use our app 🎶
  Run this deployed version of it:
   - [https://csci-499-capstone-project.onrender.com](https://csci-499-capstone-project.onrender.com)
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
