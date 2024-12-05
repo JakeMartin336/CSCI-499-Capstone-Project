@@ -1,6 +1,6 @@
 /* General Styling */
 body {
-    background-image: url('blue.gif');
+    background-image: url('img/blue.gif');
     font-family: "Montserrat", "arial";
     background-attachment: fixed;
     background-size: cover; /* Cover the entire viewport */

@@ -19,7 +19,7 @@
 
 <!-- Navbar top -->
 <div class="navbar-top">
-    <img src="{{ url_for('static', filename='logo.png') }}" alt="ConcertConnect Logo" style="height: 90px; margin-right: 200px;" />
+    <img src="{{ url_for('static', filename='img/logo.png') }}" alt="ConcertConnect Logo" style="height: 90px; margin-right: 200px;" />
     <ul>
         <div class="explore-button-container">
             <button class="button" onclick="window.location.href='/landing'">Home <i class="fa fa-home"></i></button>
@@ -93,9 +93,9 @@
 
 <!-- Seat POV Display Section -->
 <div class="container seat-pov" id="seat-pov" style="display: none;"> <!-- Initially hidden -->
-    <img src="{{ url_for('static', filename='seat1.png') }}" alt="Seat View 1" id="seat-view-1" style="display: none;" > <!-- Hidden by default -->
-    <img src="{{ url_for('static', filename='seat2.png') }}" alt="Seat View 2" id="seat-view-2" style="display: none;"> <!-- Hidden by default -->
-    <img src="{{ url_for('static', filename='seat3.png') }}" alt="Seat View 3" id="seat-view-3" style="display: none;"> <!-- Hidden by default -->
+    <img src="{{ url_for('static', filename='img/seat1.png') }}" alt="Seat View 1" id="seat-view-1" style="display: none;" > <!-- Hidden by default -->
+    <img src="{{ url_for('static', filename='img/seat2.png') }}" alt="Seat View 2" id="seat-view-2" style="display: none;"> <!-- Hidden by default -->
+    <img src="{{ url_for('static', filename='img/seat3.png') }}" alt="Seat View 3" id="seat-view-3" style="display: none;"> <!-- Hidden by default -->
 </div>
 
 
@@ -113,6 +113,6 @@
 <script>
   console.log('Supabase library loaded:', typeof supabase.createClient);
 </script>
-<script src="{{ url_for('static', filename='venue.js') }}" defer></script>
+<script src="{{ url_for('static', filename='js/venue.js') }}" defer></script>
 </body>
 </html>

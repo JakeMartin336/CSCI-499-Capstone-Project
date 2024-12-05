@@ -82,7 +82,6 @@ async function updateCardWithNewUser(userId) {
 }
 
 
-
 let currentIndex = 0;
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -91,10 +90,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function updateConcertDetails(index) {
-    // if (allConcertsData.length === 0){
-    //     displayEmptyConcertList();
-    // }
-    // else{
     const concert = allConcertsData[index];
     document.getElementById("concertImage").src = concert.thumbnail || "";
     document.getElementById("concertName").textContent = concert.name || "No Name";
@@ -112,15 +107,7 @@ function updateConcertDetails(index) {
         li.innerHTML = `<strong>${ticket.source}:</strong> <a href="${ticket.link}" target="_blank">${ticket.link}</a>`;
         ticketLinks.appendChild(li);
     });
-    // }
 };
-
-// function displayEmptyConcertList(){
-//     document.getElementById('prevTicket').style.display = "none";
-//     document.getElementById('nextTicket').style.display = "none";
-//     document.getElementById('saveConcertButton').style.display = "none";
-//     document.getElementById('infoButton').style.display = "none";
-// }
 
 function showConcertIndex(direction) { 
     if (direction === 'next' && currentIndex < allConcertsData.length - 1) {
