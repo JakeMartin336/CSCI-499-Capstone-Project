@@ -191,24 +191,53 @@ body {
 }
 
 /* Seat POV Section */
-.seat-pov {
+/* .seat-pov {
     margin-top: 30px;
     padding: 20px;
     background-color: #f1f9b7;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    display: none;  /* Initially hidden */
+    display: none;
     justify-content: space-around;
-}
+} */
 
-.seat-pov img {
+/* .seat-pov img {
     width: 400px;
     height: 300px;
     border-radius: 10px;
     border: 2px solid #ddd;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
+} */
+
+.seat-pov {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    
+    padding:10px;
+
+    background-color: #f1f9b7;
+    border-radius: 10px;
+    border: 2px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap; /* Ensures images wrap to the next row if needed */
+    justify-content: space-around; /* Centers the images */
 }
+.seat-pov img {
+    max-width: 100%;
+    display: block;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    margin-top:10px;
+    margin-bottom:10px;
+}
+
+
 
 .seat-pov img:hover {
     transform: scale(1.1);  /* Zoom effect on hover */
@@ -224,6 +253,3 @@ footer {
     border-radius: 10px 10px 0 0;
     box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
 }
-
-
-

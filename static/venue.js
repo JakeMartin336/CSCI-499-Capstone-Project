@@ -16,7 +16,6 @@ document.getElementById('search-btn').addEventListener('click', function() {
     }
 });
 
-// Function to search for events by venue name
 async function searchEventsByVenue(venueName) {
     const apiKey = 'bv3fIbkBp4hjBLjVOBBessILI48oEYGG'; // Replace with your Ticketmaster API key
     try {
@@ -28,15 +27,15 @@ async function searchEventsByVenue(venueName) {
 
         if (data._embedded && data._embedded.events.length > 0) {
             const event = data._embedded.events[0];
-            console.log("Event Data:", event);
+            // console.log("Event Data:", event);
             displaySeatMapFromEvent(event);
         } else {
             document.getElementById('venue-map').style.display = 'none';
-            document.getElementById('message').textContent = `No events found for "${venueName}".`;
+            // document.getElementById('message').textContent = `No events found for "${venueName}".`;
         }
     } catch (error) {
         console.error("Error fetching event data:", error);
-        document.getElementById('message').textContent = "There was an error retrieving the event information.";
+        // document.getElementById('message').textContent = "There was an error retrieving the event information.";
     }
 }
 
@@ -48,10 +47,10 @@ function displaySeatMapFromEvent(event) {
         }
         document.getElementById('venue-map').src = event.seatmap.staticUrl;
         document.getElementById('venue-map').style.display = 'block';
-        document.getElementById('message').textContent = `Seat map for ${event.name}`;
+        // document.getElementById('message').textContent = `Seat map for ${event.name}`;
     } else {
         document.getElementById('venue-map').style.display = 'none';
-        document.getElementById('message').textContent = "Seat map not available for this event.";
+        // document.getElementById('message').textContent = "Seat map not available for this event.";
     }
 }
 
@@ -59,21 +58,109 @@ function displaySeatMapFromEvent(event) {
 document.querySelector('.seat-finder .btn-warning').addEventListener('click', function() {
     // Show the seat POV section and images only after clicking "Seat POV Finder"
     document.getElementById('seat-pov').style.display = 'flex';
+    const venueName = document.getElementById('venue-name').value.trim();
+    // First, try to fetch venue images from the database
+    fetchVenueImages(venueName).then(images => {
+        // If there are images in the database, use them
+        if (images.length > 0) {
+            updateVenueUI(images);
+        } else {
+            // If no images are found, use the default images
+            useDefaultImages();
+        }
+    }).catch(error => {
+        console.error('Error fetching venue images:', error);
+        useDefaultImages();
+    });
+});
+
+// Function to use default images when no images are available from the database
+function useDefaultImages() {
     document.getElementById('seat-view-1').style.display = 'block';
     document.getElementById('seat-view-2').style.display = 'block';
     document.getElementById('seat-view-3').style.display = 'block';
-});
+}
 
-// Simulate POV upload button
-document.getElementById('upload-pov').addEventListener('click', function() {
-    const section = document.getElementById('section-number').value;
-    const row = document.getElementById('row-number').value;
-    const seat = document.getElementById('seat-number').value;
-
-    if (section && row && seat) {
-        alert(`Seat POV for Section: ${section}, Row: ${row}, Seat: ${seat} uploaded!`);
-        // Logic to fetch and display seat views can go here
-    } else {
-        alert('Please fill in all the fields.');
+let formData = null;
+document.getElementById('upload-image').addEventListener('change', function(event) {
+    const file = event.target.files[0]; // Get the uploaded file
+    if (file) {
+        // Create a FormData object to send the image to the Flask server
+        formData = new FormData();
+        formData.append('image', file);
     }
 });
+
+
+document.getElementById('upload-pov').addEventListener('click', function () {
+    const venueName = document.getElementById('venue-name').value.trim();
+    const section = document.getElementById('section-number').value.trim();
+    const row = document.getElementById('row-number').value.trim();
+    const seat = document.getElementById('seat-number').value.trim();
+    
+    if (venueName && section && row && seat && formData) {
+        formData.append('venue_name', venueName);
+        formData.append('section', section);
+        formData.append('row', row);
+        formData.append('seat', seat);
+
+        addVenueImage(formData);
+    } else {
+        alert('Please fill out all fields before uploading.');
+    }
+});
+
+
+
+async function fetchVenueImages(venueName) {
+    try {
+        const response = await fetch(`/get_venue_images?venue_name=${encodeURIComponent(venueName)}`);
+        const data = await response.json();
+
+        if (!response.ok) {
+            console.error('Server Error:', data.error || data.message || 'Unknown error occurred');
+            return []; // Return an empty array for errors
+        }
+
+        console.log('Fetched Venue Images:', data.image_urls); // Debug log
+        return data.image_urls || []; // Return the images if available
+    } catch (error) {
+        console.error('Network Error:', error);
+        return []; // Return an empty array for network errors
+    }
+}
+
+
+// Function to update the UI with fetched venue images
+function updateVenueUI(images) {
+    const venueMapContainer = document.getElementById('seat-pov');
+    venueMapContainer.innerHTML = ''; // Clear any previous content
+
+    images.forEach(image => {
+        const imgElement = document.createElement('img');
+        imgElement.src = image.image_url; // Use the `image_url` field from your Supabase database
+        imgElement.alt = `Image for ${image.venue_name}`;
+        imgElement.classList.add('venue-image');
+        venueMapContainer.appendChild(imgElement);
+    });
+}
+
+// Function to add a new venue image via the Flask backend
+async function addVenueImage(formData) {
+    fetch('/add_venue_image', {
+        method: 'POST',
+        body: formData // Send the FormData object to Flask
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message) {
+            alert(data.message); // Handle the response
+        }
+    })
+    .catch(error => {
+        console.error('Error uploading image:', error);
+    });
+
+    const venueName = document.getElementById('venue-name').value.trim();
+    fetchVenueImages(venueName);
+}
