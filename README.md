@@ -113,6 +113,6 @@ Installing and setting up the app:
    This should run the application and you are able to access it on your local machine.
 ## or
  Run this deployed version of it:
-  - [https://csci-499-capstone-project.onrender.com](https://csci-499-capstone-project.onrender.com)
+  - [[https://csci-499-capstone-project.onrender.com](https://csci-499-capstone-project.onrender.com)](https://csci-499-capstone-project.onrender.com)
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
