@@ -111,6 +111,12 @@ Installing and setting up the app:
    flask run
    ```
    This should run the application and you are able to access it on your local machine.
+
+6. Add this line to terminal
+   ```sh
+   python app.py
+   ```
+   This will provide you with a link to where you can run the application. Follow the link and you can start using the application!
 ## or
  Run this deployed version of it:
   - [https://csci-499-capstone-project.onrender.com](https://csci-499-capstone-project.onrender.com)
