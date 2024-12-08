@@ -103,7 +103,7 @@ Installing and setting up the app:
   - Copy the following template and fill in your own values:
      ```bash
      SUPABASE_URL="https://azjyjnshzkanmzbidmlb.supabase.co"
-     SUPABASE_API_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6anlqbnNoemthbm16YmlkbWxiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjkwOTU1MzQsImV4cCI6MjA0NDY3MTUzNH0.nTzxoslmmR1A-dsomD9EP-sUeAlA0Zk-ViMsM9exN-A"
+     SUPABASE_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImF6anlqbnNoemthbm16YmlkbWxiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjkwOTU1MzQsImV4cCI6MjA0NDY3MTUzNH0.nTzxoslmmR1A-dsomD9EP-sUeAlA0Zk-ViMsM9exN-A"
      OPENAI_API_KEY=your-openai-api-key
      ```
 5. Once everything is set up, run this command in the terminal:
