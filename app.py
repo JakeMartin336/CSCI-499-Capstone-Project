@@ -43,25 +43,25 @@ def get_user_friends(user_id):
             .execute()
         )
         user_contacts = get_friends_ID.data[0]['contacts']
+        map_of_friends = {}
+        for friend in user_contacts:
+            try:
+                get_friends_name = (
+                    supabase.table("users")
+                    .select("user_name")
+                    .eq("id", friend)
+                    .execute()
+                )
+                map_of_friends[friend]=get_friends_name.data[0]['user_name']
+            except Exception as error:
+                print(f"Error fetching user contacts names: {error}")
+                # return "Database connection error. Please try again later."
+                return None
+        return map_of_friends
     except Exception as error:
         print(f"Error fetching user contacts: {error}")
-        return "Database connection error. Please try again later."
-    
-    map_of_friends = {}
-    for friend in user_contacts:
-        try:
-            get_friends_name = (
-                supabase.table("users")
-                .select("user_name")
-                .eq("id", friend)
-                .execute()
-            )
-            map_of_friends[friend]=get_friends_name.data[0]['user_name']
-        except Exception as error:
-            print(f"Error fetching user contacts names: {error}")
-            return "Database connection error. Please try again later."
-    
-    return map_of_friends
+        # return "Database connection error. Please try again later."
+        return None
     
 
 def insert_survey(user_id, age, location, genres, budget, travel_time, account_description):
