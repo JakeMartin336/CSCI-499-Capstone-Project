@@ -73,16 +73,16 @@ function CloseChat(){
 };
 
 const CreateMessage = (name, msg) => {
-    var chatMessages = document.getElementById("chatMessages");
-    const newMessage = document.createElement('div');
-    if (name !== username) {
-        newMessage.classList.add('message', 'received');
-    }
-    else{
-        newMessage.classList.add('message', 'sent');
-    }
-    newMessage.textContent = msg;
-    chatMessages.appendChild(newMessage);
+    // var chatMessages = document.getElementById("chatMessages");
+    // const newMessage = document.createElement('div');
+    // if (name !== username) {
+    //     newMessage.classList.add('message', 'received');
+    // }
+    // else{
+    //     newMessage.classList.add('message', 'sent');
+    // }
+    // newMessage.textContent = msg;
+    // chatMessages.appendChild(newMessage);
 };
 
 socketio.on("message", (data) => {
