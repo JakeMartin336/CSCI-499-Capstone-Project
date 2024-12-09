@@ -320,10 +320,10 @@ def concerts():
     user_location = session.get('user_info')['user_location']
 
     if len(all_concerts) == 0:
-        all_concerts = example_concerts()
-        # for genre in user_genres:
-        #     recc_concerts = get_concerts(genre, user_location)
-        #     all_concerts.extend(recc_concerts)
+        # all_concerts = example_concerts()
+        for genre in user_genres:
+            recc_concerts = get_concerts(genre, user_location)
+            all_concerts.extend(recc_concerts)
     
     return render_template("concert.html", all_concerts=all_concerts,)
 
