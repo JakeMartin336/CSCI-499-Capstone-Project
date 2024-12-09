@@ -11,6 +11,8 @@ document.getElementById('search-btn').addEventListener('click', function() {
 
         // Call the function to search for events and display seat map
         searchEventsByVenue(venueName);
+        const seatPovContainer = document.getElementById('seat-pov');
+        seatPovContainer.innerHTML = '';
     } else {
         alert('Please enter a venue name.');
     }
