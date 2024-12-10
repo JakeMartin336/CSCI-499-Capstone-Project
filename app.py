@@ -1,68 +1,25 @@
 from flask import Flask, render_template, request, jsonify, url_for, redirect, session
-from flask_socketio import SocketIO, send, join_room, leave_room
 import os
 from supabase import create_client, Client
 from dotenv import load_dotenv
+import faiss
 from api import get_concerts, example_concerts
-import secrets
 from fetch_user import fetch_all_users_as_json
 import numpy as np
 from faiss_match import recommend_best_match_faiss, setup_faiss_index
-import asyncio
-import threading
-from realtime import AsyncRealtimeClient
 
-from dotenv import load_dotenv
-import os
-
-# Load .env file
 load_dotenv()
-
-# Check if variables are loaded
-url = os.getenv("SUPABASE_URL")
-key = os.getenv("SUPABASE_KEY")
-
+url = os.environ.get("SUPABASE_URL")
+key = os.environ.get("SUPABASE_KEY")
 openai_key = os.getenv("OPENAI_API_KEY")
 supabase = create_client(url, key)
 
 app = Flask(__name__, static_folder='static')
-# app.config["TEMPLATES_AUTO_RELOAD"] = True
+app.config["TEMPLATES_AUTO_RELOAD"] = True
+
+import secrets
 app.secret_key = secrets.token_hex(16)
-socketio = SocketIO(app)
 
-# Used to keep track of user's that are actively chatting/in a chatting room
-rooms = {}
-
-def get_user_friends(user_id):
-    user_contacts = None
-    try:
-        get_friends_ID = (
-            supabase.table("users")
-            .select("contacts")
-            .eq("id", user_id)
-            .execute()
-        )
-        user_contacts = get_friends_ID.data[0]['contacts']
-    except Exception as error:
-        print(f"Error fetching user contacts: {error}")
-        return "Database connection error. Please try again later."
-    
-    map_of_friends = {}
-    for friend in user_contacts:
-        try:
-            get_friends_name = (
-                supabase.table("users")
-                .select("user_name")
-                .eq("id", friend)
-                .execute()
-            )
-            map_of_friends[friend]=get_friends_name.data[0]['user_name']
-        except Exception as error:
-            print(f"Error fetching user contacts names: {error}")
-            return "Database connection error. Please try again later."
-    
-    return map_of_friends
-    
 
 def insert_survey(user_id, age, location, genres, budget, travel_time, account_description):
     if account_description == "FAIL ME":
@@ -147,35 +104,64 @@ def create_user(username, email, password):
 
 
 def get_user_info(account_id):
+    # Get user information from the Supabase "users" table
     user_info = None
     try:
+        # Use `select` to retrieve the columns where id == account_id(`eq` to filter by `id`)
         response = supabase.table("users").select("*").eq("id", account_id).execute()
+        
+        # Check if data exists in the response
         if response.data:
             user_info = response.data[0] 
-            columns = ["id", "created_at", "user_name", "age", "email_address", "account_description", 
-                       "user_location", "music_genre", "budget", "travel_time", "contacts"]
-            user_info = {col: user_info.get(col) for col in columns}
+
+            # Convert response to dictionary with preferred column names, if necessary
+            columns = ["account_id", "created_at", "user_name", "age", "email_address", "account_description", 
+                       "user_location", "music_genre", "budget", "travel_time", "contact_ids"]
+            user_info = {col: user_info.get(col) for col in columns}  # Ensures consistent keys
+            # print(f"Fetched user info: {user_info}")
         else:
             print("No user found with that account_id.")
+    
     except Exception as error:
         print(f"Error fetching user info: {error}")
     
     return user_info
 
+@app.route('/api/user-info/<user_id>', methods=['GET', 'POST'])
+def user_info(user_id):
+    user_info = get_user_info(int(user_id))
+    if user_info:
+        print("I am user_info", user_info)
+        return jsonify(user_info)  # Respond with user info in json format
+    else:
+        return jsonify({"error": "User not found"}), 404
 
 def get_user_concerts(user_id):
     concerts = []
     try:
-        response = supabase.table("concerts").select("*").eq("user_id", user_id).execute()
-        if response.data:
+        # Get user concerts from the supabase 'user_concert' DB, where the id is user_id
+        response = supabase.table("user_concerts").select("user_concert_id, status").eq("id", user_id).execute()
+        if response.status_code == 200:
             concerts = response.data 
         else:
             print(f"Error fetching user concerts: {response.error}")
     except Exception as error:
         print(f"Error fetching user concerts: {error}")
-    
-    return concerts
 
+def get_user_concerts(user_id):
+    # concerts = []
+    # try:
+    #     # Get user concerts from the supabase 'user_concert' DB, where the id is user_id
+    #     response = supabase.table("concerts").select("*").eq("user_id", user_id).execute()
+    #     if response.status_code == 200:
+    #         concerts = response.data 
+    #     else:
+    #         print(f"Error fetching user concerts: {response.error}")
+    # except Exception as error:
+    #     print(f"Error fetching user concerts: {error}")
+    response = supabase.table("concerts").select("*").eq("user_id", user_id).execute()
+    concerts = response.data
+    return concerts
 
 def insert_concert(user_id, concert_status, concert_name, concert_image, concert_date):
     try:
@@ -189,28 +175,17 @@ def insert_concert(user_id, concert_status, concert_name, concert_image, concert
             .execute()
         )
         if get_concert.data:
-            if concert_status == 'DELETE':
-                delete_concert = (
-                    supabase.table("concerts")
-                    .delete()
-                    .eq("user_id", user_id)
-                    .eq("concert_name", concert_name)
-                    .eq("concert_image", concert_image)
-                    .eq("concert_date", concert_date)
-                    .execute()
-                )
-            else:
-                update_concert = (
-                    supabase.table("concerts")
-                    .update({
-                        "concert_status" : concert_status
-                    })
-                    .eq("user_id", user_id)
-                    .eq("concert_name", concert_name)
-                    .eq("concert_image", concert_image)
-                    .eq("concert_date", concert_date)
-                    .execute()
-                )
+            update_concert = (
+                supabase.table("concerts")
+                .update({
+                    "concert_status" : concert_status
+                })
+                .eq("user_id", user_id)
+                .eq("concert_name", concert_name)
+                .eq("concert_image", concert_image)
+                .eq("concert_date", concert_date)
+                .execute()
+            )
         else:
             insert_concert = (
                 supabase.table("concerts")
@@ -308,29 +283,83 @@ def landing():
         user_concerts = get_user_concerts(account_id)
 
     session['user_info'] = user_info
+    # session['user_concerts'] = user_concerts
+    # print(user_concerts)
     return render_template("landing.html", user=user_info, concerts=user_concerts)
 
+# @app.route("/concerts")
+# def concerts():
+#     user_info = session.get('user_info')
+#     for genre in user_info['music_genre']:
+#         get_concerts(genre, user_info['user_location'])
+#     return render_template("concert.html")
 
+# @app.route("/concerts")
+# def concerts():
+#     # user_info = session.get('user_info')
+#     # concerts_list = []
+#     # if user_info:
+#     #     for genre in user_info['music_genre']:
+#     #         concerts_by_genre = get_concerts(genre, user_info['user_location'])
+#     #         concerts_list.append(concerts_by_genre)
+#     # return render_template("concert_list.html", concerts=concerts_list)
+    
+#     concerts_list = example_concerts()
+#     return render_template("concert.html", concert=concerts_list)
+
+list_index = 0
 all_concerts = []
+
 @app.route("/concerts")
 def concerts():
+    global list_index
     global all_concerts
 
-    user_genres = session.get('user_info')['music_genre']
-    user_location = session.get('user_info')['user_location']
-
-    if len(all_concerts) == 0:
-        all_concerts = example_concerts()
-        # for genre in user_genres:
-        #     recc_concerts = get_concerts(genre, user_location)
-        #     all_concerts.extend(recc_concerts)
+    user_info = session.get('user_info')
+    user_genres = user_info['music_genre']
+    user_location = user_info['user_location']
     
-    return render_template("concert.html", all_concerts=all_concerts,)
+    if len(all_concerts) == 0:
+        # all_concerts = example_concerts()
+        for genre in user_genres:
+            recc_concerts = get_concerts(genre, user_location)
+            all_concerts.extend(recc_concerts)
+    
+    # session['all_concerts'] = all_concerts
+
+    return render_template("concert.html", concert=all_concerts[list_index], list_index=list_index, concert_count=len(all_concerts))
+
+
+@app.route("/concerts/previous")
+def previous_concert():
+    global list_index
+    # all_concerts = session.get('all_concerts')
+    global all_concerts 
+
+    if list_index > 0:
+        list_index -= 1
+    return render_template("concert.html", concert=all_concerts[list_index], list_index=list_index, concert_count=len(all_concerts))
+
+
+@app.route("/concerts/next")
+def next_concert():
+    global list_index
+    # all_concerts = session.get('all_concerts')
+    global all_concerts
+    
+    if list_index < len(all_concerts) - 1:
+        list_index += 1 
+    return render_template("concert.html", concert=all_concerts[list_index], list_index=list_index, concert_count=len(all_concerts))
 
 
 @app.route('/venues')
 def venue():
     return render_template('venue.html')
+
+
+@app.route('/messages')
+def messages():
+    return render_template('messages.html')
 
 
 @app.route('/logout')
@@ -357,140 +386,15 @@ def save_concert():
     return jsonify({"message": f"Concert '{name}' has been marked as {status}!"})
 
 
-@app.route('/concert_attendance', methods=['POST'])
-def concert_attendance():
-    user_id = session.get('user_id')
-
-    data = request.get_json()
-    attendance = data.get('attendance')
-    concert_name = data.get('concert_name')
-    concert_date = data.get('concert_date')
-    concert_image = data.get('concert_image')
-    
-    if attendance == 'yes':
-        attendance = 'attended'
-        message = f"Concert '{concert_name}' has been marked as {attendance}!"
-    if attendance == 'no':
-        attendance = 'DELETE'
-        message = f"Concert '{concert_name}' has been deleted!"
-
-    updated_concert = insert_concert(user_id, attendance, concert_name, concert_image, concert_date)
-    
-    return jsonify({"message": message})
-
-
-@app.route('/messages')
-def messages():
-    account_id = session.get('user_id')
-    username = session.get('user_info')['user_name']
-    friends = get_user_friends(account_id)
-    concerts = get_user_concerts(account_id)
-    return render_template('messages.html', friends=friends, concerts=concerts, username=username)
-
-
-
-
-
-@socketio.on('join')
-def on_join(data):
-    userID = session.get('user_id')
-    friendID = data['friendID']
-    
-    # room = (userID, friendID)
-    room=1
-
-    if not room or not userID or not friendID:
-        return
-
-    # Create the room if it doesn't exist
-    if room not in rooms:
-        rooms[room] = {'users': [userID, friendID], 'messages': []}
-    
-    # Ensure the user is added to the room
-    join_room(room)
-    send(f'{userID} has joined the room.', to=room)
-    print(f'Room created: {room}')
-
-@socketio.on('leave')
-def on_leave(data):
-    userID = session.get('user_id')
-    friendID = data['friendID']
-    
-    # room = (userID, friendID)
-    room=1
-
-    if room in rooms:
-        leave_room(room)
-        del rooms[room]  # Remove the room after leaving
-        send(f'{userID} has left the room.', to=room)
-        print(f'Room removed: {room}')
-
-@socketio.on('message')
-def on_message(data):
-    userID = session.get('user_id')
-    friendID = data['friendID']
-    
-    # room = (userID, friendID)
-    room=1
-
-    if room not in rooms:
-        return
-
-    content = {
-        "name": userID,
-        "message": data["message"]
-    }
-
-    # Send the message to the room
-    send(content, to=room)
-    rooms[room]["messages"].append(content)
-    print(f"Message sent to {room}: {content}")
-
-
-@app.route('/api/user-info/<user_id>', methods=['GET', 'POST'])
-def user_info(user_id):
-    user_info = get_user_info(int(user_id))
-    if user_info:
-        print("I am user_info", user_info)
-        return jsonify(user_info)  # Respond with user info in json format
-    else:
-        return jsonify({"error": "User not found"}), 404
-
-
 def initialize_app():
     print("Initializing app...")
-    listener_thread = threading.Thread(target=start_async_realtime_client, daemon=True)
-    listener_thread.start()
-    
-    print("Listening...")
     if not os.path.exists("users_data.json"):
         print("'users_data.json' not found. Creating it...")
         fetch_all_users_as_json()
     else:
         print("'users_data.json' already exists.") # This will load all the users from supabase into a json so we can use them 
-        fetch_all_users_as_json()
+
     setup_faiss_index()
-
-def postgres_changes_callback(payload, *args):
-    print("*: ", payload)
-    fetch_all_users_as_json()
-
-async def setup_async_realtime_client():
-    socket = AsyncRealtimeClient(f"{url}/realtime/v1", key, auto_reconnect=True)
-    await socket.connect()
-
-    # Setting up Postgres changes
-    channel = socket.channel("public:todos")
-    await channel.on_postgres_changes(
-        "*", callback=postgres_changes_callback
-    ).subscribe()
-
-    # Listen indefinitely
-    await socket.listen()
-
-def start_async_realtime_client():
-    asyncio.run(setup_async_realtime_client())
-
 @app.route('/api/buddy/recommend', methods=['GET', 'POST'])
 def recommend():
     print("Route hit!")
@@ -511,86 +415,6 @@ def recommend():
     except ValueError:
         return jsonify({"error": "Invalid target_id parameter"}), 400
 
-
-
-@app.route('/get_venue_images', methods=['GET'])
-def get_venue_images():
-    venue_name = request.args.get('venue_name')
-    section = request.args.get('section')
-    row = request.args.get('row')
-    seat = request.args.get('seat')
-    
-    print(f"Parameters received: Venue={venue_name}, Section={section}, Row={row}, Seat={seat}")  # Debug log
-
-    if not venue_name:
-        return jsonify({'error': 'Venue name is required.'}), 400
-
-    query = supabase.table("venue-images").select("image_url")
-    query = query.eq("venue_name", venue_name)
-    
-    if section:
-        query = query.eq("section", section)
-    if row:
-        query = query.eq("row", row)
-    if seat:
-        query = query.eq("seat", seat)
-    
-    try:
-        response = query.execute()
-        print(f"Query response: {response.data}")  # Debug log
-
-        if not response.data:
-            return jsonify({'message': 'No images found for the specified criteria.'}), 404
-        return jsonify({'image_urls': response.data}), 200
-    except Exception as e:
-        print(f"Error fetching venue images: {str(e)}")  # Debug log
-        return jsonify({'error': 'An error occurred while fetching venue images.'}), 500
-
-
-
-
-
-@app.route('/add_venue_image', methods=['POST'])
-def add_venue_image():
-    venue_name = request.form.get('venue_name')
-    section = request.form.get('section')
-    row = request.form.get('row')
-    seat = request.form.get('seat')
-    image = request.files.get('image')
-    
-    if not image:
-        return jsonify({'error': 'No image file provided.'}), 400
-
-    try:
-        image_bytes = image.read()
-        image_filename = f"{image.filename}"
-        
-        upload_response = supabase.storage.from_('venue-images-bucket').upload(image_filename, image_bytes)
-        public_url = supabase.storage.from_('venue-images-bucket').get_public_url(image_filename)
-
-        insert_response = (
-            supabase.table("venue-images")
-            .insert({
-                "venue_name": venue_name,
-                "section": section,
-                "row": row,
-                "seat": seat,
-                "image_url": public_url,
-            })
-            .execute()
-        )
-
-        if insert_response.get('status_code', 200) != 200:
-            return jsonify({'error': 'Failed to insert image metadata into database.'}), 500
-
-        return jsonify({'message': 'Venue image added successfully!', 'image_url': public_url}), 201
-
-    except Exception as e:
-        print(f"Error occurred: {str(e)}")
-        return jsonify({'error': f"Failed to upload image: {str(e)}"}), 500
-
-
 if __name__ == '__main__':
-    # app.run(debug=True)
     initialize_app()
-    socketio.run(app, debug=True)
+    app.run(debug=True)

@@ -1,4 +1,3 @@
-
 async function showMatchingSection() {
     const matchingSection = document.querySelector('.matching');
     matchingSection.style.display = 'none';
@@ -16,6 +15,8 @@ async function generateNewBuddy() {
                 'Content-Type': 'application/json',
             },
         });
+
+       
 
         if (!response.ok) {
             try {
@@ -35,6 +36,7 @@ async function generateNewBuddy() {
         if (recommendedUserIds) {
             console.log(recommendedUserIds)
             await updateCardWithNewUser(recommendedUserIds);  // wait for the update
+            
         } else {
             alert('No new recommendations available!');
         }
@@ -43,8 +45,6 @@ async function generateNewBuddy() {
         console.error('Error fetching new buddy:', error);
     }
 }
-
-
 
 async function updateCardWithNewUser(userId) {
     try {
@@ -80,6 +80,9 @@ async function updateCardWithNewUser(userId) {
         console.error('Error updating card content:', error);
     }
 }
+
+
+
 
 
 let currentIndex = 0;

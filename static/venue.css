@@ -147,6 +147,9 @@ body {
     max-height: 80vh;          /* Limits height to 80% of the viewport height */
     border-radius: 10px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); /* Adds a subtle shadow around the map */
+    margin-left: auto;
+    margin-right: auto;
+
 }
 
 
