@@ -360,24 +360,32 @@ def save_concert():
 @app.route('/concert_attendance', methods=['POST'])
 def concert_attendance():
     user_id = session.get('user_id')
+    if not user_id:
+        return jsonify({"error": "User not logged in"}), 401
 
     data = request.get_json()
+
     attendance = data.get('attendance')
+    if attendance not in ['yes', 'no']:
+        return jsonify({"error": "Invalid attendance value"}), 400
+
     concert_name = data.get('concert_name')
     concert_date = data.get('concert_date')
     concert_image = data.get('concert_image')
-    
+
+    if not concert_name or not concert_date or not concert_image:
+        return jsonify({"error": "Missing concert details"}), 400
+
     if attendance == 'yes':
         attendance = 'attended'
         message = f"Concert '{concert_name}' has been marked as {attendance}!"
-    if attendance == 'no':
+    elif attendance == 'no':
         attendance = 'DELETE'
         message = f"Concert '{concert_name}' has been deleted!"
 
     updated_concert = insert_concert(user_id, attendance, concert_name, concert_image, concert_date)
-    
-    return jsonify({"message": message})
 
+    return jsonify({"message": message})
 
 @app.route('/messages')
 def messages():
