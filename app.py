@@ -589,7 +589,7 @@ def add_venue_image():
             .execute()
         )
 
-        if insert_response.get('status_code', 200) != 200:
+        if not insert_response.data:
             return jsonify({'error': 'Failed to insert image metadata into database.'}), 500
 
         return jsonify({'message': 'Venue image added successfully!', 'image_url': public_url}), 201
