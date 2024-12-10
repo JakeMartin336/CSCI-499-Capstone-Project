@@ -548,7 +548,7 @@ def get_venue_images():
         print(f"Query response: {response.data}")  # Debug log
 
         if not response.data:
-            return jsonify({'message': 'No images found for the specified criteria.'}), 404
+            return jsonify({'error': 'No images found for the specified criteria.'}), 404
         return jsonify({'image_urls': response.data}), 200
     except Exception as e:
         print(f"Error fetching venue images: {str(e)}")  # Debug log
@@ -570,6 +570,7 @@ def add_venue_image():
         return jsonify({'error': 'No image file provided.'}), 400
 
     try:
+        venue_name = venue_name.lower()
         image_bytes = image.read()
         image_filename = f"{image.filename}"
         

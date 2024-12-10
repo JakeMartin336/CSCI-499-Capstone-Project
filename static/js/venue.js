@@ -72,29 +72,73 @@ document.querySelector('.seat-finder .btn-warning').addEventListener('click', as
     if (images.length > 0) {
         updateVenueUI(images);
     } else {
-        alert('No images found for the specified seat.');
+        Swal.fire({
+            icon: 'error',
+            title: 'No Images Found',
+            text: 'We couldn\'t find any images for the specified seat. Please try again with different details.',
+            confirmButtonText: 'OK'
+        });
     }
 });
 
 async function fetchSeatPOV(venueName, section, row, seat) {
     console.log(`Fetching seat POV with: Venue=${venueName}, Section=${section}, Row=${row}, Seat=${seat}`); // Log inputs
 
+    // Show the SweetAlert loading notification while fetching data
+    Swal.fire({
+        title: 'Fetching POV...',
+        text: 'Please wait while we load the seat image.',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+
     try {
         const response = await fetch(`/get_venue_images?venue_name=${encodeURIComponent(venueName)}&section=${encodeURIComponent(section)}&row=${encodeURIComponent(row)}&seat=${encodeURIComponent(seat)}`);
         const data = await response.json();
 
-        console.log('Response from /get_venue_images:', data); // Log response
+        console.log('Response from /get_venue_images:', data); 
 
         if (!response.ok) {
             console.error('Error:', data.error || data.message);
+            Swal.close(); 
+
+            Swal.fire({
+                icon: 'error',
+                title: 'No images found.',
+                text: data.error || 'We couldn\'t find any images matching your criteria. Please try again with different details.',
+                confirmButtonText: 'Retry'
+            });
             return [];
         }
+
+        // Successfully fetched data
+        Swal.close(); 
+        Swal.fire({
+            icon: 'success',
+            title: 'POV Fetched Successfully!',
+            text: 'Seat POV images have been loaded.',
+            confirmButtonText: 'OK'
+        });
+
         return data.image_urls || [];
     } catch (error) {
         console.error('Network Error:', error);
+        Swal.close(); 
+
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Network Error',
+            text: 'There was an error connecting to the server. Please try again later.',
+            confirmButtonText: 'Retry'
+        });
+
         return [];
     }
 }
+
 
 
 function updateVenueUI(images) {
@@ -190,21 +234,50 @@ async function fetchVenueImages(venueName) {
 
 // Function to add a new venue image via the Flask backend
 async function addVenueImage(formData) {
+    Swal.fire({
+        title: 'Uploading...',
+        text: 'Please wait while we upload your image.',
+        icon: 'info',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        didOpen: () => {
+            Swal.showLoading(); 
+        }
+    });
     fetch('/add_venue_image', {
         method: 'POST',
-        body: formData // Send the FormData object to Flask
+        body: formData
     })
     .then(response => response.json())
     .then(data => {
+        // Close the loading SweetAlert
+        Swal.close();
+
+        // Show a success message if upload was successful
         if (data.message) {
-            alert(data.message); // Handle the response
-            alert('Upload was successful!');
+            Swal.fire({
+                icon: 'success',
+                title: 'Upload Successful!',
+                text: data.message,
+                confirmButtonText: 'OK'
+            });
         }
     })
     .catch(error => {
+        // Close the loading SweetAlert
+        Swal.close();
+
+        // Show an error message in case of failure
+        Swal.fire({
+            icon: 'error',
+            title: 'Upload Failed',
+            text: 'There was an error uploading the image. Please try again.',
+            confirmButtonText: 'Retry'
+        });
         console.error('Error uploading image:', error);
     });
 
+    // Fetch venue images after upload
     const venueName = document.getElementById('venue-name').value.trim();
     fetchVenueImages(venueName);
 }
