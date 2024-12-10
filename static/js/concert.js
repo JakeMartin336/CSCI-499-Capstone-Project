@@ -198,17 +198,29 @@ function saveConcertInfo(status, event) {
     })
     .then(response => response.json()) // Parse JSON response
     .then(data => {
-        // Handle the response from Python here (optional)
         console.log('Server response:', data);
-        alert(data.message);  // Example: show a message from Python
+
+        // Display a SweetAlert2 notification
+        Swal.fire({
+            icon: status === 'saved' ? 'success' : 'info',
+            title: 'Concert Saved',
+            text: data.message,
+            confirmButtonText: 'OK',
+        });
     })
     .catch(error => {
         console.error('Error:', error);
+
+        // Display an error notification
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Something went wrong while saving the concert!',
+            confirmButtonText: 'Try Again'
+        });
+    })
+    .finally(() => {
+        // Re-enable the button after the operation is complete
+        button.disabled = false;
     });
-
-    // Re-enable the button if necessary
-    setTimeout(() => { button.disabled = false; }, 500);
-
 }
-
-
