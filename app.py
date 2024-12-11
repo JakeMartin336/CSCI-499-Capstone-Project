@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify, url_for, redirect, session
-from flask_socketio import SocketIO, send, join_room, leave_room
+from flask_socketio import SocketIO, send, join_room, leave_room, emit
 import os
 from supabase import create_client, Client
 from dotenv import load_dotenv
@@ -11,9 +11,6 @@ from faiss_match import recommend_best_match_faiss, setup_faiss_index
 import asyncio
 import threading
 from realtime import AsyncRealtimeClient
-
-from dotenv import load_dotenv
-import os
 
 # Load .env file
 load_dotenv()
@@ -30,8 +27,8 @@ app = Flask(__name__, static_folder='static')
 app.secret_key = secrets.token_hex(16)
 socketio = SocketIO(app)
 
-# Used to keep track of user's that are actively chatting/in a chatting room
-rooms = {}
+# Socket_users is the dictionary where I input the users that will be using the socket.
+socket_users = {}
 
 def get_user_friends(user_id):
     user_contacts = None
@@ -396,63 +393,41 @@ def messages():
     return render_template('messages.html', friends=friends, concerts=concerts, username=username)
 
 
+@socketio.on('connect', namespace='/messages')
+def handle_connect():
+    user_id = int(session.get('user_id'))
+    socket_users[user_id] = request.sid
+    print(f"UserID: {user_id}, Connected: {request.sid}")
 
 
+@socketio.on('disconnect', namespace='/messages')
+def handle_disconnect():
+    user_id = int(session.get('user_id'))
+    if user_id in socket_users:
+        del socket_users[user_id]
+        print(f"User {user_id} disconnected.")
 
-@socketio.on('join')
-def on_join(data):
-    userID = session.get('user_id')
-    friendID = data['friendID']
-    
-    # room = (userID, friendID)
-    room=1
 
-    if not room or not userID or not friendID:
-        return
-
-    # Create the room if it doesn't exist
-    if room not in rooms:
-        rooms[room] = {'users': [userID, friendID], 'messages': []}
-    
-    # Ensure the user is added to the room
+@socketio.on('join', namespace='/messages')
+def handle_join(data):
+    room = data['room']
+    user_id = int(session.get('user_id'))
+    username = session.get('user_info')['user_name']
     join_room(room)
-    send(f'{userID} has joined the room.', to=room)
-    print(f'Room created: {room}')
+    print(f"UserID: {user_id}, Join room: {room}")
+    # emit('message', {'msg': f'{username} has entered the room.'}, room=room)
 
-@socketio.on('leave')
-def on_leave(data):
-    userID = session.get('user_id')
-    friendID = data['friendID']
-    
-    # room = (userID, friendID)
-    room=1
 
-    if room in rooms:
-        leave_room(room)
-        del rooms[room]  # Remove the room after leaving
-        send(f'{userID} has left the room.', to=room)
-        print(f'Room removed: {room}')
+@socketio.on('private_message', namespace='/messages')
+def handle_message(data):
+    recipient = int(data['recipient'])
+    message = data['message']
+    sender = session.get('user_info')['user_name']
+    if recipient in socket_users:
+        emit('private_message', {'sender': sender, 'message': message}, to=socket_users[recipient])
+    else:
+        emit('private_message', {'sender': 'System', 'message': f"User is offline."}, to=request.sid)
 
-@socketio.on('message')
-def on_message(data):
-    userID = session.get('user_id')
-    friendID = data['friendID']
-    
-    # room = (userID, friendID)
-    room=1
-
-    if room not in rooms:
-        return
-
-    content = {
-        "name": userID,
-        "message": data["message"]
-    }
-
-    # Send the message to the room
-    send(content, to=room)
-    rooms[room]["messages"].append(content)
-    print(f"Message sent to {room}: {content}")
 
 
 @app.route('/api/user-info/<user_id>', methods=['GET', 'POST'])
@@ -520,7 +495,6 @@ def recommend():
         return jsonify({"error": "Invalid target_id parameter"}), 400
 
 
-
 @app.route('/get_venue_images', methods=['GET'])
 def get_venue_images():
     venue_name = request.args.get('venue_name')
@@ -553,9 +527,6 @@ def get_venue_images():
     except Exception as e:
         print(f"Error fetching venue images: {str(e)}")  # Debug log
         return jsonify({'error': 'An error occurred while fetching venue images.'}), 500
-
-
-
 
 
 @app.route('/add_venue_image', methods=['POST'])
