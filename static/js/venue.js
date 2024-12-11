@@ -150,8 +150,8 @@ async function fetchSeatPOV(venueName, section, row, seat) {
         Swal.close(); 
         Swal.fire({
             icon: 'success',
-            title: 'POV Fetched Successfully!',
-            text: 'Seat POV images have been loaded.',
+            title: 'Seat POV is Ready!',
+            text: 'The images are ready to be viewed.',
             confirmButtonText: 'OK'
         });
 
@@ -164,7 +164,7 @@ async function fetchSeatPOV(venueName, section, row, seat) {
         Swal.fire({
             icon: 'error',
             title: 'Network Error',
-            text: 'There was an error connecting to the server. Please try again later.',
+            text: 'There was a Network Connection Error. Please try again later.',
             confirmButtonText: 'Retry'
         });
 
