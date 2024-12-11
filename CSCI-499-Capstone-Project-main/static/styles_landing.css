@@ -1,0 +1,450 @@
+/* Import Font Dancing Script */
+* {
+    margin: 0;
+}
+
+body {
+    background-image: url('img/blue.gif'); 
+    background-size: cover; 
+    background-position: contain; /* fit the screen */ 
+    font-family: "Montserrat", "Arial";
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+
+/* NavbarTop */
+.navbar-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* background-color: #b4d2f5; Pink */
+    color: #fff; /* White text for contrast */
+    /* box-shadow: 0px 4px 8px 0px rgb(252, 255, 86); */
+
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.109);
+    height: 90px;
+    padding: 0 20px; /* Added padding for a balanced look */
+}
+
+.title {
+    font-size: 24px;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7); /* Text shadow for depth */
+}
+
+.navbar-top ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.navbar-top ul li {
+  
+    margin: 0 20px; 
+
+}
+
+.navbar-top button {
+    width: 110px; 
+    height: 45px; 
+    margin: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    gap: 10px;
+    background-color: #f1f9b7; /* Button background color */
+    border-radius: 30px; /* Rounded corners */
+    color: #b56aee; 
+    font-weight: 600;
+    border: none;
+    cursor: pointer; /* Pointer cursor on hover */
+    box-shadow: 0px 4px 8px rgba(232, 255, 23, 0.598);
+    transition: background-color 0.3s ease, transform 0.3s ease; 
+    font-family: "Itim";
+    font-size: 18px;
+}
+
+.navbar-top button:hover {
+    background-color: rgba(255, 255, 255, 0.772); /* Semi-transparent white on hover */
+    transform: scale(1.1); /* Slightly enlarge on hover */
+
+}
+
+.svgIcon {
+    height: 25px; /* Height for the SVG icon */
+    transition-duration: 1.5s; /* Transition for icon rotation */
+}
+
+.button:hover .svgIcon {
+    transform: rotate(250deg); /* Rotate on hover */
+    transition-duration: 1.5s; /* Duration of rotation */
+}
+
+
+
+/* End */
+
+/* Sidenav */
+.container {
+    display: flex;
+}
+
+.sidenav-container {
+    display: flex;
+    flex-direction: column;
+    width: 275px;
+    color: #333;
+    padding: 20px;
+}
+
+.sidenav {
+    margin-bottom: 15px;
+}
+
+.profile-box,
+.concerts-box {
+    background-color: #f7f6f5; 
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Slightly darker shadow for depth */
+    font-family: 'Itim';
+    font-size: 20px;
+}
+
+.profile {
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 20px;
+}
+
+.name {
+    font-size: 25px;
+    font-weight: bold;
+    margin-top: 10px;
+    color: #817bd8;
+}
+
+.job {
+    font-size: 14px;
+    color: #666;
+}
+
+.age {
+    font-size: 14px;
+    color: #666;
+}
+
+.location {
+    font-size: 14px;
+    color: #666;
+}
+
+.music_genres {
+    font-size: 14px;
+    color: #666;
+}
+
+.sidenav-url .url a {
+    color: #333;
+    font-size: 16px;
+    text-decoration: none;
+    padding: 8px;
+    display: block;
+    text-align: center;
+    border-radius: 75px;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease; /* Added transform for hover effect */
+}
+
+.sidenav-url hr {
+    border: 0;
+    border-top: 1px solid #ddd;
+    margin: 8px 0;
+    width: 100%;
+}
+
+.sidenav-url .url a:hover {
+    background-color:#f1f9b7;
+    color: #7e7e7e; 
+    transform: scale(1.05); 
+}
+
+.concerts-box h3 {
+    margin-bottom: 10px;
+    border-radius: 75px;
+    color: #817bd8 
+}
+
+.concerts-box ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.concerts-box ul li {
+    margin: 5px 0;
+}
+
+.concerts-box ul li a {
+    color: #333;
+    font-size: 16px;
+    text-decoration: none;
+    padding: 8px;
+    display: block;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease; 
+}
+
+.concerts-box ul li a:hover {
+    background-color: #ffea00;
+    color: #000; 
+    transform: scale(1.05); 
+}
+
+/* End */
+
+/* Main */
+.main {
+    margin-top: 20px;
+    font-size: 28px;
+    padding: 0 10px;
+    width: 60%;
+}
+
+
+.post-container {
+    background-color: #c1c4f7;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    
+    
+}
+
+.post-form textarea {
+    width: 98%;
+    height: 80px;
+    padding: 10px;
+    border-radius: 15px;
+    border: 1px solid #f1f5d6;
+    resize: none;
+    margin-top: 10px;
+    
+}
+
+.post-form button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #817bd8;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.post-form button:hover {
+    background-color: #9b96e3; /* Lighter purple on hover */
+}
+
+.feed-container {
+    background-color: #f1f9b7;
+    padding: 15px;
+    border-radius: 8px;
+ 
+}
+
+
+
+.feed-container h2 {
+    margin-bottom: 20px;
+}
+
+.post {
+    background-color: #efefef;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.post p {
+    font-size: 16px;
+    margin: 0;
+}
+
+.post span {
+    font-size: 12px;
+    color: #666;
+}
+
+.main .card {
+    background-color: #ecfa6d;
+    border-radius: 18px;
+    box-shadow: 1px 1px 8px 0 rgb(237, 241, 197);
+    height: auto;
+    margin-bottom: 20px;
+    padding: 20px 0 20px 50px;
+}
+
+.main .card table {
+    border: none;
+    font-size: 16px;
+    width: 80%;
+}
+
+.goingConcerts li,
+.interestedConcerts li,
+.attendedConcerts li {
+    list-style-type: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.goingConcerts li img,
+.interestedConcerts li img,
+.attendedConcerts li img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+}
+
+.concert-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.concert-name {
+    font-weight: bold;
+}
+
+.concert-date {
+    font-size: 0.9em;
+    color: gray;
+}
+
+/* Styling for attendance div */
+.past-concert-container{
+    display: flex;
+    margin-bottom: 10px;
+}
+
+/* Styling for the buttons */
+.past-concert-button-yes {
+    background-color: green;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    margin: 0 5px;
+    transition: background-color 0.3s ease;
+  }
+
+  .past-concert-button-no {
+    background-color: red;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    margin: 0 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .past-concert-button-yes:hover,
+  .past-concert-button-no:hover{
+    background-color: rgb(46, 44, 44);
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 600px) {
+    .past-concert-container {
+      max-width: 100%;
+      padding: 8px;
+    }
+  
+    .past-concert-button-yes {
+      padding: 6px 10px;
+      font-size: 12px;
+    }
+    .past-concert-button-no {
+        padding: 6px 10px;
+        font-size: 12px;
+      }
+  }
+  /* requests section */
+.rightsidenav h3 {
+    color: #ff7675;
+    text-align: center;
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+/* Requests Box Styling */
+.rightsidenav .requests-box {
+    background-color: #f7f6f5; 
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    margin-top: 20px;
+    flex-grow: 1; 
+    margin-left: 20px; 
+    margin-right: 20px; 
+}
+
+
+.rightsidenav .requests-box ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.rightsidenav .requests-box .matchRequests li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+    
+}
+
+.rightsidenav .requests-box .matchRequests .request-details {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.rightsidenav .requests-box .matchRequests .request-info {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9em;
+}
+
+.rightsidenav .requests-box .matchRequests .actions {
+    display: flex;
+    gap: 10px;
+}
+
+.rightsidenav .requests-box .matchRequests .accept-btn,
+.rightsidenav .requests-box .matchRequests .decline-btn {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.8em;
+}
+
+.rightsidenav .requests-box .matchRequests .accept-btn {
+    background-color: #55efc4;
+    color: white;
+}
+
+.rightsidenav .requests-box .matchRequests .decline-btn {
+    background-color: #ff7675;
+    color: white;
+}
