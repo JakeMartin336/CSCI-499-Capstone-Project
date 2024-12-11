@@ -3,9 +3,11 @@
 }
 
 body {
-    background-attachment: fixed;
-    background-image: url("img/blue.gif") !important;
+    background-image: url('img/blue.gif');
     font-family: "Montserrat", "arial";
+    background-attachment: fixed;
+    background-size: cover; /* Cover the entire viewport */
+    background-position: contain; /* fit the screen */ 
 }
 
 
