@@ -6,7 +6,7 @@
 body {
     background-image: url('img/blue.gif'); 
     background-size: cover; 
-    background-position: contain; 
+    background-position: contain; /* fit the screen */ 
     font-family: "Montserrat", "Arial";
     overflow: hidden;
     overflow-y: auto;
@@ -19,18 +19,18 @@ body {
     align-items: center;
     justify-content: space-between;
     /* background-color: #b4d2f5; Pink */
-    color: #fff; 
+    color: #fff; /* White text for contrast */
     /* box-shadow: 0px 4px 8px 0px rgb(252, 255, 86); */
 
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.109);
     height: 90px;
-    padding: 0 20px; 
+    padding: 0 20px; /* Added padding for a balanced look */
 }
 
 .title {
     font-size: 24px;
     font-weight: bold;
-    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7); 
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7); /* Text shadow for depth */
 }
 
 .navbar-top ul {
@@ -54,12 +54,12 @@ body {
     align-items: center;
     justify-content: center; 
     gap: 10px;
-    background-color: #f1f9b7; 
-    border-radius: 30px; 
+    background-color: #f1f9b7; /* Button background color */
+    border-radius: 30px; /* Rounded corners */
     color: #b56aee; 
     font-weight: 600;
     border: none;
-    cursor: pointer; 
+    cursor: pointer; /* Pointer cursor on hover */
     box-shadow: 0px 4px 8px rgba(232, 255, 23, 0.598);
     transition: background-color 0.3s ease, transform 0.3s ease; 
     font-family: "Itim";
@@ -67,11 +67,20 @@ body {
 }
 
 .navbar-top button:hover {
-    background-color: rgba(255, 255, 255, 0.772); 
-    transform: scale(1.1); 
+    background-color: rgba(255, 255, 255, 0.772); /* Semi-transparent white on hover */
+    transform: scale(1.1); /* Slightly enlarge on hover */
 
 }
 
+.svgIcon {
+    height: 25px; /* Height for the SVG icon */
+    transition-duration: 1.5s; /* Transition for icon rotation */
+}
+
+.button:hover .svgIcon {
+    transform: rotate(250deg); /* Rotate on hover */
+    transition-duration: 1.5s; /* Duration of rotation */
+}
 
 
 
@@ -99,7 +108,7 @@ body {
     background-color: #f7f6f5; 
     border-radius: 10px;
     padding: 15px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); 
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Slightly darker shadow for depth */
     font-family: 'Itim';
     font-size: 20px;
 }
@@ -145,7 +154,7 @@ body {
     display: block;
     text-align: center;
     border-radius: 75px;
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease; 
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease; /* Added transform for hover effect */
 }
 
 .sidenav-url hr {
@@ -221,6 +230,7 @@ body {
     border: 1px solid #f1f5d6;
     resize: none;
     margin-top: 10px;
+    
 }
 
 .post-form button {
@@ -231,11 +241,10 @@ body {
     border: none;
     cursor: pointer;
     border-radius: 5px;
-    font-family: "Montserrat"
 }
 
 .post-form button:hover {
-    background-color: #9b96e3; 
+    background-color: #9b96e3; /* Lighter purple on hover */
 }
 
 .feed-container {
@@ -315,4 +324,127 @@ body {
 .concert-date {
     font-size: 0.9em;
     color: gray;
+}
+
+/* Styling for attendance div */
+.past-concert-container{
+    display: flex;
+    margin-bottom: 10px;
+}
+
+/* Styling for the buttons */
+.past-concert-button-yes {
+    background-color: green;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    margin: 0 5px;
+    transition: background-color 0.3s ease;
+  }
+
+  .past-concert-button-no {
+    background-color: red;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    margin: 0 5px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .past-concert-button-yes:hover,
+  .past-concert-button-no:hover{
+    background-color: rgb(46, 44, 44);
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 600px) {
+    .past-concert-container {
+      max-width: 100%;
+      padding: 8px;
+    }
+  
+    .past-concert-button-yes {
+      padding: 6px 10px;
+      font-size: 12px;
+    }
+    .past-concert-button-no {
+        padding: 6px 10px;
+        font-size: 12px;
+      }
+  }
+  /* requests section */
+.rightsidenav h3 {
+    color: #ff7675;
+    text-align: center;
+    font-size: 20px;
+    margin-bottom: 15px;
+}
+
+/* Requests Box Styling */
+.rightsidenav .requests-box {
+    background-color: #f7f6f5; 
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    margin-top: 20px;
+    flex-grow: 1; 
+    margin-left: 20px; 
+    margin-right: 20px; 
+}
+
+
+.rightsidenav .requests-box ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.rightsidenav .requests-box .matchRequests li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+    
+}
+
+.rightsidenav .requests-box .matchRequests .request-details {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.rightsidenav .requests-box .matchRequests .request-info {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9em;
+}
+
+.rightsidenav .requests-box .matchRequests .actions {
+    display: flex;
+    gap: 10px;
+}
+
+.rightsidenav .requests-box .matchRequests .accept-btn,
+.rightsidenav .requests-box .matchRequests .decline-btn {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.8em;
+}
+
+.rightsidenav .requests-box .matchRequests .accept-btn {
+    background-color: #55efc4;
+    color: white;
+}
+
+.rightsidenav .requests-box .matchRequests .decline-btn {
+    background-color: #ff7675;
+    color: white;
 }

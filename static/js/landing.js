@@ -81,72 +81,86 @@ function isEmpty(ulSelector, message) {
 
 
 // function SendAttendance(attendance, concert_name, concert_date, concert_image){
-function SendAttendance(attendance, item){
+    function SendAttendance(attendance, item) {
+        const dateElement = item.querySelector('.concert-date');
+        const nameElement = item.querySelector('.concert-name');
+        const imgElement = item.querySelector('.concert-image');
     
-    const dateElement = item.querySelector('.concert-date');
-    const nameElement = item.querySelector('.concert-name');
-    const imgElement = item.querySelector('.concert-image');
-
-    const attendanceData = {
-        attendance: attendance,
-        concert_name: nameElement.textContent.trim(),
-        concert_date: dateElement.textContent.trim(),
-        concert_image: imgElement?.src
-    };
-
-    // Send the data to the Flask backend using fetch
-    fetch('/concert_attendance', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(attendanceData)
-    })
-    .then(response => response.json()) // Parse JSON response
-    .then(data => {
-        // Handle the response from Python here (optional)
-        console.log('Server response:', data);
-        alert(data.message);  // Example: show a message from Python
-    })
-    .catch(error => {
-        console.error('Error:', error);
-    });
-
-    const parentList = item.parentElement;
-    const container = item.nextElementSibling;
-
-    if (attendance === 'no') {
-        // Remove the concert and yes/no buttons from the current list
-        if (container && container.classList.contains('past-concert-container')) {
-            container.remove();
-        }
-        parentList.removeChild(item);
+        const attendanceData = {
+            attendance: attendance,
+            concert_name: nameElement.textContent.trim(),
+            concert_date: dateElement.textContent.trim(),
+            concert_image: imgElement?.src
+        };
+    
+        // Send the data to the Flask backend using fetch
+        fetch('/concert_attendance', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(attendanceData)
+        })
+        .then(response => response.json()) // Parse JSON response
+        .then(data => {
+            console.log('Server response:', data);
+    
+            // Display a SweetAlert2 notification
+            Swal.fire({
+                icon: attendance === 'yes' ? 'success' : 'info',
+                title: 'Success!',
+                text: data.message,
+                confirmButtonText: 'OK'
+            });
+    
+            const parentList = item.parentElement;
+            const container = item.nextElementSibling;
+    
+            if (attendance === 'no') {
+                // Remove the concert and yes/no buttons from the current list
+                if (container && container.classList.contains('past-concert-container')) {
+                    container.remove();
+                }
+                parentList.removeChild(item);
+            }
+    
+            // Append the concert to the Attended list
+            if (attendance === 'yes') {
+                // Remove the concert and yes/no buttons from the current list
+                if (container && container.classList.contains('past-concert-container')) {
+                    container.remove();
+                }
+                parentList.removeChild(item);
+    
+                // Append the concert to the Attended list
+                const attendedList = document.querySelector('.attendedConcerts');
+                if (attendedList) {
+                    const newItem = document.createElement('li');
+                    newItem.innerHTML = `
+                        <img src="${imgElement?.src}" class="concert-image" alt="Concert Image"><br>
+                        <div class="concert-text">
+                          <span class="concert-name">${nameElement.textContent.trim()}</span>
+                          <span class="concert-date">${dateElement.textContent.trim()}</span>
+                        </div>
+                    `;
+                    attendedList.appendChild(newItem);
+                }
+            }
+    
+            isEmpty('.goingConcerts', 'No concerts have been selected.');
+            isEmpty('.interestedConcerts', 'No concerts have been selected.');
+            isEmpty('.attendedConcerts', 'No concerts have been selected.');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+    
+            // Display an error notification
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!',
+                confirmButtonText: 'Try Again'
+            });
+        });
     }
-
-    // Append the concert to the Attended list
-    if (attendance === 'yes') {
-        // Remove the concert and yes/no buttons from the current list
-        if (container && container.classList.contains('past-concert-container')) {
-            container.remove();
-        }
-        parentList.removeChild(item);
-
-        // Append the concert to the Attended list
-        const attendedList = document.querySelector('.attendedConcerts');
-        if (attendedList) {
-            const newItem = document.createElement('li');
-            newItem.innerHTML = `
-                <img src="${imgElement?.src}" class="concert-image" alt="Concert Image"><br>
-                <div class="concert-text">
-                  <span class="concert-name">${nameElement.textContent.trim()}</span>
-                  <span class="concert-date">${dateElement.textContent.trim()}</span>
-                </div>
-            `;
-            attendedList.appendChild(newItem);
-        }
-    }
-
-    isEmpty('.goingConcerts', 'No concerts have been selected.');
-    isEmpty('.interestedConcerts', 'No concerts have been selected.');
-    isEmpty('.attendedConcerts', 'No concerts have been selected.');
-}
+    

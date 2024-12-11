@@ -103,7 +103,7 @@ def recommend_best_match_faiss(target_id):
     # Recommend the best user match using Faiss similarity search, avoiding duplicates by using a history
     target_user = next((user for user in user_data if user['id'] == target_id), None)
     if not target_user or not target_user['survey_complete']:
-        return None
+        return None, "No new matches available at the moment." 
 
     # Generate vector for the target user
     target_vector = generate_user_vector(target_user).reshape(1, -1)
@@ -146,7 +146,7 @@ def recommend_best_match_faiss(target_id):
     
     # If no match is found, just print out no match found --> we want to try to avoid this tho 
     print(f"No new match found for user {target_id}")
-    return None  # If no valid match is found --> think of soemthing else we want to replace with 
+    return None, "No new matches available at the moment."   # If no valid match is found --> think of soemthing else we want to replace with 
 
 
 # Example for users

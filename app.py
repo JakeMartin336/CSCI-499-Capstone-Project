@@ -8,6 +8,7 @@ from fetch_user import fetch_all_users_as_json
 import numpy as np
 from faiss_match import recommend_best_match_faiss, setup_faiss_index
 
+
 load_dotenv()
 url = os.environ.get("SUPABASE_URL")
 key = os.environ.get("SUPABASE_KEY")
@@ -19,6 +20,7 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 import secrets
 app.secret_key = secrets.token_hex(16)
+
 
 
 def insert_survey(user_id, age, location, genres, budget, travel_time, account_description):

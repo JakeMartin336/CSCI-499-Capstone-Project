@@ -15,6 +15,7 @@
     />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
+    
 
     <!-- FontAwesome 5 -->
     <link
@@ -26,8 +27,7 @@
 
    <!-- Navbar top -->
    <div class="navbar-top">
-    <img src="/static/img/logo.png" alt="ConcertConnect Logo" style="height: 120px; margin-right: 200px;">
-
+    <img src="{{ url_for('static', filename='img/logo.png') }}" alt="ConcertConnect Logo" style="height: 120px; margin-right: 200px;" />
     <ul>
         <div class="explore-button-container">
             <button class="button" onclick="window.location.href='/landing'">Home <i class="fa fa-home"></i></button>
@@ -136,9 +136,6 @@
     </div>
 
 
-    
-
-
       <!-- End -->
 
       <!-- Main -->
@@ -189,42 +186,14 @@
               <p style="font-size: 0.9em; color: gray; text-align: center;">No match requests yet.</p>
             {% endif %}
           </ul>
-
-      <div class="rightsidenav">
-        <div class="requests-box">
-          <h3 style="color: #ff7675; text-align: center; font-size: 24px;">🤝 Match Requests</h3>
-      
-          <!-- Match Requests List -->
-          <ul class="matchRequests">
-            {% if match_requests %}
-              {% for request in match_requests %}
-                <li>
-                  <div class="request-details">
-                    <img src="{{ request.user_image }}" alt="User Image" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; overflow: hidden;">
-                    <div class="request-info">
-                      <span class="user-name">{{ request.user_name }}</span><br>
-                      <span class="concert-name">{{ request.concert_name }}</span>
-                    </div>
-                    <div class="actions">
-                      <button class="accept-btn">Accept</button>
-                      <button class="decline-btn">Decline</button>
-                    </div>
-                  </div>
-                </li>
-              {% endfor %}
-            {% else %}
-              <p style="font-size: 0.9em; color: gray; text-align: center;">No match requests yet.</p>
-            {% endif %}
-          </ul>
         </div>
       </div>
+
+      
     </div>
     <!-- End -->
     <script src="{{ url_for('static', filename='js/landing.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
   </body>
 </html>
-
-<!-- How to run flask -->
-<!-- 1) python3 -m venv venv
-     2) source venv/bin/activate
-     3) flask run -->
