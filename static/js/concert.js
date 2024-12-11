@@ -227,3 +227,12 @@ function saveConcertInfo(status, event) {
         button.disabled = false;
     });
 }
+
+document.getElementById('request-button').addEventListener('click', function() {
+    Swal.fire({
+        title: 'Request Sent!',
+        text: 'Your request has been sent! Hang tight while we connect you both. 🎶✨',
+        icon: 'success',
+        confirmButtonText: 'OK'
+    });
+});
