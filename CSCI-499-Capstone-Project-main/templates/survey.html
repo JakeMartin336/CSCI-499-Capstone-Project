@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
+    <title>Survey</title>
+    <style>
+        body {
+            font-family: 'Montserrat';
+            text-align: center;
+            background-image: url('static/img/blue.gif');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #0066CC; /* Blue text color */
+        }
+
+        h1 {
+    color: #f9ea98; 
+    text-shadow: 0 0 10px #c0b15e, 0 0 20px #FFD700, 0 0 30px #FFD700, 0 0 40px #FFD700;
+}
+
+
+        .error-message {
+            color: red;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        form {
+            background-color: #9acef5;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgb(237, 240, 193);
+            color: #565757; 
+            font-family: 'Montserrat';
+        }
+
+        .form-control {
+            text-align: left;
+            margin-bottom: 20px;
+            font-family: 'Montserrat';
+            color: #565757; 
+        }
+
+        .form-control label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #565757; 
+        }
+
+        .form-control input,
+        .form-control select,
+        .form-control textarea {
+            border: 1px solid #777;
+            border-radius: 2px;
+            font-family: inherit;
+            padding: 10px;
+            display: block;
+            width: 95%;
+            color: #432b84; 
+            font-size: 14px;
+        }
+
+        .form-control input[type="radio"],
+        .form-control input[type="checkbox"] {
+            display: inline-block;
+            width: auto;
+            color: #565757; 
+        }
+
+        .form-control .checkbox-group {
+            display: flex;
+            font-family: 'Montserrat';
+            flex-wrap: wrap;
+            color: #565757; 
+        }
+
+        .form-control .checkbox-group label {
+            width: 48%;
+            margin-bottom: 10px;
+            color: #565757; /* Blue text color for checkboxes */
+        }
+
+        button {
+            background-color: #5e56b7; /* Yellow background for button */
+            color: white;
+            border: 1px solid #777;
+            border-radius: 2px;
+            font-family: inherit;
+            font-size: 21px;
+            display: block;
+            width: 100%;
+            height: 50px;
+            margin-top: 50px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            font-family: 'Montserrat';
+        }
+
+        button:hover {
+            background-color: #8d72e7;
+            color: #ffffff; /* Change text color on hover to blue */
+        }
+
+        
+        .slider {
+            width: 100%;
+            accent-color: #e08fcc;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 style = "padding-top: 30px;">Tell us a bit about yourself:</h1>
+    <form id="survey-form" method="POST" action="/survey">
+
+        <!-- Hidden fields for user data, ONLY USE IF register() is passing values to survey()-->
+        <!-- <input type="hidden" name="new_username" value="{{ new_username }}">
+        <input type="hidden" name="new_email" value="{{ new_email }}">
+        <input type="hidden" name="new_password" value="{{ new_password }}"> -->
+
+        {% if error %}
+            <p class="error-message">{{ error }}</p>  <!-- Display error message -->
+        {% endif %}
+
+        <div class="form-control">
+            <label for="age" style = "color:#a367e9; font-size: 20px;">Age</label>
+            <input type="range" id="age" name="age" min="18" max="100" value="25" class="slider" oninput="this.nextElementSibling.value = this.value">
+            <output>25</output>
+        </div>
+
+        <div class="form-control">
+            <label for="location" style = "color:#a367e9; font-size: 20px;">Location</label>
+            <label><input type="radio" name="location" value="Manhattan"> Manhattan</label>
+            <label><input type="radio" name="location" value="Brooklyn"> Brooklyn</label>
+            <label><input type="radio" name="location" value="Queens"> Queens</label>
+            <label><input type="radio" name="location" value="The Bronx"> The Bronx</label>
+            <label><input type="radio" name="location" value="Staten Island"> Staten Island</label>
+        </div>
+
+        <div class="form-control">
+            <label for="genre" style = "color:#a367e9; font-size: 20px;">Pick up to 3 of your favorite genres</label>
+            <div class="checkbox-group">
+                <label><input type="checkbox" name="genre" value="Alternative" class="genre-checkbox"> Alternative</label>
+                <label><input type="checkbox" name="genre" value="Ballads/Romantic" class="genre-checkbox"> Ballads/Romantic</label>
+                <label><input type="checkbox" name="genre" value="Blues" class="genre-checkbox"> Blues</label>
+                <label><input type="checkbox" name="genre" value="Children’s music" class="genre-checkbox"> Children’s music</label>
+                <label><input type="checkbox" name="genre" value="Classic" class="genre-checkbox"> Classic</label>
+                <label><input type="checkbox" name="genre" value="Country" class="genre-checkbox"> Country</label>
+                <label><input type="checkbox" name="genre" value="Dance/Electronic" class="genre-checkbox"> Dance/Electronic</label>
+                <label><input type="checkbox" name="genre" value="Folk" class="genre-checkbox"> Folk</label>
+                <label><input type="checkbox" name="genre" value="Hip-Hop/Rap" class="genre-checkbox"> Hip-Hop/Rap</label>
+                <label><input type="checkbox" name="genre" value="Holiday" class="genre-checkbox"> Holiday</label>
+                <label><input type="checkbox" name="genre" value="Jazz" class="genre-checkbox"> Jazz</label>
+                <label><input type="checkbox" name="genre" value="Latin" class="genre-checkbox"> Latin</label>
+                <label><input type="checkbox" name="genre" value="Medieval/Renaissance" class="genre-checkbox"> Medieval/Renaissance</label>
+                <label><input type="checkbox" name="genre" value="Metal" class="genre-checkbox"> Metal</label>
+                <label><input type="checkbox" name="genre" value="New Age" class="genre-checkbox"> New Age</label>
+                <label><input type="checkbox" name="genre" value="Other" class="genre-checkbox"> Other</label>
+                <label><input type="checkbox" name="genre" value="Pop" class="genre-checkbox"> Pop</label>
+                <label><input type="checkbox" name="genre" value="R&B" class="genre-checkbox"> R&B</label>
+                <label><input type="checkbox" name="genre" value="Reggae" class="genre-checkbox"> Reggae</label>
+                <label><input type="checkbox" name="genre" value="Religious" class="genre-checkbox"> Religious</label>
+                <label><input type="checkbox" name="genre" value="Rock" class="genre-checkbox"> Rock</label>
+                <label><input type="checkbox" name="genre" value="World" class="genre-checkbox"> World</label>
+            </div>
+        </div>
+
+        <div class="form-control">
+            <label for="budget" style = "color:#a367e9; font-size: 20px;">Average Budget for One Concert Ticket?</label>
+            <label><input type="radio" name="budget" value="0-100"> $0-100</label>
+            <label><input type="radio" name="budget" value="100-300"> $100-300</label>
+            <label><input type="radio" name="budget" value="300-500"> $300-500</label>
+            <label><input type="radio" name="budget" value="500+"> $500+</label>
+        </div>
+
+        <div class="form-control">
+            <label for="travel-time"style = "color:#a367e9; font-size: 20px;">Preference for Travel Time to a Venue?</label>
+            <label><input type="radio" name="travel_time" value="0-1hr"> 0-1hr</label>
+            <label><input type="radio" name="travel_time" value="1-3hr"> 1-3hr</label>
+            <label><input type="radio" name="travel_time" value="3+ hr"> 3+ hr</label>
+        </div>
+
+        <div class="form-control">
+            <label for="introduction" style = "color:#a367e9; font-size: 20px;">Introduce Yourself!</label>
+            <textarea id="introduction" name="introduction" rows="3" placeholder="Introduce yourself in 20 words or less."></textarea>
+        </div>
+
+        <button type="submit">Submit Survey</button>
+    </form>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+</html>

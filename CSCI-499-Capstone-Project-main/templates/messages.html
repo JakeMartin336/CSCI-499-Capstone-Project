@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Messaging Page</title>
+    <link rel="stylesheet" href="/static/messages_styles.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" />
+    
+    <!-- <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script> -->
+    <!-- <script src="https://cdn.socket.io/4.4.1/socket.io.min.js" integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H" crossorigin="anonymous"></script> -->
+    <!-- <script type="text/javascript" src="//cdn.socket.io/4.4.1/socket.io.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+
+</head>
+<body>
+    <!-- Navbar top -->
+    <div class="navbar-top">
+        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="ConcertConnect Logo" style="height: 120px; margin-right: 200px;" />
+        <ul>
+            <div class="explore-button-container">
+                <button class="button" onclick="window.location.href='/landing'">Home <i class="fa fa-home"></i></button>
+            </div>
+            <div class="explore-button-container">
+                <button class="button" onclick="window.location.href='/venues'">Venues <i class="fa fa-music"></i></button>
+            </div>
+            <div class="explore-button-container">
+                <button class="button" onclick="window.location.href='/concerts'">Concerts <i class="fa fa-headphones"></i></button>
+            </div>
+            <div class="explore-button-container">
+                <button class="button" onclick="window.location.href='/messages'">Messages <i class="fa fa-comments"></i></button>
+            </div>
+            <div class="explore-button-container">
+                <button class="button" onclick="window.location.href='/logout'">Log Out <i class="fa fa-sign-out-alt"></i></button>
+            </div>
+        </ul>
+    </div>
+
+    <!-- Sidenav -->
+    <div class="container">
+        <div class="sidenav-container">
+            <div class="concerts-box">
+                <h3 style="color: #c28adc; text-align: center; font-size: 20px;">🎶 My Concert List 🎶</h3>
+                <h4 style="color:#61d1b2;">Going:</h4>
+                {% if concerts %}
+                <ul class="goingConcerts">
+                    {% for concert in concerts %}
+                        {% if concert.concert_status == 'going' %}
+                            <li>
+                                <img src="{{ concert.concert_image }}" alt="Concert Image"><br>
+                                <div class="concert-text">
+                                    <span class="concert-name">{{ concert.concert_name }}</span>
+                                    <span class="concert-date">{{ concert.concert_date }}</span>
+                                </div>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+                {% else %}
+                    <p style="font-size: 0.9em; color: gray;">No concerts have been selected.</p>
+                {% endif %}
+                <h4 style="color:#d6a351;">Interested:</h4>
+                {% if concerts %}
+                <ul class="interestedConcerts">
+                    {% for concert in concerts %}
+                        {% if concert.concert_status == 'interested' %}
+                            <li>
+                                <img src="{{ concert.concert_image }}" alt="Concert Image"><br>
+                                <div class="concert-text">
+                                <span class="concert-name">{{ concert.concert_name }}</span>
+                                <span class="concert-date">{{ concert.concert_date }}</span>
+                                </div>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+                {% else %}
+                    <p style="font-size: 0.9em; color: gray;">No concerts have been selected.</p>
+                {% endif %}
+                <h4 style="color:#e05c8f;">Attended:</h4>
+                <p style="font-size: 0.9em; color: gray;">No concerts have been attended.</p>
+            </div>
+        </div>
+
+        <div class="contacts-panel">
+            <h3>Contacts</h3>
+            {% if friends %}
+            <ul class="contact-list">
+                {% for id, name in friends.items() %}
+                <li class="contact" onclick="selectContact('{{ id }}', '{{ name }}')">
+                    <img src="https://i.pinimg.com/736x/4c/50/87/4c50870fef410d14ff495ea1f532565a.jpg" class="contact-pic">{{ friends[id] }}
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+                <p>No contacts available.</p>
+            {% endif %}
+        </div>
+
+        <div class="chat-window" id="chatWindow" style="display: none;">
+            <div class="chat-header" id="chatHeader">
+                <span class="contact-name" id="chatroomTitle">Chat with someone!</span>
+                <div class="chat-options">
+                    <button class="icon-button" onclick="startVideoCall()"><i class="fa fa-video"></i></button>
+                    <button class="icon-button" onclick="startVoiceCall()"><i class="fa fa-phone"></i></button>
+                    <button class="icon-button close-button" onclick="CloseChat()">
+                        <i class="fa fa-times" style="color: red;"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="chat-messages" id="chatMessages">
+                <div class="message received" style="display: none;"></div>
+                <div class="message sent" style="display: none;"></div>
+            </div>
+
+            <div class="message-input" id="message-input">
+                <input type="text" id="messageInput" placeholder="Send a message...">
+                <button class="icon-button" onclick="sendMessage()"><i class="fa fa-paper-plane"></i></button>
+                <button class="icon-button" onclick="attachFile()"><i class="fa fa-paperclip"></i></button>
+            </div>
+        
+        </div>
+    
+    </div>
+
+
+    <script type="text/javascript" charset="utf-8">
+        const socket = io("/messages");
+        // var socket = io.connect('http://127.0.0.1:5000');
+        // const socket = io.connect('http://127.0.0.1:5000/messages');
+        
+        socket.on('connect', () => {
+            console.log('Connected to the messaging server.');
+            // socket.emit('join', { room: 'default_room' });
+        });
+
+        // Receive message
+        socket.on('private_message', (data) => {
+            console.log(data.message);
+            appendMessage(`${data.sender}: ${data.message}`, true);
+        });
+
+
+
+        let currentContactId = null;
+        // Select a contact to chat with
+        function selectContact(contactId, contactName) {
+            currentContactId = contactId;
+            document.getElementById('chatWindow').style.display = "block";
+            document.getElementById("chatroomTitle").textContent = `Chat with ${contactName}`;
+            document.getElementById('chatMessages').innerHTML = '';
+            socket.emit('join', { room: 'default_room' });
+        }
+
+        // Send message
+        function sendMessage() {
+            const message = document.getElementById('messageInput').value;
+            if (message && currentContactId) {
+                socket.emit('private_message', {recipient: currentContactId, message: message});
+                appendMessage(`You: ${message}`, false);
+                document.getElementById('messageInput').value = '';
+            }
+        }
+
+        // Append message to the chat window
+        function appendMessage(msg, isReceived) {
+            const msgDiv = document.getElementById('chatMessages');
+            const newMessage = document.createElement('div');
+            newMessage.className = isReceived ? "message received" : "message sent";
+            newMessage.textContent = msg;
+            msgDiv.appendChild(newMessage);
+            msgDiv.scrollTop = msgDiv.scrollHeight;
+        }
+
+        function CloseChat(){
+            document.getElementById('chatWindow').style.display = "none";
+            socket.emit('disconnect', {});
+        }
+
+    </script>
+    <script src="{{ url_for('static', filename='js/messages.js') }}"></script>
+
+</body>
+</html>
