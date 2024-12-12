@@ -30,6 +30,47 @@ socketio = SocketIO(app)
 # Socket_users is the dictionary where I input the users that will be using the socket.
 socket_users = {}
 
+def insert_friend(user_id, friend_id):
+    try:
+        response = (
+            supabase.table("users")
+            .select("contacts")
+            .eq("id", user_id)
+            .single()
+            .execute()
+        )
+        current_contacts = response.data["contacts"] or []
+        if friend_id not in current_contacts:
+            current_contacts.append(friend_id)
+            update_response = (
+                supabase.table("users")
+                .update({"contacts": current_contacts})
+                .eq("id", user_id)
+                .execute()
+            )
+        
+        other_response = (
+            supabase.table("users")
+            .select("contacts")
+            .eq("id", friend_id)
+            .single()
+            .execute()
+        )
+        other_current_contacts = other_response.data["contacts"] or []
+        if user_id not in other_current_contacts:
+            other_current_contacts.append(user_id)
+            other_update_response = (
+                supabase.table("users")
+                .update({"contacts": other_current_contacts})
+                .eq("id", friend_id)
+                .execute()
+            )
+        
+        return True
+    except Exception as error:
+        print(f"Error updating contacts: {error}")
+        return False
+
 def get_user_friends(user_id):
     user_contacts = None
     try:
@@ -317,10 +358,10 @@ def concerts():
     user_location = session.get('user_info')['user_location']
 
     if len(all_concerts) == 0:
-        # all_concerts = example_concerts()
-        for genre in user_genres:
-            recc_concerts = get_concerts(genre, user_location)
-            all_concerts.extend(recc_concerts)
+        all_concerts = example_concerts()
+        # for genre in user_genres:
+        #     recc_concerts = get_concerts(genre, user_location)
+        #     all_concerts.extend(recc_concerts)
     
     return render_template("concert.html", all_concerts=all_concerts,)
 
@@ -392,6 +433,27 @@ def messages():
     concerts = get_user_concerts(account_id)
     return render_template('messages.html', friends=friends, concerts=concerts, username=username)
 
+# Simple implement to immediately add someone as a friend
+@app.route('/add_friend/<user_id>', methods=['POST'])
+def friend(user_id):
+    try:
+        account_id = session.get('user_id')  # Safely retrieve user_id from session
+        if not account_id:
+            return jsonify({"error": "User not logged in"}), 401
+
+        newFriendID = int(user_id)  # Convert user_id to integer
+        print(f"Account ID: {account_id}, New Friend ID: {newFriendID}")
+
+        # Add friend logic
+        add_friend = insert_friend(int(account_id), newFriendID)
+        if add_friend:
+            print("Added as friend!", newFriendID)
+            return jsonify({"success": True})
+        else:
+            return jsonify({"error": "User not found"}), 404
+
+    except ValueError:
+        return jsonify({"error": "Invalid user ID"}), 400  # Handle bad ID input
 
 @socketio.on('connect', namespace='/messages')
 def handle_connect():
