@@ -309,7 +309,8 @@ body {
 }
 
 .goingConcerts li,
-.interestedConcerts li {
+.interestedConcerts li,
+.attendedConcerts li {
     list-style-type: none;
     display: flex;
     align-items: center;
@@ -318,7 +319,8 @@ body {
 }
 
 .goingConcerts li img,
-.interestedConcerts li img {
+.interestedConcerts li img,
+.attendedConcerts li img {
     width: 45px;
     height: 45px;
     border-radius: 50%;
