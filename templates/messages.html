@@ -81,7 +81,24 @@
                     <p style="font-size: 0.9em; color: gray;">No concerts have been selected.</p>
                 {% endif %}
                 <h4 style="color:#e05c8f;">Attended:</h4>
-                <p style="font-size: 0.9em; color: gray;">No concerts have been attended.</p>
+                <!-- Attended Concerts List -->
+                {% if concerts %}
+                <ul class="attendedConcerts">
+                    {% for concert in concerts %}
+                        {% if concert.concert_status == 'attended' %}
+                            <li>
+                              <img src="{{ concert.concert_image }}" class="concert-image" alt="Concert Image"><br>
+                              <div class="concert-text">
+                                <span class="concert-name">{{ concert.concert_name }}</span>
+                                <span class="concert-date">{{ concert.concert_date }}</span>
+                              </div>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+                {% else %}
+                  <p style="font-size: 0.9em; color: gray;">No concerts have been selected.</p>
+                {% endif %}
             </div>
         </div>
 
