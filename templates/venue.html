@@ -41,10 +41,11 @@
 </div>
 
 <!-- Welcome Message Section -->
-<div class="container mt-4 p-4 rounded shadow" style="background-color: #9995e6;">
-    <h2 class="text-center" style="color: #333; font-family: 'Montserrat', sans-serif;">Welcome to Our Seat POV Search!</h2>
-    <p class="text-center" style="font-size: 1.2rem; color: #555; font-family: 'Itim', cursive;">
-        Search up a venue to view its seat map and add seat details to see how your seat would look from the stage, or upload a photo of your own!
+<div class="container mt-4 p-4 rounded shadow" style="background-color: #a19cf3;">
+    <h2 class="text-center" style="color: #7b7b7f; font-family: 'Montserrat', sans-serif; text-shadow: 0 0 10px rgb(229, 229, 173), 0 0 20px rgb(223, 223, 188), 0 0 30px yellow;">🏟️ Welcome to Our Venue Search! </h2>
+
+    <p class="text-center" style="font-size: 1.3rem; color: #e9e8e8; font-family: 'Itim', cursive;">
+        Search up a venue to view its seat map, see how your seat would look from the stage, or upload a photo of your own!
     </p>
 </div>
     
@@ -52,14 +53,14 @@
 <section class="container-search" id="preview">
     <form class="d-flex ms-auto p-4 mb-3 bg-outline-light rounded shadow" role="search">
         <h3 class="text-left mb-0" style="color: #fff; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">Explore Venues</h3>
-        <input type="text" class="form-control form-control-lg me-2" id="venue-name" type="search" placeholder="Search for more venues" aria-label="Search">
+        <input type="text" class="form-control form-control-lg me-2" id="venue-name" type="search" placeholder="Search for a venue!" aria-label="Search">
         <button class="btn btn-outline-dark btn-lg" id="search-btn" type="button">Search</button>
     </form>
 </section>
 
 <!-- Header Section (Venue Name) -->
 <div class="header" id="venue-header">
-    <h1 id="venue-title"></h1>
+    <h1 id="venue-title" style = "color: rgb(72, 100, 228); font-family: Itim;"></h1>
 </div>
 
 <!-- Map Section -->
@@ -76,9 +77,12 @@
 <!-- Seat POV Finder Section -->
 <div class="container seat-finder" id="seat-finder">
     <div class="row">
-        <div class="col-md-12 text-center">
-            <button class="btn btn-warning btn-lg">Seat View Search</button>
-        </div>
+       
+    </div>
+      <!-- Instruction Section -->
+      <div class="container mt-1 p-1" style="background-color: transparent; width: 400px; margin-bottom: 20px">
+        <h4 class="text-center" style="color: #636060; font-family: 'Montserrat', sans-serif; font-size: 25px">🔎 Search for a Seat View</h4>
+     
     </div>
     <div class="row justify-content-center">
         <div class="col-md-2">
@@ -90,13 +94,31 @@
         <div class="col-md-2">
             <input type="text" id="seat-number" class="form-control" placeholder="Seat #">
         </div>
-        <div class="col-md-3">
-            <input type="file" accept="image/*" id="upload-image" class="form-control" style="width: 100%;">
+       
+         <div class="col-md-12 text-center">
+            <button class="btn btn-warning btn-lg" style = "font-family: Itim">Find my View!</button>
         </div>
-      
-            <div class="col-md-2">
-                <button type="button" class="btn btn-primary" id="upload-pov">Upload</button>
-            </div>
+        
+        <div class="row">
+        <!-- Instruction Section -->
+        <div class="container mt-2 p-2 rounded shadow" style="background-color: #f8fad9; border-left: 6px solid #817be4; max-width: 400px;">
+            <h4 class="text-center" style="color: #5a5a59; font-family: 'Montserrat', sans-serif;">📸 How to Upload Your Seat View</h4>
+            <p class="text-center" style="font-size: 1.1rem; color: #555; font-family: 'Itim', cursive;">
+                Before uploading a seat view photo, please ensure that you fill in the section, row, and seat details above.
+                This helps others see the correct perspective from your seat!
+            </p>
+        </div>
+
+
+        
+            <!-- Upload Section (aligned to the right) -->
+            <div class="col-md-6 align-items-center" style = "margin-right: 200px; margin-top: 20px" >
+                <input type="file" accept="image/*" id="upload-image" class="form-control" style="width: 70%; margin-right: 10px;">
+                <button type="button" class="btn btn-primary" id="upload-pov" style = "font-family: Itim">Upload My View!</button>
+              </div>
+          </div>
+          
+
             
         
 

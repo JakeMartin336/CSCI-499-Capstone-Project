@@ -183,13 +183,14 @@ body {
     padding: 10px 20px;
     border-radius: 25px;
     margin-bottom: 20px;
+    margin-top: 20px;
     color: white;
     font-weight: bold;
     transition: background-color 0.3s ease;
 }
 
 .seat-finder button:hover {
-    background-color: #6bbcff;  /* Hover effect */
+    background-color: #6bbcff; 
     color: white;
 }
 

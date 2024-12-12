@@ -94,25 +94,6 @@
         "survey_complete": true
     },
     {
-        "id": 46,
-        "created_at": "2024-12-09T02:09:51.016165+00:00",
-        "user_name": "Joel Klug",
-        "age": 25,
-        "email_address": "testing@testing.com",
-        "account_description": "",
-        "user_location": "Staten Island",
-        "music_genre": [
-            "Alternative",
-            "Classic",
-            "Medieval/Renaissance"
-        ],
-        "budget": "300-500",
-        "contacts": null,
-        "password": "testing.com",
-        "travel_time": "1-3hr",
-        "survey_complete": true
-    },
-    {
         "id": 49,
         "created_at": "2024-12-09T04:06:50.59125+00:00",
         "user_name": "Gretchen Cordy",
@@ -164,25 +145,24 @@
         "survey_complete": true
     },
     {
-        "id": 1,
-        "created_at": "2024-10-16T18:08:41.011763+00:00",
-        "user_name": "Jacob Martin",
-        "age": 24,
-        "email_address": "jacob.martin@example.com",
-        "account_description": "I love rock music",
-        "user_location": "manhattan",
+        "id": 46,
+        "created_at": "2024-12-09T02:09:51.016165+00:00",
+        "user_name": "Joel Klug",
+        "age": 25,
+        "email_address": "testing@testing.com",
+        "account_description": "",
+        "user_location": "Staten Island",
         "music_genre": [
-            "rock",
-            "jazz"
+            "Alternative",
+            "Classic",
+            "Medieval/Renaissance"
         ],
-        "budget": "100.00",
+        "budget": "300-500",
         "contacts": [
-            2,
-            3,
-            4
+            19
         ],
-        "password": "password123",
-        "travel_time": null,
+        "password": "testing.com",
+        "travel_time": "1-3hr",
         "survey_complete": true
     },
     {
@@ -350,6 +330,25 @@
         "survey_complete": true
     },
     {
+        "id": 66,
+        "created_at": "2024-12-12T18:42:28.200542+00:00",
+        "user_name": "maggiema",
+        "age": 21,
+        "email_address": "maggeema@gmail.com",
+        "account_description": "I am a college student that has a background in music and loves to have fun with my friends. I love attending concerts of all kinds, whether it be a classical concert or a late night concert event!",
+        "user_location": "Brooklyn",
+        "music_genre": [
+            "Hip-Hop/Rap",
+            "Jazz",
+            "R&B"
+        ],
+        "budget": "100-300",
+        "contacts": null,
+        "password": "testing!",
+        "travel_time": "0-1hr",
+        "survey_complete": true
+    },
+    {
         "id": 41,
         "created_at": "2024-12-09T01:41:24.431345+00:00",
         "user_name": "gabedlol1",
@@ -461,6 +460,68 @@
         "survey_complete": true
     },
     {
+        "id": 1,
+        "created_at": "2024-10-16T18:08:41.011763+00:00",
+        "user_name": "Jacob Martin",
+        "age": 24,
+        "email_address": "jacob.martin@example.com",
+        "account_description": "I love rock music",
+        "user_location": "manhattan",
+        "music_genre": [
+            "rock",
+            "jazz"
+        ],
+        "budget": "100.00",
+        "contacts": [
+            2,
+            3,
+            4,
+            18,
+            8
+        ],
+        "password": "password123",
+        "travel_time": null,
+        "survey_complete": true
+    },
+    {
+        "id": 18,
+        "created_at": "2024-11-13T00:02:06.589987+00:00",
+        "user_name": "Ramona Gray",
+        "age": 25,
+        "email_address": "test3@gmail.com",
+        "account_description": "sws",
+        "user_location": "Queens",
+        "music_genre": [
+            "Classic"
+        ],
+        "budget": "300-500",
+        "contacts": [
+            1
+        ],
+        "password": "test",
+        "travel_time": "0-1hr",
+        "survey_complete": true
+    },
+    {
+        "id": 19,
+        "created_at": "2024-11-25T09:40:06.506498+00:00",
+        "user_name": "Dirk Been",
+        "age": 25,
+        "email_address": "example@example.com",
+        "account_description": "",
+        "user_location": "Manhattan",
+        "music_genre": [
+            "Folk"
+        ],
+        "budget": "0-100",
+        "contacts": [
+            46
+        ],
+        "password": "Example",
+        "travel_time": "0-1hr",
+        "survey_complete": true
+    },
+    {
         "id": 2,
         "created_at": "2024-10-16T18:08:41.096985+00:00",
         "user_name": "Tim Bob",
@@ -494,43 +555,11 @@
             "Jazz"
         ],
         "budget": "100-300",
-        "contacts": null,
+        "contacts": [
+            1
+        ],
         "password": "krabs",
         "travel_time": "1-3hr",
-        "survey_complete": true
-    },
-    {
-        "id": 18,
-        "created_at": "2024-11-13T00:02:06.589987+00:00",
-        "user_name": "Ramona Gray",
-        "age": 25,
-        "email_address": "test3@gmail.com",
-        "account_description": "sws",
-        "user_location": "Queens",
-        "music_genre": [
-            "Classic"
-        ],
-        "budget": "300-500",
-        "contacts": null,
-        "password": "test",
-        "travel_time": "0-1hr",
-        "survey_complete": true
-    },
-    {
-        "id": 19,
-        "created_at": "2024-11-25T09:40:06.506498+00:00",
-        "user_name": "Dirk Been",
-        "age": 25,
-        "email_address": "example@example.com",
-        "account_description": "",
-        "user_location": "Manhattan",
-        "music_genre": [
-            "Folk"
-        ],
-        "budget": "0-100",
-        "contacts": null,
-        "password": "Example",
-        "travel_time": "0-1hr",
         "survey_complete": true
     },
     {
