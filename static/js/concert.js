@@ -45,7 +45,7 @@ async function generateNewBuddy() {
         console.error('Error fetching new buddy:', error);
     }
 }
-
+let currentCardID = null;
 async function updateCardWithNewUser(userId) {
     try {
         // Call the backend to get user information
@@ -54,6 +54,8 @@ async function updateCardWithNewUser(userId) {
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
+        
+        currentCardID = userId;
 
         const userData = await response.json();
         let formattedGenres = '';
@@ -229,10 +231,36 @@ function saveConcertInfo(status, event) {
 }
 
 document.getElementById('request-button').addEventListener('click', function() {
+    AddFriend(currentCardID);
     Swal.fire({
         title: 'Request Sent!',
         text: 'Your request has been sent! Hang tight while we connect you both. 🎶✨',
         icon: 'success',
         confirmButtonText: 'OK'
     });
+
 });
+
+
+
+// Simple implement to immediately add a user as a friend
+async function AddFriend(userId) {
+    try {
+        const response = await fetch(`/add_friend/${userId}`, {
+            method: 'POST', // Explicitly set to POST
+            headers: {
+                'Content-Type': 'application/json' // Define the content type
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+        console.log('Server response:', data);
+
+    } catch (error) {
+        console.error('Error updating card content:', error);
+    }
+}
