@@ -104,7 +104,7 @@
                     </div>
                 </div>
                 <div class="col-md-4 align-self-end">
-                    <button type="button" class="buddy_button custom-button w-50" style = "font-size: 18px;" onclick="showMatchingSection()">
+                    <button type="button" class="buddy_button custom-button w-50" style = "font-size: 18px" onclick="showMatchingSection()">
                         🫂 Match with a Buddy!
                     </button>
                 </div>
@@ -135,7 +135,7 @@
     <!-- Buddy Matching Section -->
     <section class="matching">
         <div class="container d-flex justify-content-center card-container">
-            <h1> Match me with a Buddy! </h1>
+            <h1 style = "color:#7b7b7f; border-color:#8da8f9"> Match me with a Buddy! </h1>
             <div class="card d-flex flex-md-row align-items-center scrollable-card">
                 <div class="row">
                     <div class="col-12 col-md-4 order-md-1">
@@ -152,8 +152,9 @@
                 </div>
             </div>
             <div class="button-container">
-                <button class="btn buddy_button" id="request-button">Say Hi!</button>
-                <button class="btn btn-outline" onclick="generateNewBuddy()">Find me another buddy.</button>
+                <button class="btn buddy_button say-hi" id="request-button" style = "font-family: 'Itim';">Say Hi!</button>
+                <button class="btn buddy_button" style = "font-family: 'Itim';" onclick="generateNewBuddy()">Find me another buddy.</button>
+                
             </div>
         </div>
     </section>
