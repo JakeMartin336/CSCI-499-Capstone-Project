@@ -139,8 +139,11 @@ body {
     border-radius: 10px;
     box-sizing: border-box; 
     margin-top: 20px;
+    margin-bottom: 20px; 
     overflow-y: auto;
+    max-height: calc(120vh);
 }
+
 
 .contacts-panel h3 {
     font-family: 'Itim', sans-serif;
@@ -249,9 +252,9 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding-top: 10px;
-    padding-bottom: 10px; 
+    padding-top: 10px; 
     border-top: 2px solid #c1c4f7;
+    margin-top: 300px;
 }
 
 .message-input input {

@@ -636,3 +636,17 @@ if __name__ == '__main__':
     # app.run(debug=True)
     initialize_app()
     socketio.run(app, debug=True)
+
+
+@app.route('/api/searchConcerts', methods=['GET'])
+def search_concerts():
+    genre = request.args.get('genre', '')
+    location = request.args.get('location', '')
+    
+
+    concerts = get_concerts(genre, location)
+    
+    return jsonify(concerts)
+
+if __name__ == '__main__':
+    app.run(debug=True)

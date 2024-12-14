@@ -19,22 +19,23 @@
         "survey_complete": true
     },
     {
-        "id": 13,
-        "created_at": "2024-11-11T19:54:29.019431+00:00",
-        "user_name": "Sonja Christopher",
+        "id": 18,
+        "created_at": "2024-11-13T00:02:06.589987+00:00",
+        "user_name": "Ramona Gray",
         "age": 25,
-        "email_address": "test@gmail.com",
-        "account_description": "test",
-        "user_location": "Manhattan",
+        "email_address": "test3@gmail.com",
+        "account_description": "sws",
+        "user_location": "Queens",
         "music_genre": [
-            "Alternative",
-            "Blues",
             "Classic"
         ],
-        "budget": "100-300",
-        "contacts": null,
+        "budget": "300-500",
+        "contacts": [
+            1,
+            13
+        ],
         "password": "test",
-        "travel_time": "1-3hr",
+        "travel_time": "0-1hr",
         "survey_complete": true
     },
     {
@@ -91,6 +92,28 @@
         "contacts": null,
         "password": "12345",
         "travel_time": "0-1hr",
+        "survey_complete": true
+    },
+    {
+        "id": 13,
+        "created_at": "2024-11-11T19:54:29.019431+00:00",
+        "user_name": "Sonja Christopher",
+        "age": 25,
+        "email_address": "test@gmail.com",
+        "account_description": "test",
+        "user_location": "Manhattan",
+        "music_genre": [
+            "Alternative",
+            "Blues",
+            "Classic"
+        ],
+        "budget": "100-300",
+        "contacts": [
+            18,
+            64
+        ],
+        "password": "test",
+        "travel_time": "1-3hr",
         "survey_complete": true
     },
     {
@@ -257,20 +280,19 @@
         "survey_complete": true
     },
     {
-        "id": 64,
-        "created_at": "2024-12-09T23:21:58.129817+00:00",
-        "user_name": "Colleen Haskell",
-        "age": 25,
-        "email_address": "testing4423@gmail.com",
+        "id": 67,
+        "created_at": "2024-12-14T05:17:02.897153+00:00",
+        "user_name": "michaelhyun",
+        "age": 23,
+        "email_address": "kiyiimy@gmail.com",
         "account_description": "",
         "user_location": "Manhattan",
         "music_genre": [
-            "Blues",
             "R&B"
         ],
-        "budget": "0-100",
+        "budget": "100-300",
         "contacts": null,
-        "password": "12345",
+        "password": "qwert",
         "travel_time": "0-1hr",
         "survey_complete": true
     },
@@ -365,6 +387,26 @@
         "contacts": null,
         "password": "mypasswordforthislol1",
         "travel_time": "1-3hr",
+        "survey_complete": true
+    },
+    {
+        "id": 64,
+        "created_at": "2024-12-09T23:21:58.129817+00:00",
+        "user_name": "Colleen Haskell",
+        "age": 25,
+        "email_address": "testing4423@gmail.com",
+        "account_description": "",
+        "user_location": "Manhattan",
+        "music_genre": [
+            "Blues",
+            "R&B"
+        ],
+        "budget": "0-100",
+        "contacts": [
+            13
+        ],
+        "password": "12345",
+        "travel_time": "0-1hr",
         "survey_complete": true
     },
     {
@@ -481,25 +523,6 @@
         ],
         "password": "password123",
         "travel_time": null,
-        "survey_complete": true
-    },
-    {
-        "id": 18,
-        "created_at": "2024-11-13T00:02:06.589987+00:00",
-        "user_name": "Ramona Gray",
-        "age": 25,
-        "email_address": "test3@gmail.com",
-        "account_description": "sws",
-        "user_location": "Queens",
-        "music_genre": [
-            "Classic"
-        ],
-        "budget": "300-500",
-        "contacts": [
-            1
-        ],
-        "password": "test",
-        "travel_time": "0-1hr",
         "survey_complete": true
     },
     {

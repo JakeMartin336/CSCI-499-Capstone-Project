@@ -38,7 +38,7 @@ section {
     align-items: center;
     justify-content: space-between;
     /* background-color: #b4d2f5; Pink */
-    color: #fff; /* White text for contrast */
+    color: #fff; 
     /* box-shadow: 0px 4px 8px 0px rgb(252, 255, 86); */
 
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.109);
@@ -146,7 +146,7 @@ section {
 /* Concert Preview End */
 
 /* Custom Button Styles */
-.custom-button {
+.custom-button2 {
     margin-top: 50%;
     background-color: rgba(0, 0, 0, 0.1);
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.457);
@@ -159,8 +159,8 @@ section {
     transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-.custom-button:hover{
-    background-color: rgba(74, 91, 248, 0.169);          
+.custom-button2:hover{
+    background-color: rgba(239, 241, 166, 0.813);          
     cursor: pointer;          
 }
 
@@ -188,6 +188,39 @@ section {
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.457);
 }
 /* Network Info End*/
+
+/* Style the More Information button using its id */
+#infoButton {
+    background-color: #6761d1;  
+    color: white;  
+    border: none;  
+    padding: 8px 16px;  
+    font-size: 16px;  
+    border-radius: 4px;  
+    cursor: pointer;  
+}
+
+#infoButton:hover {
+    background-color: #4d4aa8;  
+}
+.custom-button {
+    background-color: #e9f5ae ;
+    border-color: #ffffb1 ;
+    color: rgb(91, 89, 89);
+    font-family: "itim";
+    font-size: 20px;
+    box-shadow: palegoldenrod;
+
+}
+
+.custom-button:hover {
+    background-color: #d4daa7;
+    color: rgb(91, 89, 89);
+
+   
+}
+
+
 
 /* Dropdown Item Styles */
 
@@ -296,6 +329,7 @@ section {
     top: 60%; 
     transform: translateY(-50%); 
     z-index: 10; 
+    background-color: #6bbcff;
 }
 
 .btn-left {
@@ -311,4 +345,14 @@ section {
         margin-top: 5px;
 
     }
+}
+
+.btn.btn-outline-dark {
+    background-color: rgb(129, 164, 245) !important;
+    color: rgb(253, 245, 245) !important; 
+}
+
+.btn.btn-outline-dark:hover {
+    background-color: rgb(103, 142, 233) !important;
+    color: rgb(253, 245, 245) !important;  
 }

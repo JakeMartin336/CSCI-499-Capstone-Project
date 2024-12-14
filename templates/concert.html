@@ -38,12 +38,21 @@
         </ul>
     </div>
 
+    <!-- Welcome Message Section -->
+<div class="container mt-4 p-4 rounded shadow" style="background-color: #8da8f9;">
+    <h2 class="text-center" style="color: #7b7b7f; font-family: 'Montserrat', sans-serif; text-shadow: 0 0 10px rgb(229, 229, 173), 0 0 20px rgb(223, 223, 188), 0 0 30px yellow;">🎸 Welcome to Our Concert Search! </h2>
+
+    <p class="text-center" style="font-size: 1.3rem; color: #e9e8e8; font-family: 'Itim', cursive;">
+        Click through recommended concerts, add it to your list, and connect with a potential concert buddy!
+    </p>
+</div>
+
     <!-- Concert Preview Section -->
     <section class="container-bg" id="preview">
         
         <form class="d-flex ms-auto p-4 mb-3 bg-outline-light rounded shadow" role="search">
             <h3 class="text-left mb-0" style="color: #fff; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">Explore Concerts</h3>
-            <input class="form-control form-control-lg me-2" id="searchButton" type="search" placeholder="Search for more concerts" aria-label="Search">
+            <input class="form-control form-control-lg me-2" id="searchButton" type="search" placeholder="Search for more concerts!" aria-label="Search">
             <button class="btn btn-outline-dark btn-lg" type="submit">Search</button>
         </form>
 
@@ -53,9 +62,10 @@
             <div class="row">
                 <div class="col-md-4 align-self-start text-center">
                     <div class="dropdown">
-                        <button class="btn concert_preview_list_button btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: None; border-color: None;">
-                            Add to List
+                        <button class="btn concert_preview_list_button btn-secondary dropdown-toggle custom-button" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            📋 Add to List
                         </button>
+                        
                         <ul class="dropdown-menu" id="saveConcertButton">
                             <li class="dropdown-item">
                                 <div class="form-check">
@@ -81,7 +91,7 @@
                         <p id="concertDescription"></p>
                         <p id="concertTime"></p>
 
-                        <div class="dropdown">
+                        <div class="dropdown moreinfo">
                             <button id="infoButton" class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 More Information
                             </button>
@@ -90,11 +100,12 @@
                                 <li><a class="dropdown-item" onclick="showInfo('tickets');">Buy Tickets</a></li>
                             </ul>
                         </div>
+                        
                     </div>
                 </div>
                 <div class="col-md-4 align-self-end">
-                    <button type="button" class="buddy_button custom-button w-50" onclick="showMatchingSection()">
-                        Match with a Buddy!
+                    <button type="button" class="buddy_button custom-button w-50" style = "font-size: 18px;" onclick="showMatchingSection()">
+                        🫂 Match with a Buddy!
                     </button>
                 </div>
             </div>
@@ -142,7 +153,7 @@
             </div>
             <div class="button-container">
                 <button class="btn buddy_button" id="request-button">Say Hi!</button>
-                <button class="btn btn-outline-secondary" onclick="generateNewBuddy()">Find me another buddy.</button>
+                <button class="btn btn-outline" onclick="generateNewBuddy()">Find me another buddy.</button>
             </div>
         </div>
     </section>

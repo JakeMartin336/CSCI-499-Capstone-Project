@@ -23,6 +23,9 @@ document.addEventListener('DOMContentLoaded', () => {
   
             const divText = document.createElement('div');
             divText.innerText = 'Did you attend?';
+           
+            divText.style.color = 'charcoal';  
+            divText.style.fontSize = '18px';
             divText.className = 'past-concert-text';
   
             const yesButton = document.createElement('button');

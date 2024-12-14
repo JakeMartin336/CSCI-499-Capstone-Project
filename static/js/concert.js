@@ -264,3 +264,76 @@ async function AddFriend(userId) {
         console.error('Error updating card content:', error);
     }
 }
+
+//concert search bar 
+document.addEventListener('DOMContentLoaded', function() {
+    const searchForm = document.getElementById('searchForm');
+    const genreInput = document.getElementById('genre');
+    const locationInput = document.getElementById('location');
+    const resultsDiv = document.getElementById('concertResults');
+
+    // Handle the form submission
+    searchForm.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent default form submission
+        
+        // Get genre and location values
+        const genre = genreInput.value.trim();
+        const location = locationInput.value.trim();
+
+        // Validate the input
+        if (!genre || !location) {
+            alert('Please enter both genre and location.');
+            return;
+        }
+
+        // Display loading message while fetching results
+        resultsDiv.innerHTML = '<p>Loading concerts...</p>';
+        
+        // Fetch concert data from the backend
+        fetch(`/api/searchConcerts?genre=${encodeURIComponent(genre)}&location=${encodeURIComponent(location)}`)
+            .then(response => response.json())
+            .then(data => {
+                // Clear previous results
+                resultsDiv.innerHTML = '';
+
+                // Check if no results found
+                if (data.length === 0) {
+                    resultsDiv.innerHTML = '<p>No concerts found.</p>';
+                    return;
+                }
+
+                // Loop through the concert data and create the cards
+                data.forEach(concert => {
+                    const concertCard = document.createElement('div');
+                    concertCard.classList.add('col-md-4', 'mb-4'); // Adjust as per your grid system (e.g., Bootstrap)
+
+                    concertCard.innerHTML = `
+                        <div class="card h-100">
+                            <img src="${concert.thumbnail}" class="card-img-top" alt="${concert.name}">
+                            <div class="card-body">
+                                <h5 class="card-title">${concert.name}</h5>
+                                <p class="card-text">${concert.description}</p>
+                                <p><strong>Start Time:</strong> ${new Date(concert.start_time).toLocaleString()}</p>
+                                <p><strong>Venue:</strong> ${concert.venue_name}</p>
+                                <p><strong>Address:</strong> ${concert.venue_address}</p>
+                                <a href="${concert.venue_website}" class="btn btn-primary" target="_blank">Visit Venue</a>
+                            </div>
+                            <div class="card-footer">
+                                <strong>Buy Tickets:</strong>
+                                ${concert.ticket_links.map(ticket => `
+                                    <a href="${ticket.link}" class="btn btn-secondary btn-sm" target="_blank">${ticket.source}</a>
+                                `).join(' ')}
+                            </div>
+                        </div>
+                    `;
+
+                    // Append the concert card to the results div
+                    resultsDiv.appendChild(concertCard);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching concert data:', error);
+                resultsDiv.innerHTML = '<p>There was an error fetching the concerts. Please try again later.</p>';
+            });
+    });
+});

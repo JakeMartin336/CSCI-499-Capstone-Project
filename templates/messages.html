@@ -103,7 +103,7 @@
         </div>
 
         <div class="contacts-panel">
-            <h3>Contacts</h3>
+            <h3>👤 Contacts</h3>
             {% if friends %}
             <ul class="contact-list">
                 {% for id, name in friends.items() %}
@@ -168,7 +168,7 @@
         function selectContact(contactId, contactName) {
             currentContactId = contactId;
             document.getElementById('chatWindow').style.display = "block";
-            document.getElementById("chatroomTitle").textContent = `Chat with ${contactName}`;
+            document.getElementById("chatroomTitle").textContent = `💬 Chat with ${contactName}`;
             document.getElementById('chatMessages').innerHTML = '';
             socket.emit('join', { room: 'default_room' });
         }
