@@ -1,6 +1,8 @@
-from flask import Flask, render_template, request, jsonify, url_for, redirect, session
-from flask_socketio import SocketIO, send, join_room, leave_room, emit
+from flask import Flask, render_template, request, jsonify, url_for, redirect, session, flash
+from flask_socketio import SocketIO, send, join_room, leave_room
 import os
+import uuid
+from werkzeug.utils import secure_filename
 from supabase import create_client, Client
 from dotenv import load_dotenv
 from api import get_concerts, example_concerts
@@ -11,8 +13,9 @@ from faiss_match import recommend_best_match_faiss, setup_faiss_index
 import asyncio
 import threading
 from realtime import AsyncRealtimeClient
+from datetime import datetime
 
-# Load .env file
+# Load environment variables
 load_dotenv()
 
 # Check if variables are loaded
@@ -23,56 +26,26 @@ openai_key = os.getenv("OPENAI_API_KEY")
 supabase = create_client(url, key)
 
 app = Flask(__name__, static_folder='static')
-# app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.secret_key = secrets.token_hex(16)
 socketio = SocketIO(app)
 
-# Socket_users is the dictionary where I input the users that will be using the socket.
-socket_users = {}
+BUCKET_NAME = "profile-pictures"
 
-def insert_friend(user_id, friend_id):
-    try:
-        response = (
-            supabase.table("users")
-            .select("contacts")
-            .eq("id", user_id)
-            .single()
-            .execute()
-        )
-        current_contacts = response.data["contacts"] or []
-        if friend_id not in current_contacts:
-            current_contacts.append(friend_id)
-            update_response = (
-                supabase.table("users")
-                .update({"contacts": current_contacts})
-                .eq("id", user_id)
-                .execute()
-            )
-        
-        other_response = (
-            supabase.table("users")
-            .select("contacts")
-            .eq("id", friend_id)
-            .single()
-            .execute()
-        )
-        other_current_contacts = other_response.data["contacts"] or []
-        if user_id not in other_current_contacts:
-            other_current_contacts.append(user_id)
-            other_update_response = (
-                supabase.table("users")
-                .update({"contacts": other_current_contacts})
-                .eq("id", friend_id)
-                .execute()
-            )
-        
-        return True
-    except Exception as error:
-        print(f"Error updating contacts: {error}")
-        return False
+
+rooms = {}
+UPLOAD_FOLDER = "static/uploads"
+ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
+
+all_concerts = []
+list_index = 0  # If you do not need this, remove references to list_index completely.
+
+
+def allowed_file(filename):
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+
 
 def get_user_friends(user_id):
-    user_contacts = None
     try:
         get_friends_ID = (
             supabase.table("users")
@@ -90,33 +63,31 @@ def get_user_friends(user_id):
                     .eq("id", friend)
                     .execute()
                 )
-                map_of_friends[friend]=get_friends_name.data[0]['user_name']
+                map_of_friends[friend] = get_friends_name.data[0]['user_name']
             except Exception as error:
                 print(f"Error fetching user contacts names: {error}")
-                # return "Database connection error. Please try again later."
                 return None
         return map_of_friends
     except Exception as error:
         print(f"Error fetching user contacts: {error}")
-        # return "Database connection error. Please try again later."
         return None
-    
+
 
 def insert_survey(user_id, age, location, genres, budget, travel_time, account_description):
     if account_description == "FAIL ME":
         return "TEST FAILURE OUTPUT"
-    
+
     try:
         insert_survey = (
             supabase.table("users")
             .update({
-                "age" : age,
-                "account_description" : account_description,
-                "user_location" : location,
-                "music_genre" : genres,
-                "budget" : budget,
-                "travel_time" : travel_time,
-                "survey_complete" : True
+                "age": age,
+                "account_description": account_description,
+                "user_location": location,
+                "music_genre": genres,
+                "budget": budget,
+                "travel_time": travel_time,
+                "survey_complete": True
             })
             .eq("id", user_id)
             .execute()
@@ -133,8 +104,7 @@ def insert_survey(user_id, age, location, genres, budget, travel_time, account_d
 def get_login(email, password):
     if email == 'STOP@STOP':
         return 'TEST FAILURE'
-    
-    get_login_info = None
+
     try:
         get_login_info = (
             supabase.table("users")
@@ -146,7 +116,7 @@ def get_login(email, password):
         if get_login_info.data:
             user_id = get_login_info.data[0]['id']
             session['user_id'] = user_id
-            if get_login_info.data[0]['survey_complete'] == False:
+            if get_login_info.data[0]['survey_complete'] is False:
                 return False
             else:
                 return True
@@ -155,21 +125,20 @@ def get_login(email, password):
     except Exception as error:
         print(f"Error fetching user info: {error}")
         return "Database connection error. Please try again later."
-    
+
 
 def create_user(username, email, password):
     if username == 'STOP':
         return 'User could not be created. Please try again.'
-    
-    create_user = None
+
     try:
         create_user = (
             supabase.table("users")
             .insert({
-                "user_name" : username,
-                "email_address" : email,
-                "password" : password,
-                "survey_complete" : False
+                "user_name": username,
+                "email_address": email,
+                "password": password,
+                "survey_complete": False
             })
             .execute()
         )
@@ -184,21 +153,60 @@ def create_user(username, email, password):
         return "Database connection error. Please try again later."
 
 
-def get_user_info(account_id):
-    user_info = None
+def get_user_info(user_id):
     try:
-        response = supabase.table("users").select("*").eq("id", account_id).execute()
+        columns_to_fetch = [
+            "id", "created_at", "user_name", "age", "email_address",
+            "account_description", "user_location", "music_genre",
+            "budget", "travel_time", "contacts", "password", "survey_complete", "profile_picture_url"
+        ]
+
+        response = (
+            supabase.table("users")
+            .select(",".join(columns_to_fetch))
+            .eq("id", user_id)
+            .execute()
+        )
+
+        print("Database Response:", response.data)
+        
+
         if response.data:
             user_info = response.data[0] 
             columns = ["id", "created_at", "user_name", "age", "email_address", "account_description", 
-                       "user_location", "music_genre", "budget", "travel_time", "contacts"]
+                       "user_location", "music_genre", "budget", "travel_time", "contacts", "survey_complete", "profile_picture_url"]
             user_info = {col: user_info.get(col) for col in columns}
         else:
             print("No user found with that account_id.")
     except Exception as error:
         print(f"Error fetching user info: {error}")
-    
     return user_info
+
+
+def update_user_info(user_id, updated_data):
+    try:
+        response = (
+            supabase.table("users")
+            .update(updated_data)
+            .eq("id", user_id)
+            .execute()
+        )
+
+        print("Update Response:", response.data)
+
+        if response.data and len(response.data) > 0:
+            print("User updated successfully:", response.data)
+            refreshed_user = get_user_info(user_id)
+            print("Refetched User Info:", refreshed_user)
+            if refreshed_user:
+                return True
+            else:
+                return "Update succeeded, but failed to retrieve updated data."
+        else:
+            return "Failed to update user info."
+    except Exception as error:
+        print(f"Error updating user info: {error}")
+        return "Database error."
 
 
 def get_user_concerts(user_id):
@@ -206,12 +214,12 @@ def get_user_concerts(user_id):
     try:
         response = supabase.table("concerts").select("*").eq("user_id", user_id).execute()
         if response.data:
-            concerts = response.data 
+            concerts = response.data
         else:
             print(f"Error fetching user concerts: {response.error}")
     except Exception as error:
         print(f"Error fetching user concerts: {error}")
-    
+
     return concerts
 
 
@@ -228,63 +236,49 @@ def insert_concert(user_id, concert_status, concert_name, concert_image, concert
         )
         if get_concert.data:
             if concert_status == 'DELETE':
-                delete_concert = (
-                    supabase.table("concerts")
-                    .delete()
-                    .eq("user_id", user_id)
-                    .eq("concert_name", concert_name)
-                    .eq("concert_image", concert_image)
-                    .eq("concert_date", concert_date)
+                supabase.table("concerts") \
+                    .delete() \
+                    .eq("user_id", user_id) \
+                    .eq("concert_name", concert_name) \
+                    .eq("concert_image", concert_image) \
+                    .eq("concert_date", concert_date) \
                     .execute()
-                )
             else:
-                update_concert = (
-                    supabase.table("concerts")
-                    .update({
-                        "concert_status" : concert_status
-                    })
-                    .eq("user_id", user_id)
-                    .eq("concert_name", concert_name)
-                    .eq("concert_image", concert_image)
-                    .eq("concert_date", concert_date)
+                supabase.table("concerts") \
+                    .update({"concert_status": concert_status}) \
+                    .eq("user_id", user_id) \
+                    .eq("concert_name", concert_name) \
+                    .eq("concert_image", concert_image) \
+                    .eq("concert_date", concert_date) \
                     .execute()
-                )
         else:
-            insert_concert = (
-                supabase.table("concerts")
+            supabase.table("concerts") \
                 .insert({
                     "user_id": user_id,
                     "concert_status": concert_status,
                     "concert_name": concert_name,
                     "concert_image": concert_image,
                     "concert_date": concert_date
-                })
+                }) \
                 .execute()
-            )
     except Exception as error:
         print(f"Error getting concert info: {error}")
-        # return "Database connection error. Please try again later."
 
 
 @app.route('/')
 def home():
     initialize_app()
-    # return render_template('index.html')
     return redirect(url_for('login'))
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    error = None
     fetch_all_users_as_json()
     if request.method == 'POST':
         user_email = request.form['user_email']
         user_password = request.form['user_password']
-        # print(f"Email: {email}, Password: {password}")
         verified_info = get_login(user_email, user_password)
         if verified_info is True:
-            # return redirect(url_for('home'))
-            # return render_template("smile.html")
             return redirect(url_for('landing'))
         elif verified_info is False:
             return redirect(url_for('survey'))
@@ -296,12 +290,10 @@ def login():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    error = None
     if request.method == 'POST':
         new_username = request.form.get('new_username')
         new_email = request.form.get('new_email')
         new_password = request.form.get('new_password')
-        # print(f"Username: {new_username}, Email: {new_email}, Password: {new_password}")
         created_info = create_user(new_username, new_email, new_password)
         if created_info is True:
             return redirect(url_for('survey'))
@@ -309,61 +301,221 @@ def register():
             return render_template("register.html", error=created_info)
     else:
         return render_template('register.html')
-    
+
 
 @app.route('/survey', methods=['GET', 'POST'])
 def survey():
-    error = None
     if request.method == 'POST':
-        user_id = session.get('user_id') 
+        user_id = session.get('user_id')
         age = request.form['age']
         location = request.form['location']
         genres = request.form.getlist('genre')
         budget = request.form['budget']
         travel_time = request.form['travel_time']
         account_description = request.form['introduction']
-        # print([user_id, age, location, ', '.join(genres), budget, travel_time])
-        updated_info = insert_survey(user_id, age, location, genres, budget, travel_time, account_description)        
+        updated_info = insert_survey(user_id, age, location, genres, budget, travel_time, account_description)
         if updated_info is True:
-            # session.pop('user_id', None)
-            # return render_template("smile.html")
             return redirect(url_for('landing'))
         else:
             return render_template("survey.html", error=updated_info)
     else:
         return render_template('survey.html')
-    
+
+
+@app.route('/profile', methods=['GET', 'POST'])
+def profile():
+    user_id = session.get("user_id")
+    if not user_id:
+        return redirect(url_for("login"))
+
+    user_info = get_user_info(user_id)
+    success_message, error_message = None, None
+
+   # Predefined list of avatar URLs (host these in your static files or a bucket)
+    avatars = [
+        url_for('static', filename='avatars/avatar1.png'),
+        url_for('static', filename='avatars/avatar2.png'),
+        url_for('static', filename='avatars/avatar3.png'),
+        url_for('static', filename='avatars/avatar4.png'),
+        url_for('static', filename='avatars/avatar5.png'),
+        url_for('static', filename='avatars/avatar6.png'),
+        url_for('static', filename='avatars/avatar7.png'),
+        url_for('static', filename='avatars/avatar8.png'),
+        url_for('static', filename='avatars/avatar9.png'),
+        url_for('static', filename='avatars/avatar10.png')
+    ]
+
+    if request.method == 'POST':
+        chosen_avatar = request.form.get('chosen_avatar')
+        if chosen_avatar and chosen_avatar in avatars:
+            update_status = update_user_info(user_id, {"profile_picture_url": chosen_avatar})
+            if update_status is True:
+                user_info['profile_picture_url'] = chosen_avatar
+                success_message = "Avatar updated successfully!"
+            else:
+                error_message = update_status
+        
+        # Handle other fields (username, email, etc.)
+        updated_username = request.form.get('username')
+        if updated_username and updated_username != user_info['user_name']:
+            # Update username as an example
+            update_status = update_user_info(user_id, {'user_name': updated_username})
+            if update_status is True:
+                user_info['user_name'] = updated_username
+                if not success_message:
+                    success_message = "Username updated successfully!"
+            else:
+                error_message = update_status
+
+        # Update user information fields
+        updated_username = request.form.get('username')
+        if updated_username and updated_username != user_info['user_name']:
+            update_status = update_user_info(user_id, {'user_name': updated_username})
+            if update_status is True:
+                user_info['user_name'] = updated_username
+                success_message = "Username updated successfully!"
+            else:
+                error_message = update_status
+
+        updated_email = request.form.get('email')
+        if updated_email and updated_email != user_info['email_address']:
+            update_status = update_user_info(user_id, {'email_address': updated_email})
+            if update_status is True:
+                user_info['email_address'] = updated_email
+                success_message = "Email address updated successfully!"
+            else:
+                error_message = update_status
+
+        updated_age = request.form.get('age')
+        if updated_age and updated_age != str(user_info['age']):
+            update_status = update_user_info(user_id, {'age': updated_age})
+            if update_status is True:
+                user_info['age'] = updated_age
+                success_message = "Age updated successfully!"
+            else:
+                error_message = update_status
+
+        updated_location = request.form.get('location')
+        if updated_location and updated_location != user_info['user_location']:
+            update_status = update_user_info(user_id, {'user_location': updated_location})
+            if update_status is True:
+                user_info['user_location'] = updated_location
+                success_message = "Location updated successfully!"
+            else:
+                error_message = update_status
+
+        updated_account_description = request.form.get('account_description')
+        if updated_account_description and updated_account_description != user_info['account_description']:
+            update_status = update_user_info(user_id, {'account_description': updated_account_description})
+            if update_status is True:
+                user_info['account_description'] = updated_account_description
+                success_message = "Account description updated successfully!"
+            else:
+                error_message = update_status
+
+        # Handle music genre
+        updated_music_genre_str = request.form.get('music_genre')
+        # Convert the comma-separated string to a list
+        if updated_music_genre_str is not None:
+            updated_music_genres = [g.strip() for g in updated_music_genre_str.split(',') if g.strip()]
+            if updated_music_genres != user_info['music_genre']:
+                update_status = update_user_info(user_id, {'music_genre': updated_music_genres})
+                if update_status is True:
+                    user_info['music_genre'] = updated_music_genres
+                    if success_message is None:
+                        success_message = "Music genres updated successfully!"
+                else:
+                    error_message = update_status
+
+
+        updated_budget = request.form.get('budget')
+        if updated_budget and updated_budget != str(user_info['budget']):
+            update_status = update_user_info(user_id, {'budget': updated_budget})
+            if update_status is True:
+                user_info['budget'] = updated_budget
+                success_message = "Budget updated successfully!"
+            else:
+                error_message = update_status
+
+        updated_travel_time = request.form.get('travel_time')
+        if updated_travel_time and updated_travel_time != str(user_info['travel_time']):
+            update_status = update_user_info(user_id, {'travel_time': updated_travel_time})
+            if update_status is True:
+                user_info['travel_time'] = updated_travel_time
+                success_message = "Travel time updated successfully!"
+            else:
+                error_message = update_status
+
+        current_password = request.form.get('current_password')
+        new_password = request.form.get('new_password')
+        if current_password and new_password:
+            if user_info.get('password') == current_password:
+                update_status = update_user_info(user_id, {'password': new_password})
+                if update_status is True:
+                    user_info['password'] = new_password
+                    success_message = "Password updated successfully!"
+                else:
+                    error_message = update_status
+            else:
+                error_message = "Incorrect current password. Please try again."
+
+        updated_travel_time = request.form.get('travel_time')
+        if updated_travel_time and updated_travel_time != user_info['travel_time']:
+            update_status = update_user_info(user_id, {'travel_time': updated_travel_time})
+            if update_status is True:
+                user_info['travel_time'] = updated_travel_time
+                success_message = "Travel time updated successfully!"
+            else:
+                     error_message = update_status
+                
+    return render_template("profile.html", user=user_info, success=success_message, error=error_message, avatars=avatars)
+
+
+@app.route('/upload', methods=['GET', 'POST'])
+def upload():
+    if request.method == 'POST':
+        profile_picture = request.files.get('profile_picture')
+        if profile_picture:
+            file_data = profile_picture.read()
+            # Handle file_data as needed
+            return "File uploaded successfully!"
+        else:
+            return "No file uploaded."
+    return render_template('upload.html')
+
 
 @app.route("/landing")
 def landing():
-    account_id = session.get('user_id')
+    user_id = session.get('user_id')
     user_info = None
     user_concerts = []
-    
-    if account_id:
-        account_id = int(account_id)
-        user_info = get_user_info(account_id)
-        user_concerts = get_user_concerts(account_id)
+
+    if user_id:
+        user_id = int(user_id)
+        user_info = get_user_info(user_id)
+        user_concerts = get_user_concerts(user_id)
 
     session['user_info'] = user_info
     return render_template("landing.html", user=user_info, concerts=user_concerts)
 
 
-all_concerts = []
 @app.route("/concerts")
 def concerts():
     global all_concerts
 
-    user_genres = session.get('user_info')['music_genre']
-    user_location = session.get('user_info')['user_location']
+    user_info = session.get('user_info')
+    if not user_info:
+        return redirect(url_for('login'))
+
+    user_genres = user_info['music_genre']
+    user_location = user_info['user_location']
 
     if len(all_concerts) == 0:
-        # all_concerts = example_concerts()
         for genre in user_genres:
-             recc_concerts = get_concerts(genre, user_location)
-             all_concerts.extend(recc_concerts)
-    
-    return render_template("concert.html", all_concerts=all_concerts,)
+            recc_concerts = get_concerts(genre, user_location)
+            all_concerts.extend(recc_concerts)
+
+    return render_template("concert.html", all_concerts=all_concerts, )
 
 
 @app.route('/venues')
@@ -391,7 +543,6 @@ def save_concert():
     start_time = data.get('start_time')
 
     insert_concert(user_id, status, name, thumbnail, start_time)
-
     return jsonify({"message": f"Concert '{name}' has been marked as {status}!"})
 
 
@@ -402,7 +553,6 @@ def concert_attendance():
         return jsonify({"error": "User not logged in"}), 401
 
     data = request.get_json()
-
     attendance = data.get('attendance')
     if attendance not in ['yes', 'no']:
         return jsonify({"error": "Invalid attendance value"}), 400
@@ -421,83 +571,81 @@ def concert_attendance():
         attendance = 'DELETE'
         message = f"Concert '{concert_name}' has been deleted!"
 
-    updated_concert = insert_concert(user_id, attendance, concert_name, concert_image, concert_date)
-
+    insert_concert(user_id, attendance, concert_name, concert_image, concert_date)
     return jsonify({"message": message})
+
 
 @app.route('/messages')
 def messages():
-    account_id = session.get('user_id')
-    username = session.get('user_info')['user_name']
-    friends = get_user_friends(account_id)
-    concerts = get_user_concerts(account_id)
+    user_id = session.get('user_id')
+    if not user_id:
+        return redirect(url_for('login'))
+
+    user_info = session.get('user_info')
+    if not user_info:
+        return redirect(url_for('login'))
+
+    username = user_info['user_name']
+    friends = get_user_friends(user_id)
+    concerts = get_user_concerts(user_id)
     return render_template('messages.html', friends=friends, concerts=concerts, username=username)
 
-# Simple implement to immediately add someone as a friend
-@app.route('/add_friend/<user_id>', methods=['POST'])
-def friend(user_id):
-    try:
-        account_id = session.get('user_id')  # Safely retrieve user_id from session
-        if not account_id:
-            return jsonify({"error": "User not logged in"}), 401
 
-        newFriendID = int(user_id)  # Convert user_id to integer
-        print(f"Account ID: {account_id}, New Friend ID: {newFriendID}")
+@socketio.on('join')
+def on_join(data):
+    userID = session.get('user_id')
+    friendID = data['friendID']
+    room = 1
 
-        # Add friend logic
-        add_friend = insert_friend(int(account_id), newFriendID)
-        if add_friend:
-            print("Added as friend!", newFriendID)
-            return jsonify({"success": True})
-        else:
-            return jsonify({"error": "User not found"}), 404
+    if not room or not userID or not friendID:
+        return
 
-    except ValueError:
-        return jsonify({"error": "Invalid user ID"}), 400  # Handle bad ID input
+    if room not in rooms:
+        rooms[room] = {'users': [userID, friendID], 'messages': []}
 
-@socketio.on('connect', namespace='/messages')
-def handle_connect():
-    user_id = int(session.get('user_id'))
-    socket_users[user_id] = request.sid
-    print(f"UserID: {user_id}, Connected: {request.sid}")
-
-
-@socketio.on('disconnect', namespace='/messages')
-def handle_disconnect():
-    user_id = int(session.get('user_id'))
-    if user_id in socket_users:
-        del socket_users[user_id]
-        print(f"User {user_id} disconnected.")
-
-
-@socketio.on('join', namespace='/messages')
-def handle_join(data):
-    room = data['room']
-    user_id = int(session.get('user_id'))
-    username = session.get('user_info')['user_name']
     join_room(room)
-    print(f"UserID: {user_id}, Join room: {room}")
-    # emit('message', {'msg': f'{username} has entered the room.'}, room=room)
+    send(f'{userID} has joined the room.', to=room)
+    print(f'Room created: {room}')
 
 
-@socketio.on('private_message', namespace='/messages')
-def handle_message(data):
-    recipient = int(data['recipient'])
-    message = data['message']
-    sender = session.get('user_info')['user_name']
-    if recipient in socket_users:
-        emit('private_message', {'sender': sender, 'message': message}, to=socket_users[recipient])
-    else:
-        emit('private_message', {'sender': 'System', 'message': f"User is offline."}, to=request.sid)
+@socketio.on('leave')
+def on_leave(data):
+    userID = session.get('user_id')
+    friendID = data['friendID']
+    room = 1
 
+    if room in rooms:
+        leave_room(room)
+        del rooms[room]
+        send(f'{userID} has left the room.', to=room)
+        print(f'Room removed: {room}')
+
+
+@socketio.on('message')
+def on_message(data):
+    userID = session.get('user_id')
+    friendID = data['friendID']
+    room = 1
+
+    if room not in rooms:
+        return
+
+    content = {
+        "name": userID,
+        "message": data["message"]
+    }
+
+    send(content, to=room)
+    rooms[room]["messages"].append(content)
+    print(f"Message sent to {room}: {content}")
 
 
 @app.route('/api/user-info/<user_id>', methods=['GET', 'POST'])
-def user_info(user_id):
-    user_info = get_user_info(int(user_id))
-    if user_info:
-        print("I am user_info", user_info)
-        return jsonify(user_info)  # Respond with user info in json format
+def user_info_route(user_id):
+    u_info = get_user_info(int(user_id))
+    if u_info:
+        print("I am user_info", u_info)
+        return jsonify(u_info)
     else:
         return jsonify({"error": "User not found"}), 404
 
@@ -506,35 +654,34 @@ def initialize_app():
     print("Initializing app...")
     listener_thread = threading.Thread(target=start_async_realtime_client, daemon=True)
     listener_thread.start()
-    
+
     print("Listening...")
     if not os.path.exists("users_data.json"):
         print("'users_data.json' not found. Creating it...")
         fetch_all_users_as_json()
     else:
-        print("'users_data.json' already exists.") # This will load all the users from supabase into a json so we can use them 
+        print("'users_data.json' already exists.")
         fetch_all_users_as_json()
     setup_faiss_index()
+
 
 def postgres_changes_callback(payload, *args):
     print("*: ", payload)
     fetch_all_users_as_json()
 
+
 async def setup_async_realtime_client():
     socket = AsyncRealtimeClient(f"{url}/realtime/v1", key, auto_reconnect=True)
     await socket.connect()
 
-    # Setting up Postgres changes
     channel = socket.channel("public:todos")
-    await channel.on_postgres_changes(
-        "*", callback=postgres_changes_callback
-    ).subscribe()
-
-    # Listen indefinitely
+    await channel.on_postgres_changes("*", callback=postgres_changes_callback).subscribe()
     await socket.listen()
+
 
 def start_async_realtime_client():
     asyncio.run(setup_async_realtime_client())
+
 
 @app.route('/api/buddy/recommend', methods=['GET', 'POST'])
 def recommend():
@@ -543,7 +690,7 @@ def recommend():
     print("Account", target_id)
     if not target_id:
         return jsonify({"error": "target_id parameter is required"}), 400
-    
+
     try:
         target_id = int(target_id)
         matched_user, explanation = recommend_best_match_faiss(target_id)
@@ -563,31 +710,31 @@ def get_venue_images():
     section = request.args.get('section')
     row = request.args.get('row')
     seat = request.args.get('seat')
-    
-    print(f"Parameters received: Venue={venue_name}, Section={section}, Row={row}, Seat={seat}")  # Debug log
+
+    print(f"Parameters received: Venue={venue_name}, Section={section}, Row={row}, Seat={seat}")
 
     if not venue_name:
         return jsonify({'error': 'Venue name is required.'}), 400
 
     query = supabase.table("venue-images").select("image_url")
     query = query.eq("venue_name", venue_name)
-    
+
     if section:
         query = query.eq("section", section)
     if row:
         query = query.eq("row", row)
     if seat:
         query = query.eq("seat", seat)
-    
+
     try:
         response = query.execute()
-        print(f"Query response: {response.data}")  # Debug log
+        print(f"Query response: {response.data}")
 
         if not response.data:
             return jsonify({'error': 'No images found for the specified criteria.'}), 404
         return jsonify({'image_urls': response.data}), 200
     except Exception as e:
-        print(f"Error fetching venue images: {str(e)}")  # Debug log
+        print(f"Error fetching venue images: {str(e)}")
         return jsonify({'error': 'An error occurred while fetching venue images.'}), 500
 
 
@@ -598,7 +745,7 @@ def add_venue_image():
     row = request.form.get('row')
     seat = request.form.get('seat')
     image = request.files.get('image')
-    
+
     if not image:
         return jsonify({'error': 'No image file provided.'}), 400
 
@@ -606,10 +753,13 @@ def add_venue_image():
         venue_name = venue_name.lower()
         image_bytes = image.read()
         image_filename = f"{image.filename}"
-        
-        upload_response = supabase.storage.from_('venue-images-bucket').upload(image_filename, image_bytes)
-        public_url = supabase.storage.from_('venue-images-bucket').get_public_url(image_filename)
 
+        upload_response = supabase.storage.from_('venue-images-bucket').upload(image_filename, image_bytes)
+
+        if upload_response.error:
+            return jsonify({'error': f"Failed to upload image: {str(upload_response.error)}"}), 500
+
+        public_url = supabase.storage.from_('venue-images-bucket').get_public_url(image_filename).get('publicURL')
         insert_response = (
             supabase.table("venue-images")
             .insert({
@@ -633,20 +783,5 @@ def add_venue_image():
 
 
 if __name__ == '__main__':
-    # app.run(debug=True)
     initialize_app()
-    socketio.run(app, debug=True)
-
-
-@app.route('/api/searchConcerts', methods=['GET'])
-def search_concerts():
-    genre = request.args.get('genre', '')
-    location = request.args.get('location', '')
-    
-
-    concerts = get_concerts(genre, location)
-    
-    return jsonify(concerts)
-
-if __name__ == '__main__':
-    app.run(debug=True)
+    socketio.run(app, host='127.0.0.1', port=5003, debug=True, use_reloader=False)
