@@ -41,9 +41,9 @@
         <div class="explore-button-container">
             <button class="button" onclick="window.location.href='/messages'">Messages <i class="fa fa-comments"></i></button>
         </div>
-      <div class="explore-button-container">
-                <button class="button" onclick="window.location.href='/profile'">Profile <i class="fa fa-user"></i></button>
-            </div>
+        <div class="explore-button-container">
+          <button class="button" onclick="window.location.href='/profile'">Profile <i class="fa fa-user"></i></button>
+        </div>
         <div class="explore-button-container">
             <button class="button" onclick="window.location.href='/logout'">Log Out <i class="fa fa-sign-out-alt"></i></button>
         </div>
@@ -56,7 +56,11 @@
         <div class="sidenav">
             <div class="profile-box">
                 <div class="profile">
-                    <img src="https://i.pinimg.com/736x/4c/50/87/4c50870fef410d14ff495ea1f532565a.jpg" alt="Profile Picture" style="width: 125px; height: 125px; border-radius: 50%; object-fit: cover; overflow: hidden;" />
+                  <img 
+                  src="{{ user['profile_picture_url'] if user['profile_picture_url'] else url_for('static', filename='avatars/default.png') }}"
+                  alt="Profile Picture"
+                  style="width: 125px; height: 125px; border-radius: 50%; object-fit: cover; overflow: hidden;"
+                />                
                     <div class="name">{{ user['user_name'] if user else 'User Name' }}</div>
                     <div class="job">{{ user['account_description'] if user else '' }}</div>
                     <div class="age">{{ user['age'] if user else '' }}</div>
@@ -64,7 +68,7 @@
                     <div class="music_genres">{{ ', '.join(user['music_genre']) if user and 'music_genre' in user else '' }}</div>
                 </div>
                 <div class="sidenav-url">
-                    <div class="url"><a href="#profile">Profile</a><hr /></div>
+                    <div class="url"><a href="/profile">Profile</a><hr /></div>
                     <div class="url"><a href="#settings">Settings</a><hr /></div>
                 </div>
             </div>
@@ -74,8 +78,7 @@
             <div class="concerts-box">
                 <h3 style="color: #c28adc; text-align: center; font-size: 24px;">🎶 My Concert List 🎶</h3>
                 
-                <h4 style="color:#237961;">Going:</h4>
-
+                <h4 style="color:#61d1b2;">Going:</h4>
                 <!-- Going Concerts List -->
                 {% if concerts %}
                 <ul class="goingConcerts">
