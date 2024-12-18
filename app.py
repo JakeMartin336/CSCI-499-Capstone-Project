@@ -174,7 +174,7 @@ def get_user_info(user_id):
         if response.data:
             user_info = response.data[0] 
             columns = ["id", "created_at", "user_name", "age", "email_address", "account_description", 
-                       "user_location", "music_genre", "budget", "travel_time", "contacts", "survey_complete", "profile_picture_url"]
+                       "user_location", "music_genre", "budget", "travel_time", "password", "contacts", "survey_complete", "profile_picture_url"]
             user_info = {col: user_info.get(col) for col in columns}
         else:
             print("No user found with that account_id.")
@@ -331,7 +331,7 @@ def profile():
     user_info = get_user_info(user_id)
     success_message, error_message = None, None
 
-   # Predefined list of avatar URLs (host these in your static files or a bucket)
+   
     avatars = [
         url_for('static', filename='avatars/avatar1.png'),
         url_for('static', filename='avatars/avatar2.png'),
@@ -355,10 +355,8 @@ def profile():
             else:
                 error_message = update_status
         
-        # Handle other fields (username, email, etc.)
         updated_username = request.form.get('username')
         if updated_username and updated_username != user_info['user_name']:
-            # Update username as an example
             update_status = update_user_info(user_id, {'user_name': updated_username})
             if update_status is True:
                 user_info['user_name'] = updated_username
@@ -413,17 +411,15 @@ def profile():
             else:
                 error_message = update_status
 
-        updated_music_genre_str = request.form.get('music_genre')
-        if updated_music_genre_str is not None:
-            updated_music_genres = [g.strip() for g in updated_music_genre_str.split(',') if g.strip()]
-            if updated_music_genres != user_info['music_genre']:
-                update_status = update_user_info(user_id, {'music_genre': updated_music_genres})
-                if update_status is True:
-                    user_info['music_genre'] = updated_music_genres
-                    if success_message is None:
-                        success_message = "Profile updated successfully!"
-                else:
-                    error_message = update_status
+        updated_genres = request.form.getlist('genres')  # Get all selected genres
+        if updated_genres and updated_genres != user_info['music_genre']:
+            update_status = update_user_info(user_id, {'music_genre': updated_genres})
+            if update_status is True:
+                user_info['music_genre'] = updated_genres
+                success_message = "Profile updated successfully!"
+            else:
+                error_message = update_status
+
 
 
         updated_budget = request.form.get('budget')
