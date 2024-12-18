@@ -71,6 +71,7 @@
   </div>
 
   <div class="center-container">
+    <div id="popup-message" class="popup-message">You can only select up to 3 genres.</div>
     <!-- Single form for the entire profile -->
     <form method="POST" enctype="multipart/form-data">
       <div class="profile-box">
@@ -82,7 +83,7 @@
   alt="Current Avatar"
 />
           <div class="avatar-dropdown">
-            <button type="button" class="custom-button" id="toggle-avatars" style="padding: 5px 10px; font-size: 14px; color: white;">
+            <button type="button" class="button-avatar" id="toggle-avatars" style="padding: 5px 10px; font-size: 14px; color: white;">
               Select Avatars
             </button>
             <div class="avatar-list" id="avatar-list">
@@ -102,7 +103,7 @@
         <div class="profile-details">
           <h2>Profile Information</h2>
           {% if success %}
-          <p style="color: green;">{{ success }}</p>
+          <p style="color:green;">{{ success }}</p>
           {% endif %}
           {% if error %}
           <p style="color: red;">{{ error }}</p>
@@ -158,17 +159,46 @@
               />
             </div>
 
-            <div class="form-group mb-3">
-              <label for="location" style="color: rgb(194, 138, 220);">Location:</label>
-              <input
-                type="text"
-                id="location"
-                name="location"
-                class="form-control"
-                value="{{ user['user_location'] }}"
-                required
-              />
+            <div class="form-group">
+              <label for="location">Location</label>
+              <select name="location" id="location" class="form-control">
+                <option value="" disabled {% if not user['user_location'] %}selected{% endif %}>Select your location</option>
+                <option value="Manhattan" {% if user['user_location'] == 'Manhattan' %}selected{% endif %}>Manhattan</option>
+                <option value="Brooklyn" {% if user['user_location'] == 'Brooklyn' %}selected{% endif %}>Brooklyn</option>
+                <option value="Queens" {% if user['user_location'] == 'Queens' %}selected{% endif %}>Queens</option>
+                <option value="The Bronx" {% if user['user_location'] == 'The Bronx' %}selected{% endif %}>The Bronx</option>
+                <option value="Staten Island" {% if user['user_location'] == 'Staten Island' %}selected{% endif %}>Staten Island</option>
+              </select>
             </div>
+            
+
+
+            <div class="form-group">
+              <label for="music_genre" style="color: #c28adc; font-weight: bold; ">Music Genres</label>
+              <div class="dropdown">
+                <button type="button" id="genreDropdown" class="music-genre-dropdown">
+                  {{ ', '.join(user['music_genre']) if user['music_genre'] else "Pick up to 3 of your favorite genres" }}
+                </button>
+            
+                <!-- Dropdown Content -->
+                <div id="genreOptions" class="dropdown-content">
+                  {% set genres = [
+                    "Blues", "Classic", "Dance/Electronic", "Hip-Hop/Rap", "Jazz", "Medieval/Renaissance",
+                    "New Age", "Pop", "Reggae", "Rock", "Ballads/Romantic", "Children's music", "Country",
+                    "Folk", "Holiday", "Latin", "Metal", "Other", "R&B", "Religious", "World"
+                  ] %}
+                  {% for genre in genres %}
+                    <label>
+                      <input type="checkbox" name="genres" value="{{ genre }}"
+                      {% if user['music_genre'] and genre in user['music_genre'] %}checked{% endif %}>
+                      {{ genre }}
+                    </label>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+            
+
 
             <div class="form-group mb-3">
               <label for="description" style="color: rgb(194, 138, 220);">Account Description:</label>
@@ -178,18 +208,7 @@
                 class="form-control"
                 required>{{ user['account_description'] }}</textarea>
             </div>
-
-            <div class="form-group mb-3">
-              <label for="music_genres" style="color: rgb(194, 138, 220);">Music Genres:</label>
-              <input
-                type="text"
-                id="music_genres"
-                name="music_genre"
-                class="form-control"
-                value="{{ ', '.join(user['music_genre']) if 'music_genre' in user else '' }}"
-                required
-              />
-            </div>
+            
 
             <div class="form-group mb-3">
               <label for="budget" style="color: rgb(194, 138, 220);">Budget:</label>
@@ -234,7 +253,7 @@
             </div>
 
             <div class="form-group mb-3" style="grid-column: 2; text-align: right; margin-top: 10px;">
-              <button type="submit" class="custom-button" style="padding: 10px 20px;  color: white;">
+              <button type="submit" class="button-update-profile" style="padding: 10px 20px;  background-color:#c28adc; color: white">
                 Update Profile
               </button>
             </div>
@@ -243,6 +262,7 @@
       </div>
     </form>
   </div>
+  
   <script src="{{ url_for('static', filename='js/profile.js') }}"></script>
 </body>
 </html>
