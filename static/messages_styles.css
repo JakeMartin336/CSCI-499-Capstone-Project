@@ -27,7 +27,7 @@ body {
 .title {
     font-size: 24px;
     font-weight: bold;
-    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7); /
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7);
 }
 
 .navbar-top ul {
@@ -49,12 +49,12 @@ body {
     align-items: center;
     justify-content: center; 
     gap: 10px;
-    background-color: #f1f9b7; /* Button background color */
-    border-radius: 30px; /* Rounded corners */
+    background-color: #f1f9b7;
+    border-radius: 30px;
     color: #b56aee; 
     font-weight: 600;
     border: none;
-    cursor: pointer; /* Pointer cursor on hover */
+    cursor: pointer;
     box-shadow: 0px 4px 8px rgba(232, 255, 23, 0.598);
     transition: background-color 0.3s ease, transform 0.3s ease; 
     font-family: "Itim";

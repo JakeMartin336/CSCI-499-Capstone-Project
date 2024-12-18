@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify, url_for, redirect, session, flash
-from flask_socketio import SocketIO, send, join_room, leave_room
+from flask_socketio import SocketIO, send, join_room, leave_room, emit
 import os
 import uuid
 from werkzeug.utils import secure_filename
@@ -31,14 +31,54 @@ socketio = SocketIO(app)
 
 BUCKET_NAME = "profile-pictures"
 
-
-rooms = {}
 UPLOAD_FOLDER = "static/uploads"
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif"}
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 all_concerts = []
-list_index = 0  # If you do not need this, remove references to list_index completely.
+socket_users = {}
+
+
+def insert_friend(user_id, friend_id):
+    try:
+        response = (
+            supabase.table("users")
+            .select("contacts")
+            .eq("id", user_id)
+            .single()
+            .execute()
+        )
+        current_contacts = response.data["contacts"] or []
+        if friend_id not in current_contacts:
+            current_contacts.append(friend_id)
+            update_response = (
+                supabase.table("users")
+                .update({"contacts": current_contacts})
+                .eq("id", user_id)
+                .execute()
+            )
+        
+        other_response = (
+            supabase.table("users")
+            .select("contacts")
+            .eq("id", friend_id)
+            .single()
+            .execute()
+        )
+        other_current_contacts = other_response.data["contacts"] or []
+        if user_id not in other_current_contacts:
+            other_current_contacts.append(user_id)
+            other_update_response = (
+                supabase.table("users")
+                .update({"contacts": other_current_contacts})
+                .eq("id", friend_id)
+                .execute()
+            )
+        
+        return True
+    except Exception as error:
+        print(f"Error updating contacts: {error}")
+        return False
 
 
 def allowed_file(filename):
@@ -583,53 +623,61 @@ def messages():
     return render_template('messages.html', friends=friends, concerts=concerts, username=username)
 
 
-@socketio.on('join')
-def on_join(data):
-    userID = session.get('user_id')
-    friendID = data['friendID']
-    room = 1
+@app.route('/add_friend/<user_id>', methods=['POST'])
+def friend(user_id):
+    try:
+        account_id = session.get('user_id')
+        if not account_id:
+            return jsonify({"error": "User not logged in"}), 401
 
-    if not room or not userID or not friendID:
-        return
+        newFriendID = int(user_id)
+        add_friend = insert_friend(int(account_id), newFriendID)
+        
+        if add_friend:
+            print("Added as friend!", newFriendID)
+            return jsonify({"success": True})
+        else:
+            return jsonify({"error": "User not found"}), 404
 
-    if room not in rooms:
-        rooms[room] = {'users': [userID, friendID], 'messages': []}
+    except ValueError:
+        return jsonify({"error": "Invalid user ID"}), 400
 
+
+@socketio.on('connect', namespace='/messages')
+def handle_connect():
+    user_id = int(session.get('user_id'))
+    socket_users[user_id] = request.sid
+    print(f"UserID: {user_id}, Connected: {request.sid}")
+
+
+@socketio.on('disconnect', namespace='/messages')
+def handle_disconnect():
+    user_id = int(session.get('user_id'))
+    if user_id in socket_users:
+        del socket_users[user_id]
+        print(f"User {user_id} disconnected.")
+
+
+@socketio.on('join', namespace='/messages')
+def handle_join(data):
+    room = data['room']
+    user_id = int(session.get('user_id'))
+    username = session.get('user_info')['user_name']
     join_room(room)
-    send(f'{userID} has joined the room.', to=room)
-    print(f'Room created: {room}')
+    print(f"UserID: {user_id}, Join room: {room}")
+    # emit('message', {'msg': f'{username} has entered the room.'}, room=room)
 
 
-@socketio.on('leave')
-def on_leave(data):
-    userID = session.get('user_id')
-    friendID = data['friendID']
-    room = 1
+@socketio.on('private_message', namespace='/messages')
+def handle_message(data):
+    recipient = int(data['recipient'])
+    message = data['message']
+    sender = session.get('user_info')['user_name']
+    if recipient in socket_users:
+        emit('private_message', {'sender': sender, 'message': message}, to=socket_users[recipient])
+    else:
+        emit('private_message', {'sender': 'System', 'message': f"User is offline."}, to=request.sid)
 
-    if room in rooms:
-        leave_room(room)
-        del rooms[room]
-        send(f'{userID} has left the room.', to=room)
-        print(f'Room removed: {room}')
-
-
-@socketio.on('message')
-def on_message(data):
-    userID = session.get('user_id')
-    friendID = data['friendID']
-    room = 1
-
-    if room not in rooms:
-        return
-
-    content = {
-        "name": userID,
-        "message": data["message"]
-    }
-
-    send(content, to=room)
-    rooms[room]["messages"].append(content)
-    print(f"Message sent to {room}: {content}")
 
 
 @app.route('/api/user-info/<user_id>', methods=['GET', 'POST'])
@@ -729,39 +777,6 @@ def get_venue_images():
         print(f"Error fetching venue images: {str(e)}")
         return jsonify({'error': 'An error occurred while fetching venue images.'}), 500
 
-
-@app.route('/get_venue_images', methods=['GET'])
-def get_venue_images():
-    venue_name = request.args.get('venue_name')
-    section = request.args.get('section')
-    row = request.args.get('row')
-    seat = request.args.get('seat')
-
-    print(f"Parameters received: Venue={venue_name}, Section={section}, Row={row}, Seat={seat}")
-
-    if not venue_name:
-        return jsonify({'error': 'Venue name is required.'}), 400
-
-    query = supabase.table("venue-images").select("image_url")
-    query = query.eq("venue_name", venue_name)
-
-    if section:
-        query = query.eq("section", section)
-    if row:
-        query = query.eq("row", row)
-    if seat:
-        query = query.eq("seat", seat)
-
-    try:
-        response = query.execute()
-        print(f"Query response: {response.data}")
-
-        if not response.data:
-            return jsonify({'error': 'No images found for the specified criteria.'}), 404
-        return jsonify({'image_urls': response.data}), 200
-    except Exception as e:
-        print(f"Error fetching venue images: {str(e)}")
-        return jsonify({'error': 'An error occurred while fetching venue images.'}), 500
 
 @app.route('/add_venue_image', methods=['POST'])
 def add_venue_image():
