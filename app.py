@@ -736,6 +736,39 @@ def get_venue_images():
         return jsonify({'error': 'An error occurred while fetching venue images.'}), 500
 
 
+@app.route('/get_venue_images', methods=['GET'])
+def get_venue_images():
+    venue_name = request.args.get('venue_name')
+    section = request.args.get('section')
+    row = request.args.get('row')
+    seat = request.args.get('seat')
+
+    print(f"Parameters received: Venue={venue_name}, Section={section}, Row={row}, Seat={seat}")
+
+    if not venue_name:
+        return jsonify({'error': 'Venue name is required.'}), 400
+
+    query = supabase.table("venue-images").select("image_url")
+    query = query.eq("venue_name", venue_name)
+
+    if section:
+        query = query.eq("section", section)
+    if row:
+        query = query.eq("row", row)
+    if seat:
+        query = query.eq("seat", seat)
+
+    try:
+        response = query.execute()
+        print(f"Query response: {response.data}")
+
+        if not response.data:
+            return jsonify({'error': 'No images found for the specified criteria.'}), 404
+        return jsonify({'image_urls': response.data}), 200
+    except Exception as e:
+        print(f"Error fetching venue images: {str(e)}")
+        return jsonify({'error': 'An error occurred while fetching venue images.'}), 500
+
 @app.route('/add_venue_image', methods=['POST'])
 def add_venue_image():
     venue_name = request.form.get('venue_name')
@@ -748,16 +781,29 @@ def add_venue_image():
         return jsonify({'error': 'No image file provided.'}), 400
 
     try:
-        venue_name = venue_name.lower()
         image_bytes = image.read()
         image_filename = f"{image.filename}"
 
+        # Upload image to Supabase storage
         upload_response = supabase.storage.from_('venue-images-bucket').upload(image_filename, image_bytes)
+        public_url = supabase.storage.from_('venue-images-bucket').get_public_url(image_filename)
 
-        if upload_response.error:
-            return jsonify({'error': f"Failed to upload image: {str(upload_response.error)}"}), 500
+        # Check for duplicate entry
+        existing_entry = (
+            supabase.table("venue-images")
+            .select("*")
+            .eq("venue_name", venue_name)
+            .eq("section", section)
+            .eq("row", row)
+            .eq("seat", seat)
+            .eq("image_url", public_url)
+            .execute()
+        )
 
-        public_url = supabase.storage.from_('venue-images-bucket').get_public_url(image_filename).get('publicURL')
+        if existing_entry.data:
+            return jsonify({'error': 'Image already exists for this seat.'}), 400
+
+        # Insert new entry
         insert_response = (
             supabase.table("venue-images")
             .insert({
@@ -770,7 +816,7 @@ def add_venue_image():
             .execute()
         )
 
-        if not insert_response.data:
+        if insert_response.get('status_code', 200) != 200:
             return jsonify({'error': 'Failed to insert image metadata into database.'}), 500
 
         return jsonify({'message': 'Venue image added successfully!', 'image_url': public_url}), 201
