@@ -7,6 +7,9 @@
   
   <!-- Custom CSS -->
   <link rel="stylesheet" href="/static/styles_landing.css" />
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/static/profile.css" />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -27,145 +30,7 @@
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
   />
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: "Poppins", sans-serif;
-      background-image: url('/static/img/blue.gif');
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      color: #333;
-    }
-
-    .center-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      margin-top: -50px; /* Adjust for navbar */
-    }
-
-    .profile-box {
-      background: rgba(208, 237, 252, 0.95);
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-      display: flex;
-      flex-direction: row;
-      padding: 20px;
-      max-width: 800px;
-      width: 100%;
-      gap: 20px;
-    }
-
-    .profile {
-      flex: 0 0 200px; 
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 15px;
-    }
-
-    .profile img {
-      width: 150px;
-      height: 150px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 4px solid #c28adc;
-      box-shadow: 0 0 10px rgba(194, 138, 220, 0.5);
-    }
-
-    .profile-details {
-      flex: 1; 
-      text-align: left;
-    }
-
-    .profile-details h2 {
-      color: #c28adc;
-      margin-bottom: 20px;
-      font-size: 24px;
-      font-weight: bold;
-      text-align: center;
-    }
-
-    .profile-form {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 15px;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-    }
-
-    .form-group label {
-      font-weight: 600;
-      color: #555;
-      margin-bottom: 5px;
-    }
-
-    .form-group input,
-    .form-group textarea {
-      padding: 8px;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      font-size: 14px;
-    }
-
-    .full-width {
-      grid-column: span 2;
-    }
-
-    .custom-button {
-      background-color: rgb(194, 138, 220);
-      color: rgb(4, 4, 4);
-      border: none;
-      padding: 10px;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.3s;
-      grid-column: span 2;
-      text-align: center;
-    }
-
-    .custom-button:hover {
-      background-color: #a48fc2;
-    }
-
-    .avatar-dropdown {
-      position: relative;
-      display: inline-block;
-    }
-
-    .avatar-list {
-      display: none; /* Hidden by default */
-      position: absolute;
-      background: #fff;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      padding: 10px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-      z-index: 999;
-    }
-
-    .avatar-list img {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      margin: 5px;
-      border: 2px solid transparent;
-      cursor: pointer;
-      transition: border 0.3s;
-    }
-
-    .avatar-list img:hover {
-      border-color: #c28adc;
-    }
-  </style>
+  
 </head>
 <body>
   <!-- Navbar top -->
@@ -196,11 +61,7 @@
           Messages <i class="fa fa-comments"></i>
         </button>
       </div>
-      <div class="explore-button-container">
-        <button class="button" onclick="window.location.href='/profile'">
-          Profile <i class="fa fa-user"></i>
-        </button>
-      </div>
+      
       <div class="explore-button-container">
         <button class="button" onclick="window.location.href='/logout'">
           Log Out <i class="fa fa-sign-out-alt"></i>
@@ -210,6 +71,7 @@
   </div>
 
   <div class="center-container">
+    <div id="popup-message" class="popup-message">You can only select up to 3 genres.</div>
     <!-- Single form for the entire profile -->
     <form method="POST" enctype="multipart/form-data">
       <div class="profile-box">
@@ -221,7 +83,7 @@
   alt="Current Avatar"
 />
           <div class="avatar-dropdown">
-            <button type="button" class="custom-button" id="toggle-avatars" style="padding: 5px 10px; font-size: 14px;">
+            <button type="button" class="button-avatar" id="toggle-avatars" style="padding: 5px 10px; font-size: 14px; color: white;">
               Select Avatars
             </button>
             <div class="avatar-list" id="avatar-list">
@@ -234,25 +96,14 @@
           <!-- Hidden input to store chosen avatar for form submission -->
           <input type="hidden" name="chosen_avatar" id="chosen_avatar" value="{{ user['profile_picture_url'] if user['profile_picture_url'] else '' }}">
         
-          <div class="form-group mb-3">
-            <label for="username" style="color: rgb(194, 138, 220);">Username:</label>
-            <input
-                type="text"
-                id="username"
-                name="username"
-                class="form-control"
-                value="{{ user['user_name'] }}"
-                required
-            />
-          </div>
+          
         </div>
         
-
         <!-- Right column: Profile fields -->
         <div class="profile-details">
           <h2>Profile Information</h2>
           {% if success %}
-          <p style="color: green;">{{ success }}</p>
+          <p style="color:green;">{{ success }}</p>
           {% endif %}
           {% if error %}
           <p style="color: red;">{{ error }}</p>
@@ -308,17 +159,46 @@
               />
             </div>
 
-            <div class="form-group mb-3">
-              <label for="location" style="color: rgb(194, 138, 220);">Location:</label>
-              <input
-                type="text"
-                id="location"
-                name="location"
-                class="form-control"
-                value="{{ user['user_location'] }}"
-                required
-              />
+            <div class="form-group">
+              <label for="location">Location</label>
+              <select name="location" id="location" class="form-control">
+                <option value="" disabled {% if not user['user_location'] %}selected{% endif %}>Select your location</option>
+                <option value="Manhattan" {% if user['user_location'] == 'Manhattan' %}selected{% endif %}>Manhattan</option>
+                <option value="Brooklyn" {% if user['user_location'] == 'Brooklyn' %}selected{% endif %}>Brooklyn</option>
+                <option value="Queens" {% if user['user_location'] == 'Queens' %}selected{% endif %}>Queens</option>
+                <option value="The Bronx" {% if user['user_location'] == 'The Bronx' %}selected{% endif %}>The Bronx</option>
+                <option value="Staten Island" {% if user['user_location'] == 'Staten Island' %}selected{% endif %}>Staten Island</option>
+              </select>
             </div>
+            
+
+
+            <div class="form-group">
+              <label for="music_genre" style="color: #c28adc; font-weight: bold; ">Music Genres</label>
+              <div class="dropdown">
+                <button type="button" id="genreDropdown" class="music-genre-dropdown">
+                  {{ ', '.join(user['music_genre']) if user['music_genre'] else "Pick up to 3 of your favorite genres" }}
+                </button>
+            
+                <!-- Dropdown Content -->
+                <div id="genreOptions" class="dropdown-content">
+                  {% set genres = [
+                    "Blues", "Classic", "Dance/Electronic", "Hip-Hop/Rap", "Jazz", "Medieval/Renaissance",
+                    "New Age", "Pop", "Reggae", "Rock", "Ballads/Romantic", "Children's music", "Country",
+                    "Folk", "Holiday", "Latin", "Metal", "Other", "R&B", "Religious", "World"
+                  ] %}
+                  {% for genre in genres %}
+                    <label>
+                      <input type="checkbox" name="genres" value="{{ genre }}"
+                      {% if user['music_genre'] and genre in user['music_genre'] %}checked{% endif %}>
+                      {{ genre }}
+                    </label>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+            
+
 
             <div class="form-group mb-3">
               <label for="description" style="color: rgb(194, 138, 220);">Account Description:</label>
@@ -328,18 +208,7 @@
                 class="form-control"
                 required>{{ user['account_description'] }}</textarea>
             </div>
-
-            <div class="form-group mb-3">
-              <label for="music_genres" style="color: rgb(194, 138, 220);">Music Genres:</label>
-              <input
-                type="text"
-                id="music_genres"
-                name="music_genre"
-                class="form-control"
-                value="{{ ', '.join(user['music_genre']) if 'music_genre' in user else '' }}"
-                required
-              />
-            </div>
+            
 
             <div class="form-group mb-3">
               <label for="budget" style="color: rgb(194, 138, 220);">Budget:</label>
@@ -384,7 +253,7 @@
             </div>
 
             <div class="form-group mb-3" style="grid-column: 2; text-align: right; margin-top: 10px;">
-              <button type="submit" class="custom-button" style="padding: 10px 20px;">
+              <button type="submit" class="button-update-profile" style="padding: 10px 20px;  background-color:#c28adc; color: white">
                 Update Profile
               </button>
             </div>
@@ -393,33 +262,7 @@
       </div>
     </form>
   </div>
-
-  <script>
-    const toggleButton = document.getElementById('toggle-avatars');
-    const avatarList = document.getElementById('avatar-list');
-    const chosenAvatarInput = document.getElementById('chosen_avatar');
-    const selectedAvatar = document.getElementById('selected-avatar');
-
-    toggleButton.addEventListener('click', () => {
-      avatarList.style.display = (avatarList.style.display === 'block') ? 'none' : 'block';
-    });
-
-    avatarList.addEventListener('click', (e) => {
-  if(e.target.tagName === 'IMG') {
-    const avatarUrl = e.target.getAttribute('data-avatar');
-    selectedAvatar.src = avatarUrl;
-    document.getElementById('chosen_avatar').value = avatarUrl;
-    avatarList.style.display = 'none';
-  }
-});
-
-
-
-    document.addEventListener('click', (e) => {
-      if (!avatarList.contains(e.target) && e.target !== toggleButton) {
-        avatarList.style.display = 'none';
-      }
-    });
-  </script>
+  
+  <script src="{{ url_for('static', filename='js/profile.js') }}"></script>
 </body>
 </html>
