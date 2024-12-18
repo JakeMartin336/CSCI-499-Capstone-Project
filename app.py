@@ -351,7 +351,7 @@ def profile():
             update_status = update_user_info(user_id, {"profile_picture_url": chosen_avatar})
             if update_status is True:
                 user_info['profile_picture_url'] = chosen_avatar
-                success_message = "Avatar updated successfully!"
+                success_message = "Profile updated successfully!"
             else:
                 error_message = update_status
         
@@ -363,7 +363,7 @@ def profile():
             if update_status is True:
                 user_info['user_name'] = updated_username
                 if not success_message:
-                    success_message = "Username updated successfully!"
+                    success_message = "Profile updated successfully!"
             else:
                 error_message = update_status
 
@@ -373,7 +373,7 @@ def profile():
             update_status = update_user_info(user_id, {'user_name': updated_username})
             if update_status is True:
                 user_info['user_name'] = updated_username
-                success_message = "Username updated successfully!"
+                success_message = "Profile updated successfully!"
             else:
                 error_message = update_status
 
@@ -382,7 +382,7 @@ def profile():
             update_status = update_user_info(user_id, {'email_address': updated_email})
             if update_status is True:
                 user_info['email_address'] = updated_email
-                success_message = "Email address updated successfully!"
+                success_message = "Profile updated successfully!"
             else:
                 error_message = update_status
 
@@ -391,7 +391,7 @@ def profile():
             update_status = update_user_info(user_id, {'age': updated_age})
             if update_status is True:
                 user_info['age'] = updated_age
-                success_message = "Age updated successfully!"
+                success_message = "Profile updated successfully!"
             else:
                 error_message = update_status
 
@@ -400,7 +400,7 @@ def profile():
             update_status = update_user_info(user_id, {'user_location': updated_location})
             if update_status is True:
                 user_info['user_location'] = updated_location
-                success_message = "Location updated successfully!"
+                success_message = "Profile updated successfully!"
             else:
                 error_message = update_status
 
@@ -409,13 +409,11 @@ def profile():
             update_status = update_user_info(user_id, {'account_description': updated_account_description})
             if update_status is True:
                 user_info['account_description'] = updated_account_description
-                success_message = "Account description updated successfully!"
+                success_message = "Profile updated successfully!"
             else:
                 error_message = update_status
 
-        # Handle music genre
         updated_music_genre_str = request.form.get('music_genre')
-        # Convert the comma-separated string to a list
         if updated_music_genre_str is not None:
             updated_music_genres = [g.strip() for g in updated_music_genre_str.split(',') if g.strip()]
             if updated_music_genres != user_info['music_genre']:
@@ -423,7 +421,7 @@ def profile():
                 if update_status is True:
                     user_info['music_genre'] = updated_music_genres
                     if success_message is None:
-                        success_message = "Music genres updated successfully!"
+                        success_message = "Profile updated successfully!"
                 else:
                     error_message = update_status
 
@@ -433,7 +431,7 @@ def profile():
             update_status = update_user_info(user_id, {'budget': updated_budget})
             if update_status is True:
                 user_info['budget'] = updated_budget
-                success_message = "Budget updated successfully!"
+                success_message = "Profile updated successfully!"
             else:
                 error_message = update_status
 
@@ -442,7 +440,7 @@ def profile():
             update_status = update_user_info(user_id, {'travel_time': updated_travel_time})
             if update_status is True:
                 user_info['travel_time'] = updated_travel_time
-                success_message = "Travel time updated successfully!"
+                success_message = "Profile time updated successfully!"
             else:
                 error_message = update_status
 
@@ -453,7 +451,7 @@ def profile():
                 update_status = update_user_info(user_id, {'password': new_password})
                 if update_status is True:
                     user_info['password'] = new_password
-                    success_message = "Password updated successfully!"
+                    success_message = "Profile updated successfully!"
                 else:
                     error_message = update_status
             else:
@@ -464,7 +462,7 @@ def profile():
             update_status = update_user_info(user_id, {'travel_time': updated_travel_time})
             if update_status is True:
                 user_info['travel_time'] = updated_travel_time
-                success_message = "Travel time updated successfully!"
+                success_message = "Profile updated successfully!"
             else:
                      error_message = update_status
                 
