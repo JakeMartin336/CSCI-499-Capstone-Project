@@ -2,11 +2,8 @@ import requests
 
 current_key_index = 0
 API_Keys = [
-    "7637d6eb88msh515fe794213eec9p1ca1d3jsn559ea9232bfc",
-    "d50f6e803emsh4e674004cf2581ep178d33jsne1cea532c048",
-    "d70791e08amsh1cd03ce9f9fdc97p1f97d4jsn378f66394a3e",
-    "0b42dfc6cbmsh86699df9239150bp157a55jsnbdf52436f685",
-    "a5e78ef168msh726b7485248deacp140029jsn8107ddfaefe6",
+    "88d12055a2msh9ca44cce46b5343p171a78jsnfc333dc4bca6",
+    "d26c35c2d3mshe8487185efa5813p1eb023jsndc1e9a95d9b5"
 ]
 
 

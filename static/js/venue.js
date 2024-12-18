@@ -232,17 +232,29 @@ document.getElementById('upload-pov').addEventListener('click', function () {
     const row = document.getElementById('row-number').value.trim();
     const seat = document.getElementById('seat-number').value.trim();
     
-    if (venueName && section && row && seat && formData) {
-        formData.append('venue_name', venueName);
-        formData.append('section', section);
-        formData.append('row', row);
-        formData.append('seat', seat);
+    formData.append('venue_name', venueName);
+    formData.append('section', section);
+    formData.append('row', row);
+    formData.append('seat', seat);
+    formData.append('image', document.getElementById('upload-image').files[0]);
 
-        addVenueImage(formData);
-    } else {
-        alert('Please fill out all fields before uploading.');
+    // Debugging: Log all FormData entries
+    console.log('FormData being sent:');
+    for (let [key, value] of formData.entries()) {
+        console.log(`${key}: ${value}`);
     }
+
+    // Existing fetch request
+    fetch('/add_venue_image', {
+        method: 'POST',
+        body: formData,
+    })
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(error => console.error('Error:', error));
 });
+
+   
 
 
 
@@ -322,4 +334,5 @@ document.getElementById('venue-name').addEventListener('keydown', function(event
         document.getElementById('search-btn').click(); // Trigger click event on the search button
     }
 });
+
 
