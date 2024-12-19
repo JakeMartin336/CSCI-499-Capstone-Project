@@ -382,9 +382,7 @@ def profile():
         url_for('static', filename='avatars/avatar7.png'),
         url_for('static', filename='avatars/avatar8.png'),
         url_for('static', filename='avatars/avatar9.png'),
-        url_for('static', filename='avatars/avatar10.png'),
-        url_for('static', filename='avatars/avatar11.png'),
-        url_for('static', filename='avatars/avatar12.png'),
+        url_for('static', filename='avatars/avatar10.png')
     ]
 
     if request.method == 'POST':
@@ -746,6 +744,38 @@ def recommend():
         return jsonify({"error": "Invalid target_id parameter"}), 400
 
 
+@app.route('/get_venue_images', methods=['GET'])
+def get_venue_images():
+    venue_name = request.args.get('venue_name')
+    section = request.args.get('section')
+    row = request.args.get('row')
+    seat = request.args.get('seat')
+
+    print(f"Parameters received: Venue={venue_name}, Section={section}, Row={row}, Seat={seat}")
+
+    if not venue_name:
+        return jsonify({'error': 'Venue name is required.'}), 400
+
+    query = supabase.table("venue-images").select("image_url")
+    query = query.eq("venue_name", venue_name)
+
+    if section:
+        query = query.eq("section", section)
+    if row:
+        query = query.eq("row", row)
+    if seat:
+        query = query.eq("seat", seat)
+
+    try:
+        response = query.execute()
+        print(f"Query response: {response.data}")
+
+        if not response.data:
+            return jsonify({'error': 'No images found for the specified criteria.'}), 404
+        return jsonify({'image_urls': response.data}), 200
+    except Exception as e:
+        print(f"Error fetching venue images: {str(e)}")
+        return jsonify({'error': 'An error occurred while fetching venue images.'}), 500
 
 
 @app.route('/add_venue_image', methods=['POST'])
