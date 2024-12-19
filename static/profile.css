@@ -127,7 +127,7 @@ body {
     grid-column: span 2;
     justify-self: end;
   }
-  
+  /*Change avatar button*/
   .button-avatar {
     background-color: #c28adc;
     color: black;
