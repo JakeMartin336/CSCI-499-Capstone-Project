@@ -227,11 +227,14 @@ document.getElementById('upload-image').addEventListener('change', function(even
 
 
 document.getElementById('upload-pov').addEventListener('click', function () {
+    // Get values from the form fields
     const venueName = document.getElementById('venue-name').value.trim();
     const section = document.getElementById('section-number').value.trim();
     const row = document.getElementById('row-number').value.trim();
     const seat = document.getElementById('seat-number').value.trim();
     
+    // Prepare FormData
+    const formData = new FormData();
     formData.append('venue_name', venueName);
     formData.append('section', section);
     formData.append('row', row);
@@ -244,16 +247,59 @@ document.getElementById('upload-pov').addEventListener('click', function () {
         console.log(`${key}: ${value}`);
     }
 
+    // Show loading SweetAlert
+    Swal.fire({
+        title: 'Uploading...',
+        text: 'Please wait while we upload your image.',
+        icon: 'info',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        didOpen: () => {
+            Swal.showLoading(); // Show loading spinner
+        }
+    });
+
     // Existing fetch request
     fetch('/add_venue_image', {
         method: 'POST',
         body: formData,
     })
     .then(response => response.json())
-    .then(data => console.log(data))
-    .catch(error => console.error('Error:', error));
-});
+    .then(data => {
+        // Close the loading SweetAlert
+        Swal.close();
 
+        // Show a success message if upload was successful
+        if (data.message) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Upload Successful!',
+                text: data.message,
+                confirmButtonText: 'OK'
+            });
+        } else {
+            Swal.fire({
+                icon: 'warning',
+                title: 'No message from server',
+                text: 'The image upload was completed, but no message was returned from the server.',
+                confirmButtonText: 'OK'
+            });
+        }
+    })
+    .catch(error => {
+        // Close the loading SweetAlert
+        Swal.close();
+
+        // Show an error message in case of failure
+        Swal.fire({
+            icon: 'error',
+            title: 'Upload Failed',
+            text: 'There was an error uploading the image. Please try again.',
+            confirmButtonText: 'Retry'
+        });
+        console.error('Error:', error);
+    });
+});
    
 
 
@@ -293,11 +339,12 @@ async function addVenueImage(formData) {
         method: 'POST',
         body: formData
     })
+
     .then(response => response.json())
     .then(data => {
         // Close the loading SweetAlert
         Swal.close();
-
+        console.log(data)
         // Show a success message if upload was successful
         if (data.message) {
             Swal.fire({
