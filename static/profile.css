@@ -2,7 +2,7 @@
 body {
     margin: 0;
     padding: 0;
-    font-family: "Poppins", sans-serif;
+    font-family: "Montserrat";
     background-image: url('/static/img/blue.gif');
     background-size: cover;
     background-position: center;
@@ -27,6 +27,7 @@ body {
     padding: 20px;
     max-width: 800px;
     width: 100%;
+    font-size: "Montserrat";
     gap: 20px;
   }
   
@@ -145,6 +146,7 @@ body {
   .avatar-dropdown {
     position: relative;
     display: inline-block;
+    font-family: "Itim";
   }
   
   .avatar-list {
@@ -172,6 +174,7 @@ body {
   
   .avatar-list img:hover {
     border-color: #c28adc;
+    background-color: #dbaaf1;
   }
   
   /* Dropdown */
@@ -253,7 +256,7 @@ body {
 /* Update Profile Button */
 .button-update-profile {
     margin-top: 20px;
-    background-color: #fff; 
+    background-color:#6b55cf;
     color: #333; 
     border: 1px solid #ddd;
     padding: 10px 15px;
@@ -264,10 +267,12 @@ body {
     justify-self: end;
     text-align: center;
     transition: border-color 0.3s, background-color 0.3s;
+    font-family: "Itim";
+    font-size: 16px;
 }
 
 .button-update-profile:hover {
     border-color: #c28adc; 
-    background-color: #fff; 
+    background-color: #620a98; 
     color: #333; 
 }

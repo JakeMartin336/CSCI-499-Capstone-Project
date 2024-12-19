@@ -382,7 +382,9 @@ def profile():
         url_for('static', filename='avatars/avatar7.png'),
         url_for('static', filename='avatars/avatar8.png'),
         url_for('static', filename='avatars/avatar9.png'),
-        url_for('static', filename='avatars/avatar10.png')
+        url_for('static', filename='avatars/avatar10.png'),
+        url_for('static', filename='avatars/avatar11.png'),
+        url_for('static', filename='avatars/avatar12.png'),
     ]
 
     if request.method == 'POST':
