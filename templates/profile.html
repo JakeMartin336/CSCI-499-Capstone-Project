@@ -212,14 +212,13 @@
 
             <div class="form-group mb-3">
               <label for="budget" style="color: rgb(194, 138, 220);">Budget:</label>
-              <input
-                type="number"
-                id="budget"
-                name="budget"
-                class="form-control"
-                value="{{ user['budget'] }}"
-                required
-              />
+             
+              <select id="budget" name="budget" class="form-control">
+                <option value="$0-100" {% if user['budget'] == '$0-100"' %} selected {% endif %}>$0-100</option>
+                <option value="$100-300" {% if user['budget'] == '$100-300' %} selected {% endif %}>$100-300</option>
+                <option value="$300-500" {% if user['budget'] == '$300-500' %} selected {% endif %}>$300-500</option>
+                <option value="$500+" {% if user['budget'] == '$500+' %} selected {% endif %}>$500+</option>
+              </select>
             </div>
 
             <div class="form-group mb-3">
