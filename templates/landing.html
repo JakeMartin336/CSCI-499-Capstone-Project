@@ -54,7 +54,7 @@
             <div class="profile-box">
                 <div class="profile">
                   <img 
-                  src="{{ user['profile_picture_url'] if user['profile_picture_url'] else url_for('static', filename='avatars/default.png') }}"
+                  src="{{ user['profile_picture_url'] if user['profile_picture_url'] != 'NULL' else 'static/img/cloudpfp.png' }}"
                   alt="Profile Picture"
                   style="width: 125px; height: 125px; border-radius: 50%; object-fit: cover; overflow: hidden;"
                 />                
